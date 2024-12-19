@@ -1,16 +1,15 @@
 #include "../include/minishell.h"
 
-void sig_handler(int signum)
+void	sig_handler(int signum)
 {
 	(void)signum;
-
 	rl_replace_line("", 0);
-    rl_on_new_line();
+	rl_on_new_line();
 	write(STDOUT_FILENO, "\n", 1);
-	// rl_redisplay();
+	rl_redisplay();
 }
 
-int handle_builtin_cmds(t_prompt *prompt, char **env)
+int	handle_builtin_cmds(t_prompt *prompt, char **env)
 {
 	if (!strcmp(prompt->input, "env"))
 	{
@@ -40,36 +39,40 @@ int handle_builtin_cmds(t_prompt *prompt, char **env)
 	return (0);
 }
 
-void handle_input(t_prompt *prompt, char **env)
+void	handle_input(t_prompt *prompt, char **env)
 {
 	if (prompt->input[0] == '\0')
 	{
 		free(prompt->input);
-		return;
+		return ;
 	}
 	if (handle_builtin_cmds(prompt, env))
 	{
 		free(prompt->input);
-		return;
+		return ;
 	}
 	printf("Command not recognised: %s\n", prompt->input);
 	free(prompt->input);
 }
 
-char *ft_prompt(void)
+char	*ft_prompt(void)
 {
-	char *input;
-
+	char	*input;
 	input = readline("minishell$>");
+	if (input == NULL || atoi(input) == EOF)
+	{
+		printf("vpizdu....\n");
+		exit(0);
+	}
 	return (input);
 }
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
+	t_prompt	prompt;
+
 	(void)argc;
 	(void)argv;
-	t_prompt prompt;
-
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
@@ -78,7 +81,7 @@ int main(int argc, char **argv, char **env)
 		if (prompt.input == NULL)
 		{
 			printf("vpizdu....\n");
-			break;
+			break ;
 		}
 		add_history(prompt.input);
 		handle_input(&prompt, env);
