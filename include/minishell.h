@@ -10,7 +10,9 @@
 
 int		sig = 0;
 
+typedef struct t 
 void	sig_handler(int signum);
 void	prompt(char *input);
+
 
 #endif

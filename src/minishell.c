@@ -1,5 +1,5 @@
 
-#include "minishell.h"
+#include "../include/minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdio.h>
@@ -7,6 +7,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <signal.h>
+
+
+
 
 void	sig_handler(int signum)
 {
@@ -21,7 +24,7 @@ int	main(int argc, char **argv, char **env)
 	char *input;
 	char *path;
 
-
+	// Handle the signal to interrupt
 	signal(SIGINT, sig_handler);
 	// Ignore SIGQUIT signal
 	signal(SIGQUIT, SIG_IGN);
