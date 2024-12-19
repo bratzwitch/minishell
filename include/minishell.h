@@ -9,6 +9,11 @@
 #include <unistd.h>
 #include <signal.h>
 
+typedef struct s_prompt {
+    char *input;
+    char *path;
+} t_prompt;
+
 void	sig_handler(int signum);
 void	prompt(char *input);
 
