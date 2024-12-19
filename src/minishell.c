@@ -3,7 +3,11 @@
 void sig_handler(int signum)
 {
 	(void)signum;
-	write(STDOUT_FILENO, "\nminishell$>", 12);
+
+	rl_replace_line("", 0);
+    rl_on_new_line();
+	write(STDOUT_FILENO, "\n", 1);
+	// rl_redisplay();
 }
 
 int handle_builtin_cmds(t_prompt *prompt, char **env)
@@ -52,9 +56,12 @@ void handle_input(t_prompt *prompt, char **env)
 	free(prompt->input);
 }
 
-void prompt(t_prompt *prompt)
+char *ft_prompt(void)
 {
-	
+	char *input;
+
+	input = readline("minishell$>");
+	return (input);
 }
 
 int main(int argc, char **argv, char **env)
@@ -67,7 +74,7 @@ int main(int argc, char **argv, char **env)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		prompt.input = readline("minishell$>");
+		prompt.input = ft_prompt();
 		if (prompt.input == NULL)
 		{
 			printf("vpizdu....\n");

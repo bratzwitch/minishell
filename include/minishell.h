@@ -14,7 +14,7 @@ typedef struct s_prompt {
     char *path;
 } t_prompt;
 
-void	sig_handler(int signum);
+void sig_handler(int signum);
 void	prompt(char *input);
 
 #endif
