@@ -1,14 +1,16 @@
 NAME = minishell
-
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
-
+RM = rm -f
 LIBFT = ./libft
+SRC_DIR = ./src
 
-SRC =	./src/minishell.c
+SRC =	$(SRC_DIR)/minishell.c \
+		$(SRC_DIR)/commands.c \
+		$(SRC_DIR)/input.c \
+		$(SRC_DIR)/signal.c \
+		$(SRC_DIR)/utils.c
 			
 OBJS = $(SRC:.c=.o)
-
-RM = rm -f
 
 all: $(NAME)
 
