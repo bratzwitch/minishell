@@ -3,11 +3,11 @@
 
 #include <readline/readline.h>
 #include <readline/history.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#include <stdlib.h>
 #include <signal.h>
+#include <unistd.h>
+#include <stdio.h>
 
 typedef struct s_prompt {
     char *input;
@@ -20,5 +20,11 @@ void	setup_handlers(void);
 
 // COMMANDS
 int	handle_builtin_cmds(t_prompt *prompt, char **env);
+
+// INPUT
+void	handle_input(t_prompt *prompt, char **env);
+
+// UTILS
+char	*ft_prompt(void);
 
 #endif
