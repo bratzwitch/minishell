@@ -13,7 +13,8 @@ int	handle_builtin_cmds(t_prompt *prompt, char **env)
 	}
 	if (!ft_strcmp(prompt->input, "ls"))
 	{
-		execve("/bin/ls", &prompt->input, env);
+		execve("/usr/bin/ls", &prompt->input, env);
+		free(prompt->input);
 		return (1);
 	}
 	if (!strcmp(prompt->input, "pwd"))

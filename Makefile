@@ -8,8 +8,9 @@ SRC =	$(SRC_DIR)/minishell.c \
 		$(SRC_DIR)/commands.c \
 		$(SRC_DIR)/input.c \
 		$(SRC_DIR)/signal.c \
-		$(SRC_DIR)/utils.c
-			
+		$(SRC_DIR)/utils.c	\
+		$(SRC_DIR)/lexus/tokenise.c
+
 OBJS = $(SRC:.c=.o)
 
 all: $(NAME)

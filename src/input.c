@@ -2,7 +2,7 @@
 
 void	handle_input(t_prompt *prompt, char **env)
 {
-	tokenise(prompt);
+	// tokenise(prompt);
 
 	if (prompt->input[0] == '\0')
 	{
@@ -14,6 +14,6 @@ void	handle_input(t_prompt *prompt, char **env)
 		free(prompt->input);
 		return ;
 	}
-	printf("Command not recognised: %s\n", prompt->input);
+	// printf("Command not recognised: %s\n", prompt->input);
 	free(prompt->input);
 }
