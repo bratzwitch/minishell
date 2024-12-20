@@ -16,7 +16,6 @@ typedef struct s_prompt {
 
 // SIGNALS
 void	sig_handler(int signum);
-
 void	setup_handlers(void);
 
 // COMMANDS

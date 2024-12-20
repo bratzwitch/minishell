@@ -14,19 +14,18 @@ void setup_handlers(void)
 {
     struct sigaction sa;
 
-    sa.sa_handler = sig_handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
+    sa.sa_handler = sig_handler;
     if (sigaction(SIGINT, &sa, NULL) == -1)
     {
-        write(STDERR_FILENO, "Error sigaction SIGUSR1\n", 25);
+        write(STDERR_FILENO, "Error: sigaction SIGINT\n", 25);
         exit(1);
     }
-    if (sigaction(SIGUSR2, &sa, NULL) == -1)
+    sa.sa_handler = SIG_IGN;
+    if (sigaction(SIGQUIT, &sa, NULL) == -1)
     {
-        write(STDERR_FILENO, "Error sigaction SIGUSR2\n", 25);
+        write(STDERR_FILENO, "Error: sigaction SIGQUIT\n", 25);
         exit(1);
     }
-    signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
 }

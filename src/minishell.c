@@ -36,6 +36,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 
 	setup_handlers();
+
 	while (1)
 	{
 		prompt.input = ft_prompt();
@@ -47,5 +48,6 @@ int	main(int argc, char **argv, char **env)
 		add_history(prompt.input);
 		handle_input(&prompt, env);
 	}
+	
 	return (0);
 }
