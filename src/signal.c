@@ -1,5 +1,4 @@
 #include "../include/minishell.h"
-#define _XOPEN_SOURCE 700
 
 void sig_handler(int signum)
 {

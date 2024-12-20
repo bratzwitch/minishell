@@ -1,31 +1,17 @@
 #include "../include/minishell.h"
 
-void	handle_input(t_prompt *prompt, char **env)
+void tokenise(t_prompt *prompt)
 {
-	if (prompt->input[0] == '\0')
-	{
-		free(prompt->input);
-		return ;
-	}
-	if (handle_builtin_cmds(prompt, env))
-	{
-		free(prompt->input);
-		return ;
-	}
-	printf("Command not recognised: %s\n", prompt->input);
-	free(prompt->input);
-}
+	char *token;
+	int i = 0;
 
-char	*ft_prompt(void)
-{
-	char	*input;
-	input = readline("minishell$>");
-	if (input == NULL || atoi(input) == EOF)
+	token = strtok(prompt->input, " ");
+	while (token != NULL)
 	{
-		printf("vpizdu....\n");
-		exit(0);
+		prompt->all_tokens[i] = token;
+		token = strtok(NULL, " ");
+		i++;
 	}
-	return (input);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -49,6 +35,5 @@ int	main(int argc, char **argv, char **env)
 		add_history(prompt.input);
 		handle_input(&prompt, env);
 	}
-	
 	return (0);
 }
