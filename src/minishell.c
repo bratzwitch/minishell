@@ -45,6 +45,7 @@ int	main(int argc, char **argv, char **env)
 			printf("vpizdu....\n");
 			break ;
 		}
+		
 		add_history(prompt.input);
 		handle_input(&prompt, env);
 	}
