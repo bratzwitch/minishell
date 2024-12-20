@@ -14,7 +14,12 @@ typedef struct s_prompt {
     char *path;
 } t_prompt;
 
-void sig_handler(int signum);
-void	prompt(char *input);
+// SIGNALS
+void	sig_handler(int signum);
+
+void	setup_handlers(void);
+
+// COMMANDS
+int	handle_builtin_cmds(t_prompt *prompt, char **env);
 
 #endif
