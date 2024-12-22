@@ -12,25 +12,19 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-typedef struct s_prompt
-{
-	char			*input;
-	char			*path;
-}					t_prompt;
-
 typedef enum types
 {
-	TOKEN_COMMAND,
+	TOKEN_COMMAND, // ??? | - 0
 	TOKEN_ARGUMENT,
-	TOKEN_PIPE,
+	TOKEN_PIPE, // - 2
 	TOKEN_REDIRECT_IN,
 	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_APPEND,
 	TOKEN_HEREDOC,
-	TOKEN_ENV_VAR,
-	TOKEN_EXIT_STATUS,
+	TOKEN_ENV_VAR, // ?
+	TOKEN_EXIT_STATUS, // - 8
 	TOKEN_EOF,
-	TOKEN_ERROR
+	TOKEN_ERROR // - 10 | you dont use it anywhere, how to check
 }					t_token_type;
 
 typedef struct tokens
@@ -38,6 +32,12 @@ typedef struct tokens
 	t_token_type	type;
 	char			*value;
 }					t_token;
+
+typedef struct s_prompt
+{
+	char			*input;
+	char			*path;
+}					t_prompt;
 
 typedef struct s_lexus
 {
@@ -48,20 +48,24 @@ typedef struct s_lexus
 	int				token_num;
 	int				error_flag;
 }					t_lexus;
+
 // SIGNALS
 void				sig_handler(int signum);
 void				setup_handlers(void);
 
 // COMMANDS
 int					handle_builtin_cmds(t_prompt *prompt, char **env);
-void				tokenise(t_prompt *prompt);
 
 // INPUT
 void				handle_input(t_prompt *prompt, char **env);
 
 // LEXER
-void				lexer(char *input, char **env);
-t_token				*get_next_token(char **input, char **env, int *exit_status);
+void lexer(char *input);
+t_token *get_next_token(char **input, int *exit_status);
+t_token *create_token(t_token_type type, char *value);
+t_token *handle_special_characters(char **input);
+t_token *handle_dollar_sign(char **input);
+t_token *handle_input_redirection(char **input);
 
 // UTILS
 char				*ft_prompt(void);
