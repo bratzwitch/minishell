@@ -9,8 +9,8 @@ void free_token(t_token *t)
 {
 	if (t)
 	{
-		if (t->value)
-			free(t->value);
+		// if (t->value)
+		// 	free(t->value);
 		free(t);
 	}
 }

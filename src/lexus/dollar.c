@@ -11,9 +11,9 @@ char *get_env_variable(char **current, char *var_start) // thats execution at th
 	env_value = getenv(token_value);
 	free(token_value);
 	if (env_value)
-		return(ft_strdup(env_value));
+		return(env_value);
 	else
-		return (ft_strdup(""));
+		return ("");
 }
 
 t_token *handle_dollar_sign(char **input)

@@ -1,5 +1,6 @@
 NAME = minishell
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror
+# valgrind --leak-check=full -s --show-leak-kinds=all --suppressions=minishell.supp ./minishell
 RM = rm -f
 LIBFT = ./libft
 SRC_DIR = ./src
