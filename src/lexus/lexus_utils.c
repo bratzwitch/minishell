@@ -7,10 +7,9 @@ bool ft_isspace(char c)
 
 void free_token(t_token *t)
 {
-	if (t)
-	{
-		// if (t->value)
-		// 	free(t->value);
-		free(t);
-	}
+    if (!t)
+        return;
+    if (t->value)
+        free(t->value);
+    free(t);
 }

@@ -1,4 +1,5 @@
 #include "../../include/minishell.h"
+# include <string.h>
 
 t_token *create_token(t_token_type type, char *value)
 {
@@ -21,24 +22,20 @@ t_token *create_token(t_token_type type, char *value)
 t_token *get_next_token(char **input, int *exit_status)
 {
 	t_token *new_token;
-	char *start;
 	char *current;
 	char *token_value;
+	char *start;
 
 	(void)exit_status;
 
 	start = *input;
 	current = *input;
-	token_value = NULL;
 	new_token = NULL;
 
 	while (*current && ft_isspace(*current))
 		current++;
 	if (*current == '\0')
-	{
-		new_token = create_token(TOKEN_EOF, NULL);
-		return (new_token);
-	}
+		return (create_token(TOKEN_EOF, NULL));
 
 	new_token = handle_special_characters(&current); // handles redirections and a pipe
 	if (new_token)
@@ -48,25 +45,18 @@ t_token *get_next_token(char **input, int *exit_status)
 	}
 
 	if (*current == '$')
-	{
-		new_token = handle_dollar_sign(input);
-		return (new_token);
-	}
+		return (handle_dollar_sign(input));
 
 	while (*current && !ft_isspace(*current) && *current != '<' && *current != '>' && *current != '|' && *current != '$') // ??
 		current++;
-
-	// token_value = strndup(start, current - start);
-	// if (!token_value)
-	// {
-	// 	perror("toke_valu ???");
-	// 	exit(EXIT_FAILURE);
-	// }
+	
 	*input = current;
-
-	new_token = create_token(TOKEN_ARGUMENT, start);
-	// if (new_token)
-	// 	free(token_value);
+	token_value = strndup(start, current - start);
+	// if (!token_value)
+	// 	return (NULL);
+	new_token = create_token(TOKEN_ARGUMENT, token_value);
+	// if (!new_token)
+	// 	free (token_value);
 	return (new_token);
 }
 
