@@ -14,15 +14,14 @@
 
 typedef enum types
 {
-	TOKEN_COMMAND, // ??? | - 0
 	TOKEN_ARGUMENT,
-	TOKEN_PIPE, // - 2
+	TOKEN_PIPE,
 	TOKEN_REDIRECT_IN,
 	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_APPEND,
 	TOKEN_HEREDOC,
-	TOKEN_ENV_VAR, // ?
-	TOKEN_EXIT_STATUS, // - 8
+	TOKEN_ENV_VAR,
+	TOKEN_EXIT_STATUS,
 	TOKEN_EOF,
 	TOKEN_ERROR // - 10 | you dont use it anywhere, how to check
 }					t_token_type;
@@ -63,13 +62,14 @@ void				handle_input(t_prompt *prompt, char **env);
 void lexer(char *input);
 t_token *get_next_token(char **input, int *exit_status);
 t_token *create_token(t_token_type type, char *value);
-t_token *handle_special_characters(char **input);
+t_token *handle_special_characters(char **current, char ***input);
 t_token *handle_dollar_sign(char **input);
 t_token *handle_input_redirection(char **input);
 
 // UTILS
 char				*ft_prompt(void);
-bool				ft_isspace(char c);
+bool ft_isspace(const char c);
+bool ft_is_special_character(const char *current);
 
 // FREE
 void				free_token(t_token *t);

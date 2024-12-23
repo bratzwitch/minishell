@@ -1,46 +1,50 @@
 #include "../../include/minishell.h"
 
-t_token *handle_input_redirection(char **input)
+t_token *handle_input_redirection(char **current)
 {
-	char *current = *input;
+	char *temp = *current;
 
-	if (*(current + 1) == '<')
+	if (*(temp + 1) == '<')
 	{
-		*input = current + 2;
+		*current = temp + 2;
 		return (create_token(TOKEN_HEREDOC, "<<"));
 	}
-	*input = current + 1;
+	*current = temp + 1;
 	return (create_token(TOKEN_REDIRECT_IN, "<"));
 }
 
-t_token *handle_output_redirection(char **input)
+t_token *handle_output_redirection(char **current)
 {
-	char *current = *input;
+	char *temp = *current;
 
-	if (*(current + 1) == '>')
+	if (*(temp + 1) == '>')
 	{
-		*input = current + 2;
+		*current = temp + 2;
 		return (create_token(TOKEN_REDIRECT_APPEND, ">>"));
 	}
-	*input = current + 1;
+	*current = temp + 1;
 	return (create_token(TOKEN_REDIRECT_OUT, ">"));
 }
 
-t_token *handle_pipe(char **input)
+t_token *handle_pipe(char **current)
 {
-	*input = *input + 1;
+	*current = *current + 1;
 	return (create_token(TOKEN_PIPE, "|"));
 }
 
-t_token *handle_special_characters(char **input)
+t_token *handle_special_characters(char **current, char ***input)
 {
-	char *current = *input;
+	char *temp = *current;
+	t_token *new_token = NULL;
 
-	if (*current == '<')
-		return (handle_input_redirection(input));
-	else if (*current == '>')
-		return (handle_output_redirection(input));
-	else if (*current == '|')
-		return (handle_pipe(input));
-	return (NULL);
+	if (*temp == '<')
+		new_token = handle_input_redirection(current);
+	else if (*temp == '>')
+		new_token = handle_output_redirection(current);
+	else if (*temp == '|')
+		new_token = handle_pipe(current);
+	if (!new_token)
+		return (NULL);
+	**input = *current;
+	return (new_token);
 }

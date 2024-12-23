@@ -1,5 +1,8 @@
 #include "../../include/minishell.h"
 
+// DON'T TRY "pwd | ls" PlEaSe PLS
+// actually try it yeah
+
 char *get_env_variable(char **current, char *var_start) // thats execution at this point, no?
 {
 	char *env_value;

@@ -34,8 +34,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			add_history(prompt.input);
 			waitpid(id, NULL, 0);
-			printf("%d\n",id);
-			printf("ZzZzZz...\n");
+			printf("ZZzzZzz... End of the process id: %d\n",id);
 		}
 	}
 	free(prompt.input);
