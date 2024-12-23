@@ -9,7 +9,7 @@ void free_token(t_token *t)
 {
     if (!t)
         return;
-    if (t->value)
+    if (t->type == TOKEN_ARGUMENT)
         free(t->value);
     free(t);
 }

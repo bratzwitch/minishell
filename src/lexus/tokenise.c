@@ -52,18 +52,14 @@ t_token *get_next_token(char **input, int *exit_status)
 	
 	*input = current;
 	token_value = strndup(start, current - start);
-	// if (!token_value)
-	// 	return (NULL);
+	if (!token_value)
+		return (NULL);
 	new_token = create_token(TOKEN_ARGUMENT, token_value);
-	// if (!new_token)
-	// 	free (token_value);
+	if (!new_token)
+		free (token_value);
 	return (new_token);
 }
 
 // todo
-// ya ebu chtoli
-// nado teper tokeni use in parsing a takze fix norm hovna
-// zaebalsya jsem
-
-// yeba 22.12.24:
-// testy delam
+// token_arg ---> token_command :)
+// $?
