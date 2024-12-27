@@ -4,13 +4,15 @@
 # include "../libft/includes/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <signal.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
 # include <sys/wait.h>
+// # include <sys/types.h>
+# include <signal.h>
+# include <errno.h>
 # include <unistd.h>
+# include <stdio.h>
+# include <stdbool.h>
+# include <string.h>
+# include <stdlib.h>
 
 typedef enum types
 {
@@ -62,7 +64,7 @@ void				handle_input(t_prompt *prompt, char **env);
 void lexer(char *input);
 t_token *get_next_token(char **input, int *exit_status);
 t_token *create_token(t_token_type type, char *value);
-t_token *handle_special_characters(char **current, char ***input);
+t_token *handle_special_characters(char **current, char **input);
 t_token *handle_dollar_sign(char **input);
 t_token *handle_input_redirection(char **input);
 

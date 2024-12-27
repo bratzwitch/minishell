@@ -32,7 +32,7 @@ t_token *handle_pipe(char **current)
 	return (create_token(TOKEN_PIPE, "|"));
 }
 
-t_token *handle_special_characters(char **current, char ***input)
+t_token *handle_special_characters(char **current, char **input)
 {
 	char *temp = *current;
 	t_token *new_token = NULL;
@@ -45,6 +45,10 @@ t_token *handle_special_characters(char **current, char ***input)
 		new_token = handle_pipe(current);
 	if (!new_token)
 		return (NULL);
-	**input = *current;
+	while (**current && ft_isspace(**current))
+		*current = *current + 1;
+	*input = *current;
 	return (new_token);
 }
+
+// (gdb) set follow-fork-mode child / parent

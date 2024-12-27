@@ -1,8 +1,5 @@
 #include "../../include/minishell.h"
 
-// DON'T TRY "pwd | ls" PlEaSe PLS
-// actually try it yeah
-
 char *get_env_variable(char **current, char *var_start) // thats execution at this point, no?
 {
 	char *env_value;
@@ -35,9 +32,7 @@ t_token *handle_dollar_sign(char **input)
 	while (isalnum(*current) || *current == '_') // original ft dont forget to replace with libft
 		current++;
 	*input = current;
-
 	env_value = get_env_variable(&current, var_start);
-
 	if (env_value)
 		return (create_token(TOKEN_ENV_VAR, env_value));
 	else

@@ -9,14 +9,11 @@ void lexer(char *input)
 	exit_status = 0;
 	while ((t = get_next_token(&input, &exit_status)) != NULL && t->type != TOKEN_EOF)
 	{
-		if (t->type == TOKEN_ERROR)
-		{
-			perror("Nope bye - Token Failure\n");
+		if (t->type == TOKEN_ERROR || !t)
 			break ;
-		}
 		printf("Token Type: %d, Token Value: %s\n", t->type, t->value);
 		free_token(t);
 	}
-	// if (t)
+	if (t)
 		free_token(t);
 }
