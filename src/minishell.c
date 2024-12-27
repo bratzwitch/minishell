@@ -12,6 +12,11 @@ int main(int argc, char **argv, char **env)
 	while (1)
 	{
 		prompt.input = ft_prompt();
+		if (prompt.input == NULL)
+		{
+			printf("vpizdu2....\n");
+			break;
+		}
 		id = fork();
 		if (id == -1)
 		{
@@ -21,11 +26,6 @@ int main(int argc, char **argv, char **env)
 		if (id == 0)
 		{
 			lexer(prompt.input);
-			if (prompt.input == NULL)
-			{
-				printf("vpizdu2....\n");
-				break;
-			}
 			add_history(prompt.input);
 			handle_input(&prompt, env);
 			exit(EXIT_SUCCESS); // exit the child process
@@ -38,7 +38,7 @@ int main(int argc, char **argv, char **env)
 				printf("Process exited with status %d\n", WEXITSTATUS(exit_status));
 			else if (WIFSIGNALED(exit_status))
 				printf("Process terminated by signal %d\n", 128 + WTERMSIG(exit_status)); // exit code
-			// printf("ZZzzZzz... End of the process id: %d\n", id);
+																						  // printf("ZZzzZzz... End of the process id: %d\n", id);
 		}
 	}
 	free(prompt.input);

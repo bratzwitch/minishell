@@ -50,5 +50,3 @@ t_token *handle_special_characters(char **current, char **input)
 	*input = *current;
 	return (new_token);
 }
-
-// (gdb) set follow-fork-mode child / parent

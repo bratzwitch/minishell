@@ -11,7 +11,7 @@ char *get_env_variable(char **current, char *var_start) // thats execution at th
 	env_value = getenv(token_value);
 	free(token_value);
 	if (env_value)
-		return(env_value);
+		return (env_value);
 	else
 		return ("");
 }
@@ -31,8 +31,10 @@ t_token *handle_dollar_sign(char **input)
 	var_start = current;
 	while (isalnum(*current) || *current == '_') // original ft dont forget to replace with libft
 		current++;
-	*input = current;
 	env_value = get_env_variable(&current, var_start);
+	while (*current && ft_isspace(*current))
+		current++;
+	*input = current;
 	if (env_value)
 		return (create_token(TOKEN_ENV_VAR, env_value));
 	else

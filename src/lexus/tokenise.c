@@ -30,15 +30,17 @@ t_token *handle_argument(char **input)
 	char *start = current;
 	char *token_value;
 
-	while (*current && !ft_isspace(*current) && *current != '<' && *current != '>' && *current != '|' && *current != '$')
+	while (*current && !ft_isspace(*current) && !ft_is_special_character(current))
 		current++;
-	*input = current;
 	token_value = strndup(start, current - start); // original ft dont forget to replace with libft
 	if (!token_value)
 	{
 		printf("Memory allocation failed: %s\n", strerror(errno));
 		return (NULL);
 	}
+	while (*current && ft_isspace(*current))
+		current++;
+	*input = current;
 	return (create_token(TOKEN_ARGUMENT, token_value));
 }
 
@@ -58,3 +60,4 @@ t_token *get_next_token(char **input, int *exit_status)
 		return (handle_dollar_sign(input));
 	return (handle_argument(input));
 }
+// (gdb) set follow-fork-mode child / parent
