@@ -15,8 +15,6 @@ char	*ft_prompt(void)
 
 void	handle_input(t_prompt *prompt, char **env)
 {
-	// tokenise(prompt);
-
 	if (prompt->input[0] == '\0')
 	{
 		free(prompt->input);

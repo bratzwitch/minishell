@@ -38,12 +38,15 @@ int main(int argc, char **argv, char **env)
 				printf("Process exited with status %d\n", WEXITSTATUS(exit_status));
 			else if (WIFSIGNALED(exit_status))
 				printf("Process terminated by signal %d\n", 128 + WTERMSIG(exit_status)); // exit code
-																						  // printf("ZZzzZzz... End of the process id: %d\n", id);
+			// printf("ZZzzZzz... End of the process id: %d\n", id);
 		}
 	}
 	free(prompt.input);
 	return (0);
 }
+
+/* Slav, look at your ft_calloc and check if there are any variables
+that you for some mysterious reason do not use. and also ft_strmapi */
 
 // Readline and Terminal Handling
 // readline(prompt): Reads a line of input from the user, displaying the given prompt. Allows for command-line editing and history navigation.

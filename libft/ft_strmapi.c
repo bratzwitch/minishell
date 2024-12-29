@@ -15,8 +15,9 @@
 char	f(unsigned int i, char c)
 {
 	char	str;
+	(void)i;
 
-	i = 0;
+	// i = 0;
 	str = c;
 	return (str);
 }
