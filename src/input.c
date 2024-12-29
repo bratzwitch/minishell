@@ -5,10 +5,11 @@ char	*ft_prompt(void)
 	char	*input;
 
 	input = readline("minishell$>");
-	if (input == NULL)
+	if (input == NULL) // detect EOF; handle ctrl+D
 	{
+		write(STDOUT_FILENO, "exit\n", 5);
 		printf("vpizdu...\n");
-		return (NULL);
+		exit (0);
 	}
 	return (input);
 }

@@ -10,7 +10,7 @@ void	lst_cleanup(t_token **head, void (*del)(t_token *))
 	token = *head;
 	while (token != NULL)
 	{
-		next = node->next;
+		next = token->next;
 		del(token);
 		token = next;
 	}

@@ -22,10 +22,11 @@ void lst_print(t_prompt *prompt) // delete after finish testing
 void handle_child_process(t_prompt *prompt, char **env)
 {
 	prompt->token_lst = lexer(prompt->input);
+	// if you want to access the value of the token here's the syntax: (*prompt->token_lst)->value
 
 	lst_print(prompt); // tests
 
-	// SPACE FOR PARSING AND EXECUTION I GUESS
+	// SPACE FOR PARSING I GUESS
 
 	lst_cleanup(prompt->token_lst, free_token);
 	add_history(prompt->input);

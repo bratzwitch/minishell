@@ -34,3 +34,8 @@ int	handle_builtin_cmds(t_prompt *prompt, char **env)
 	}
 	return (0);
 }
+
+// void execute_redirections(t_token *token)
+// {
+
+// }

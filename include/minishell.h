@@ -75,10 +75,16 @@ t_token *handle_special_characters(char **current, char **input);
 t_token *handle_dollar_sign(char **input);
 t_token *handle_input_redirection(char **input);
 
+// REDIRECTIONS
+int input_redirection(const char *file_name);
+int output_redirection(const char *file_name);
+
 // UTILS
 char				*ft_prompt(void);
 bool ft_isspace(const char c);
 bool ft_is_special_character(const char *current);
+void	lst_cleanup(t_token **head, void (*del)(t_token *));
+void lst_add_back(t_token **lst, t_token *new);
 
 // FREE
 void free_token(t_token *t);

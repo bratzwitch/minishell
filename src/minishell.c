@@ -21,7 +21,6 @@ int main(int argc, char **argv, char **env)
 		else
 			handle_parent_process(id, &exit_status, &prompt);
 	}
-	free(prompt.input);
 	return (0);
 }
 
