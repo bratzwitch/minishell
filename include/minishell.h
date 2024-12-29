@@ -28,16 +28,18 @@ typedef enum types
 	TOKEN_ERROR // - 10 | you dont use it anywhere, how to check
 }					t_token_type;
 
-typedef struct tokens
+typedef struct s_token
 {
 	t_token_type	type;
 	char			*value;
+	struct s_token *next;
 }					t_token;
 
 typedef struct s_prompt
 {
 	char			*input;
 	char			*path;
+	t_token **token_lst;
 }					t_prompt;
 
 typedef struct s_lexus
@@ -51,17 +53,22 @@ typedef struct s_lexus
 }					t_lexus;
 
 // SIGNALS
-void				sig_handler(int signum);
-void				setup_handlers(void);
+void sig_handler(int signum);
+void setup_handlers(void);
+
+// PROCESSES
+pid_t create_child_process(void);
+void handle_child_process(t_prompt *prompt, char **env);
+void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt);
 
 // COMMANDS
-int					handle_builtin_cmds(t_prompt *prompt, char **env);
+int	handle_builtin_cmds(t_prompt *prompt, char **env);
 
 // INPUT
-void				handle_input(t_prompt *prompt, char **env);
+void handle_input(t_prompt *prompt, char **env);
 
 // LEXER
-void lexer(char *input);
+t_token **lexer(char *input);
 t_token *get_next_token(char **input, int *exit_status);
 t_token *create_token(t_token_type type, char *value);
 t_token *handle_special_characters(char **current, char **input);
@@ -74,6 +81,6 @@ bool ft_isspace(const char c);
 bool ft_is_special_character(const char *current);
 
 // FREE
-void				free_token(t_token *t);
+void free_token(t_token *t);
 
 #endif

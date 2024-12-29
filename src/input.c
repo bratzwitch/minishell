@@ -7,8 +7,8 @@ char	*ft_prompt(void)
 	input = readline("minishell$>");
 	if (input == NULL)
 	{
-		printf("vpizdu....\n");
-		exit(0);
+		printf("vpizdu...\n");
+		return (NULL);
 	}
 	return (input);
 }

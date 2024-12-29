@@ -27,16 +27,16 @@ LIB_OBJS = $(LIB_FILES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(LIB_OBJS)
-		ar rc $(NAME) $(LIB_OBJS)
+		@ar rc $(NAME) $(LIB_OBJS)
 
 clean:
-		$(RM) $(LIB_OBJS)
+		@$(RM) $(LIB_OBJS)
 
 fclean: clean
-		$(RM) $(NAME)
+		@$(RM) $(NAME)
 
 re: fclean all
 
 .PHONY: all clean fclean re
 
-.SILENT:
+.SILENT: $(LIB_OBJS)

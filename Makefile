@@ -1,10 +1,9 @@
 NAME := minishell
-# I added "-I/opt/homebrew/opt/readline/include"
-# and "-L/opt/homebrew/opt/readline/lib" only to compile
-# the projet on my MacBook cause i had troubles with compilation idk why
-# feel free to remove it
-CFLAGS := -Wall -Wextra -Werror -g -fPIE -I/opt/homebrew/opt/readline/include
-LDFLAGS := -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
+# For Mac:
+# CFLAGS := -Wall -Wextra -Werror -g -fPIE -I/opt/homebrew/opt/readline/include
+# LDFLAGS := -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
+CFLAGS := -Wall -Wextra -Werror -fPIE -g
+LDFLAGS := -lreadline -lncurses
 CC := cc
 RM := rm -f
 LIBFT_DIR := ./libft
@@ -15,7 +14,8 @@ SRC :=	$(SRC_DIR)/commands.c \
 		$(SRC_DIR)/input.c \
 		$(SRC_DIR)/minishell.c \
 		$(SRC_DIR)/signal.c \
-		$(SRC_DIR)/utils.c	\
+		$(SRC_DIR)/lst_utils.c \
+		$(SRC_DIR)/processes.c \
 		$(LEXER_DIR)/lexer.c \
 		$(LEXER_DIR)/lexus_utils.c \
 		$(LEXER_DIR)/operators.c \
@@ -33,26 +33,26 @@ $(NAME): $(OBJS)
 		@echo "Compiling this crap"
 		@make -C $(LIBFT_DIR)
 # idk if we're allowed to do that but i wanted to add something fun
-		@for i in {1..50}; do \
-			sleep 0.1; \
-			printf "\033[32m#\033[0m"; \
-		done
-		@echo ""
+		# @bash -c 'for i in {1..50}; do \
+		# 	sleep 0.1; \
+		# 	printf "\033[32m#\033[0m"; \
+		# done'
+		# @echo ""
 # $(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME) $(LIBFT_DIR)/libft.a
 		$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBFT_DIR)/libft.a
 		@echo "All good you can rest(no)"
 clean:
-		$(RM) $(OBJS)
+		@$(RM) $(OBJS)
 
 fclean:	clean
-		make fclean -C $(LIBFT_DIR)
-		$(RM) $(NAME)
+		@make fclean -C $(LIBFT_DIR)
+		@$(RM) $(NAME)
 
 re: fclean all
 
 .PHONY: all clean fclean re
 
-.SILENT: clean fclean
+.SILENT: $(NAME) $(OBJS)
 
 # explanations to the assignment operators:
 # 	1. = (Simple Assignment):

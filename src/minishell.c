@@ -11,39 +11,30 @@ int main(int argc, char **argv, char **env)
 	setup_handlers();
 	while (1)
 	{
-		prompt.input = ft_prompt();
-		if (prompt.input == NULL)
-		{
-			printf("vpizdu2....\n");
+		if ((prompt.input = ft_prompt()) == NULL)
 			break;
-		}
-		id = fork();
+		id = create_child_process();
 		if (id == -1)
-		{
-			printf("No fork today: %s\n", strerror(errno));
 			break;
-		}
 		if (id == 0)
-		{
-			lexer(prompt.input);
-			add_history(prompt.input);
-			handle_input(&prompt, env);
-			exit(EXIT_SUCCESS); // exit the child process
-		}
-		else // parent process
-		{
-			add_history(prompt.input);
-			waitpid(id, &exit_status, 0);
-			if (WIFEXITED(exit_status))
-				printf("Process exited with status %d\n", WEXITSTATUS(exit_status));
-			else if (WIFSIGNALED(exit_status))
-				printf("Process terminated by signal %d\n", 128 + WTERMSIG(exit_status)); // exit code
-			// printf("ZZzzZzz... End of the process id: %d\n", id);
-		}
+			handle_child_process(&prompt, env);
+		else
+			handle_parent_process(id, &exit_status, &prompt);
 	}
 	free(prompt.input);
 	return (0);
 }
+
+/*
+TO DO:
+Recommended Order
+1. Implement redirections (<, >, >>, <<).
+2. Test commands with single redirection to ensure correctness.
+3. Extend the redirection logic to work with pipes (|).
+4. Combine everything, ensuring that commands with both
+pipes and redirections (e.g., cat < infile | grep foo > outfile)
+work correctly.
+*/
 
 /* Slav, look at your ft_calloc and check if there are any variables
 that you for some mysterious reason do not use. and also ft_strmapi */

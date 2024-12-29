@@ -1,19 +1,25 @@
 #include "../../include/minishell.h"
 
-void lexer(char *input)
+t_token **lexer(char *input)
 {
-	t_token *t;
+	t_token **token_head;
+	t_token *new_token;
 	int exit_status;
 
-	t = NULL;
+	token_head = malloc(sizeof(t_token *));
+	if (!token_head)
+		return (NULL);
+	*token_head = NULL;
+	new_token = NULL;
 	exit_status = 0;
-	while ((t = get_next_token(&input, &exit_status)) != NULL && t->type != TOKEN_EOF)
+	while ((new_token = get_next_token(&input, &exit_status)) != NULL && new_token->type != TOKEN_EOF)
 	{
-		if (t->type == TOKEN_ERROR || !t)
-			break ;
-		printf("Token Type: %d, Token Value: %s\n", t->type, t->value);
-		free_token(t);
+		if (new_token->type == TOKEN_ERROR || !new_token)
+			break;
+		printf("Token Type: %d, Token Value: %s\n", new_token->type, new_token->value);
+		lst_add_back(token_head, new_token);
 	}
-	if (t)
-		free_token(t);
+	if (new_token)
+		free_token(new_token);
+	return (token_head);
 }
