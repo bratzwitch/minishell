@@ -14,7 +14,7 @@
 # include <string.h>
 # include <stdlib.h>
 
-typedef enum types
+enum e_token_type
 {
 	TOKEN_ARGUMENT,
 	TOKEN_PIPE,
@@ -25,12 +25,12 @@ typedef enum types
 	TOKEN_ENV_VAR,
 	TOKEN_EXIT_STATUS,
 	TOKEN_EOF,
-	TOKEN_ERROR // - 10 | you dont use it anywhere, how to check
-}					t_token_type;
+	TOKEN_ERROR
+} ;
 
 typedef struct s_token
 {
-	t_token_type	type;
+	enum e_token_type	type;
 	char			*value;
 	struct s_token *next;
 }					t_token;
@@ -62,15 +62,17 @@ void handle_child_process(t_prompt *prompt, char **env);
 void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt);
 
 // COMMANDS
-int	handle_builtin_cmds(t_prompt *prompt, char **env);
+int handle_builtin_cmds(t_prompt *prompt, char *args[], char **env);
+char *find_command(char *cmd_name, char *env_path);
+int execute(char *cmd_name, char *args[], char **env);
 
 // INPUT
-void handle_input(t_prompt *prompt, char **env);
+void	handle_input(t_prompt *prompt, char *args[], char **env);
 
 // LEXER
 t_token **lexer(char *input);
 t_token *get_next_token(char **input, int *exit_status);
-t_token *create_token(t_token_type type, char *value);
+t_token *create_token(enum e_token_type type, char *value);
 t_token *handle_special_characters(char **current, char **input);
 t_token *handle_dollar_sign(char **input);
 t_token *handle_input_redirection(char **input);
@@ -85,6 +87,7 @@ bool ft_isspace(const char c);
 bool ft_is_special_character(const char *current);
 void	lst_cleanup(t_token **head, void (*del)(t_token *));
 void lst_add_back(t_token **lst, t_token *new);
+void ft_free(char **values);
 
 // FREE
 void free_token(t_token *t);

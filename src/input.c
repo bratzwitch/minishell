@@ -14,18 +14,18 @@ char	*ft_prompt(void)
 	return (input);
 }
 
-void	handle_input(t_prompt *prompt, char **env)
+void	handle_input(t_prompt *prompt, char *args[], char **env)
 {
 	if (prompt->input[0] == '\0')
 	{
+		printf("input is zero just like the number of times i hit the gym this week\n");
 		free(prompt->input);
 		return ;
 	}
-	if (handle_builtin_cmds(prompt, env))
+	else if (handle_builtin_cmds(prompt, args, env) == 0)
 	{
 		free(prompt->input);
 		return ;
 	}
-	// printf("Command not recognised: %s\n", prompt->input);
 	free(prompt->input);
 }

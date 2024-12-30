@@ -1,5 +1,17 @@
 #include "../include/minishell.h"
 
+void ft_free(char **values)
+{
+	int i = 0;
+
+	while (values[i])
+	{
+		free(values[i]);
+		i++;
+	}
+	free(values);
+}
+
 void	lst_cleanup(t_token **head, void (*del)(t_token *))
 {
 	t_token	*token;

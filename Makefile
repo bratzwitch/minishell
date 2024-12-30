@@ -9,18 +9,21 @@ RM := rm -f
 LIBFT_DIR := ./libft
 SRC_DIR := ./src
 LEXER_DIR := ./src/lexus
-
-SRC :=	$(SRC_DIR)/commands.c \
-		$(SRC_DIR)/input.c \
+EXEC_DIR := ./src/execute
+	
+SRC :=	$(SRC_DIR)/input.c \
 		$(SRC_DIR)/minishell.c \
 		$(SRC_DIR)/signal.c \
-		$(SRC_DIR)/lst_utils.c \
+		$(SRC_DIR)/utils.c \
 		$(SRC_DIR)/processes.c \
 		$(LEXER_DIR)/lexer.c \
 		$(LEXER_DIR)/lexus_utils.c \
 		$(LEXER_DIR)/operators.c \
 		$(LEXER_DIR)/tokenise.c \
-		$(LEXER_DIR)/dollar.c
+		$(LEXER_DIR)/dollar.c \
+		$(EXEC_DIR)/builtins.c \
+		$(EXEC_DIR)/execute.c \
+		$(EXEC_DIR)/external.c
 
 OBJS := $(SRC:.c=.o)
 

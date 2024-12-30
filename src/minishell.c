@@ -104,3 +104,20 @@ that you for some mysterious reason do not use. and also ft_strmapi */
 // tgetstr(capname, area): Retrieves the string value of a terminal capability.
 // tgoto(cap, col, row): Computes a cursor movement string based on terminal capabilities.
 // tputs(str, affcnt, putc): Outputs a string with padding to the terminal.
+
+/*  EXECVE
+The execve function is indeed a system call, which is a special type of function.
+	System Call: A system call is a function provided by the operating system that
+	allows a program to request a service from the kernel.
+Execve replaces the current process image with a new process image. whatever it means.
+Prototype:
+	int execve(const char *pathname, char *const argv[], char *const envp[]);
+		pathname: The path to the binary executable file you want to execute (e.g., /bin/ls).
+		argv[]: An array of arguments passed to the program, where:
+			argv[0] is typically the name of the program.
+			The array must end with a NULL pointer.
+		envp[]: An array of environment variables for the program, also terminated by a NULL pointer.
+	Returns:
+		On success: execve does not return (the process image is replaced).
+		On failure: It returns -1 and sets errno.
+*/
