@@ -8,9 +8,9 @@ pid_t create_child_process(void)
 	return (id);
 }
 
-void lst_print(t_prompt *prompt) // delete after finish testing
+void lst_print(t_token **token_lst) // delete after finish testing
 {
-	t_token *current = *(prompt->token_lst);
+	t_token *current = *(token_lst);
 	
 	while (current != NULL)
 	{
@@ -25,13 +25,13 @@ void handle_child_process(t_prompt *prompt, char **env)
 
 	prompt->token_lst = lexer(prompt->input);
 	// if you want to access the value of the token here's the syntax: (*prompt->token_lst)->value
-	lst_print(prompt); // tests
+	lst_print(prompt->token_lst); // tests
 
 	// SPACE FOR PARSING I GUESS
 	
+	handle_input(prompt, prompt->token_lst, args, env);
 	lst_cleanup(prompt->token_lst, free_token);
 	add_history(prompt->input);
-	handle_input(prompt, args, env);
 	exit(EXIT_SUCCESS); // exit the child process
 }
 
