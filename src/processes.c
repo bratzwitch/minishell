@@ -32,7 +32,6 @@ void handle_child_process(t_prompt *prompt, char **env)
 	lst_cleanup(prompt->token_lst, free_token);
 	add_history(prompt->input);
 	handle_input(prompt, args, env);
-	free(prompt->token_lst);
 	exit(EXIT_SUCCESS); // exit the child process
 }
 
