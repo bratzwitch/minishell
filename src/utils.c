@@ -1,9 +1,10 @@
 #include "../include/minishell.h"
 
-void ft_free(char **values)
+void	ft_free(char **values)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (values[i])
 	{
 		free(values[i]);
@@ -29,14 +30,14 @@ void	lst_cleanup(t_token **head, void (*del)(t_token *))
 	free(head);
 }
 
-void lst_add_back(t_token **lst, t_token *new)
+void	lst_add_back(t_token **lst, t_token *new)
 {
-	t_token *last;
+	t_token	*last;
 
 	if (!*lst)
 	{
 		*lst = new;
-		return;
+		return ;
 	}
 	last = *lst;
 	while (last->next)
