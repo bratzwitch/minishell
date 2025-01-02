@@ -24,17 +24,6 @@ int main(int argc, char **argv, char **env)
 	return (0);
 }
 
-/*
-TO DO:
-Recommended Order
-1. Implement redirections (<, >, >>, <<).
-2. Test commands with single redirection to ensure correctness.
-3. Extend the redirection logic to work with pipes (|).
-4. Combine everything, ensuring that commands with both
-pipes and redirections (e.g., cat < infile | grep foo > outfile)
-work correctly.
-*/
-
 /* Slav, look at your ft_calloc and check if there are any variables
 that you for some mysterious reason do not use. and also ft_strmapi */
 

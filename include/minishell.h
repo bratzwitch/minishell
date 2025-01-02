@@ -52,6 +52,8 @@ typedef struct s_lexus
 	int				error_flag;
 }					t_lexus;
 
+void lst_print(t_token **token_lst); 
+
 // SIGNALS
 void sig_handler(int signum);
 void setup_handlers(void);
@@ -62,12 +64,12 @@ void handle_child_process(t_prompt *prompt, char **env);
 void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt);
 
 // COMMANDS
-int handle_builtin_cmds(t_prompt *prompt, char *args[], char **env);
+int handle_builtins(t_prompt *prompt, t_token **tokens, char *args[], char **env);
 char *find_command(char *cmd_name, char *env_path);
 int execute(char *cmd_name, char *args[], char **env);
 
 // INPUT
-void	handle_input(t_prompt *prompt, char *args[], char **env);
+void	handle_input(t_prompt *prompt, t_token **tokens, char *args[], char **env);
 
 // LEXER
 t_token **lexer(char *input);

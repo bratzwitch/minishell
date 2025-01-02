@@ -1,9 +1,9 @@
 NAME := minishell
 # For Mac:
-# CFLAGS := -Wall -Wextra -Werror -g -fPIE -I/opt/homebrew/opt/readline/include
-# LDFLAGS := -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
-CFLAGS := -Wall -Wextra -Werror -fPIE -g
-LDFLAGS := -lreadline -lncurses
+CFLAGS := -Wall -Wextra -Werror -g -fPIE -I/opt/homebrew/opt/readline/include
+LDFLAGS := -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
+# CFLAGS := -Wall -Wextra -Werror -fPIE -g
+# LDFLAGS := -lreadline -lncurses
 CC := cc
 RM := rm -f
 LIBFT_DIR := ./libft
