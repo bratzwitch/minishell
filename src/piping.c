@@ -1,60 +1,76 @@
 #include "../include/minishell.h"
 
-void	piping(t_token **tokens,int pipes,char *args[], char *env)
+void	piping(t_token **tokens, int pipe_count, char *env)
 {
-	int fd[2];
-	pid_t first;
-	pid_t second;
-    (void)pipes;
-    (void)args;
-    (void)env;
 
-	if (pipe(fd) < 0)
+	pid_t pid;
+	int i = 0;
+	t_token *temp = *tokens;
+	int prev_pipe = -1;
+
+	int pipes[pipe_count][2];
+	i = 0;
+	while (i < pipe_count)
 	{
-		printf("no\n");
-		return ;
-	}
-	first = fork();
-	if (first < 0)
-	{
-		printf("sill no\n");
-		return ;
-	}
-	if (first == 0)
-	{
-		close(fd[0]);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-		if (!tokens)
+		if (pipe(pipes[i]) < 0)
 		{
-			printf("cool");
-			exit(0);
-		}
-	}
-	else
-	{
-		second = fork();
-		if (second < 0)
-		{
-			printf("sill no\n");
+			perror("pipe");
 			return ;
 		}
-		if (second == 0)
+		i++;
+	}
+
+	while (temp && temp->type != TOKEN_EOF)
+	{
+		if (temp->type == TOKEN_PIPE)
 		{
-			close(fd[1]);
-			dup2(fd[0], STDIN_FILENO);
-			close(fd[0]);
-			if (!tokens)
-            {
-                printf("cool");
-                exit(0);
-            }
-				
+			temp = temp->next;
+			continue ;
+		}
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("fork");
+			return ;
+		}
+		if (pid == 0)
+		{
+			if (prev_pipe != -1)
+			{
+				close(pipes[prev_pipe][1]);
+				dup2(pipes[prev_pipe][0], STDIN_FILENO);
+				close(pipes[prev_pipe][0]);
+			}
+			if (i < pipe_count)
+			{
+				close(pipes[i][0]);
+				dup2(pipes[i][1], STDOUT_FILENO);
+				close(pipes[i][1]);
+			}
+
+			char *args[] = {temp->value, NULL};
+			execve(args[0], args, &env);
+			perror("execve");
+			exit(EXIT_FAILURE);
 		}
 		else
 		{
-			wait(NULL);
-			wait(NULL);
+			prev_pipe = i;
+			temp = temp->next;
+			i++;
 		}
+	}
+	i = 0;
+	while (i < pipe_count)
+	{
+		close(pipes[i][0]);
+		close(pipes[i][1]);
+		i++;
+	}
+	i = 0;
+	while (i <= pipe_count)
+	{
+		wait(NULL);
+		i++;
 	}
 }

@@ -91,7 +91,7 @@ int						input_redirection(const char *file_name);
 int						output_redirection(const char *file_name);
 
 // UTILS
-void					piping(t_token **tokens,int pipes, char *args[], char *env);
+void					piping(t_token **tokens, int pipe_count, char *env);
 bool					ft_isspace(const char c);
 bool					ft_is_special_character(const char *current);
 void					lst_cleanup(t_token **head, void (*del)(t_token *));

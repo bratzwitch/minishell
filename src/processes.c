@@ -33,23 +33,23 @@ void	handle_child_process(t_prompt *prompt, char **env)
 {
 	char	*args[] = {NULL};
 	t_token *temp;
-	int		pipe;
+	int		pipes;
 
-	pipe = 0;
+	pipes = 0;
 	prompt->token_lst = lexer(prompt->input);
 	temp = *prompt->token_lst;
 	while (temp->type != TOKEN_EOF)
 	{
 		if (temp->type == TOKEN_PIPE)
 		{
-			pipe += 1;
-			printf("pipe counted %d\n", pipe);
+			pipes += 1;
+			printf("pipe counted %d\n", pipes);
 		}
 		temp++;
 	}
-	if(pipe >= 1)
+	if(pipes >= 1)
 	{
-		piping(prompt->token_lst,pipe,args,*env);
+		piping(prompt->token_lst, pipes, *env);
 	}
 	// if you want to access the value of the token here's the syntax: (*prompt->token_lst)->value
 	lst_print(prompt->token_lst); // tests
