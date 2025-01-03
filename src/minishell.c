@@ -1,6 +1,17 @@
-
-
 #include "../include/minishell.h"
+
+char	*ft_prompt(void)
+{
+	char	*input;
+
+	input = readline("minishell$>");
+	if (input == NULL) // detect EOF; handle ctrl+D
+	{
+		write(1, "vpizdu..\n", 9);
+		exit (0);
+	}
+	return (input);
+}
 
 int main(int argc, char **argv, char **env)
 {

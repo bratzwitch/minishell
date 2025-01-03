@@ -1,28 +1,30 @@
 NAME := minishell
 # For Mac:
-CFLAGS := -Wall -Wextra -Werror -g -fPIE -I/opt/homebrew/opt/readline/include
-LDFLAGS := -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
-# CFLAGS := -Wall -Wextra -Werror -fPIE -g
-# LDFLAGS := -lreadline -lncurses
+# CFLAGS := -Wall -Wextra -Werror -g -fPIE -I/opt/homebrew/opt/readline/include
+# LDFLAGS := -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
+CFLAGS := -Wall -Wextra -Werror -fPIE -g
+LDFLAGS := -lreadline -lncurses
 CC := cc
 RM := rm -f
 LIBFT_DIR := ./libft
 SRC_DIR := ./src
 LEXER_DIR := ./src/lexus
 EXEC_DIR := ./src/execute
-	
-SRC :=	$(SRC_DIR)/input.c \
-		$(SRC_DIR)/minishell.c \
+		
+SRC :=	$(SRC_DIR)/minishell.c \
+		$(SRC_DIR)/processes.c \
+		$(SRC_DIR)/redirections.c \
 		$(SRC_DIR)/signal.c \
 		$(SRC_DIR)/utils.c \
-		$(SRC_DIR)/processes.c \
+		$(LEXER_DIR)/dollar.c \
 		$(LEXER_DIR)/lexer.c \
 		$(LEXER_DIR)/lexus_utils.c \
 		$(LEXER_DIR)/operators.c \
 		$(LEXER_DIR)/tokenise.c \
-		$(LEXER_DIR)/dollar.c \
 		$(EXEC_DIR)/builtins.c \
-		$(EXEC_DIR)/execute.c \
+		$(EXEC_DIR)/echo_cd.c \
+		$(EXEC_DIR)/env_pwd_exit.c \
+		$(EXEC_DIR)/export_unset.c \
 		$(EXEC_DIR)/external.c
 
 OBJS := $(SRC:.c=.o)

@@ -28,10 +28,21 @@ void handle_child_process(t_prompt *prompt, char **env)
 	lst_print(prompt->token_lst); // tests
 
 	// SPACE FOR PARSING I GUESS
-	
-	handle_input(prompt, prompt->token_lst, args, env);
-	lst_cleanup(prompt->token_lst, free_token);
+	if (prompt->input[0] == '\0')
+	{
+		free(prompt->input);
+		lst_cleanup(prompt->token_lst, free_token);
+		return ;
+	}
+	else if (handle_builtins(prompt, prompt->token_lst, args, env) != 0)
+	{
+		free(prompt->input);
+		printf("Buildins?? : %s\n", strerror(errno));
+		exit(EXIT_FAILURE);
+	}
 	add_history(prompt->input);
+	lst_cleanup(prompt->token_lst, free_token);
+	free(prompt->input);
 	exit(EXIT_SUCCESS); // exit the child process
 }
 

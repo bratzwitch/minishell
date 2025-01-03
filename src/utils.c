@@ -24,7 +24,7 @@ void	lst_cleanup(t_token **head, void (*del)(t_token *))
 	while (token != NULL)
 	{
 		next = token->next;
-		del(token); // ?? nepon
+		del(token); // it's the same as free_token(token);
 		token = next;
 	}
 	free(head);

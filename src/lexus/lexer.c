@@ -6,7 +6,7 @@ t_token	**lexer(char *input)
 	t_token	*new_token;
 	int		exit_status;
 
-	token_head = malloc(sizeof(t_token *));
+	token_head = malloc(sizeof(t_token *)); // still reachable
 	if (!token_head)
 		return (NULL);
 	*token_head = NULL;
