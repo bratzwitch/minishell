@@ -19,6 +19,13 @@ void lst_print(t_token **token_lst) // delete after finish testing
 	}
 }
 
+void cleanup_and_exit(t_prompt *prompt, int exit_code)
+{
+    free(prompt->input);
+    lst_cleanup(prompt->token_lst, free_token);
+    exit(exit_code);
+}
+
 void handle_child_process(t_prompt *prompt, char **env)
 {
 	char *args[] = {NULL};
@@ -29,26 +36,19 @@ void handle_child_process(t_prompt *prompt, char **env)
 
 	// SPACE FOR PARSING I GUESS
 	if (prompt->input[0] == '\0')
-	{
-		free(prompt->input);
-		lst_cleanup(prompt->token_lst, free_token);
-		return ;
-	}
+		cleanup_and_exit(prompt, 0);
 	else if (handle_builtins(prompt, prompt->token_lst, args, env) != 0)
 	{
-		free(prompt->input);
 		printf("Buildins?? : %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
+		cleanup_and_exit(prompt, 1);
 	}
-	add_history(prompt->input);
-	lst_cleanup(prompt->token_lst, free_token);
-	free(prompt->input);
-	exit(EXIT_SUCCESS); // exit the child process
+	cleanup_and_exit(prompt, 0);
 }
 
 void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 {
-	add_history(prompt->input);
+	if (prompt->input[0] != '\0')
+		add_history(prompt->input);
 	waitpid(id, exit_status, 0);
 	if (WIFEXITED(*exit_status))
 		printf("Process exited with status %d\n", WEXITSTATUS(*exit_status));

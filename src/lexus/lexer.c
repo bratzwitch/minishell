@@ -21,8 +21,7 @@ t_token	**lexer(char *input)
 			new_token->value);
 		lst_add_back(token_head, new_token);
 	}
-	if (new_token)
-		free_token(new_token);
+	free_token(new_token);
 	return (token_head);
 }
 
