@@ -31,7 +31,6 @@ void handle_child_process(t_prompt *prompt, char **env)
 	if (prompt->input[0] == '\0')
 	{
 		free(prompt->input);
-		lst_cleanup(prompt->token_lst, free_token);
 		free(prompt->token_lst);
 		exit(0) ;
 	}
