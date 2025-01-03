@@ -48,6 +48,7 @@ t_token	*handle_special_characters(char **current, char **input)
 		new_token = handle_output_redirection(current);
 	else if (*temp == '|')
 	{
+		
 		new_token = handle_pipe(current);
 	}
 	if (!new_token)

@@ -17,7 +17,6 @@ t_token	**lexer(char *input)
 	{
 		if (new_token->type == TOKEN_ERROR || !new_token)
 			break ;
-		if((new_token->type) == TOKEN_PIPE)
 		printf("Token Type: %d, Token Value: %s\n", new_token->type,
 			new_token->value);
 		lst_add_back(token_head, new_token);
