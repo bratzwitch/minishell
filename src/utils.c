@@ -18,7 +18,7 @@ void	lst_cleanup(t_token **head, void (*del)(t_token *))
 	t_token	*token;
 	t_token	*next;
 
-	if (head == NULL || *head == NULL || del == NULL)
+	if (head == NULL || del == NULL)
 		return ;
 	token = *head;
 	while (token != NULL)
