@@ -2,29 +2,21 @@
 
 t_token *create_token(enum e_token_type type, char *value)
 {
-	t_token *new_token;
+    t_token *new_token;
 
-	new_token = malloc(sizeof(t_token));
-	if (!new_token)
-	{
-		printf("Error creating a token: %s\n", strerror(errno));
-		return (NULL);
-	}
-	if (value)
-	{
-		new_token->type = type;
-		new_token->value = value;
-		new_token->next = NULL;
-	}
-	else
-	{
-		new_token->type = TOKEN_ERROR;
-		new_token->value = NULL;
-	}
-	return (new_token);
+    new_token = malloc(sizeof(t_token));
+    if (!new_token)
+    {
+        printf("Error creating a token: %s\n", strerror(errno));
+        return (NULL);
+    }
+    new_token->type = type;
+    new_token->value = value;
+    new_token->next = NULL;
+    return (new_token);
 }
 
-// leaves the input pointer to the next char after the command - points to the space
+// leaves the input pointer to the next char after the command - points into space
 t_token *handle_argument(char **input)
 {
 	char *current = *input;
@@ -45,10 +37,9 @@ t_token *handle_argument(char **input)
 	return (create_token(TOKEN_ARGUMENT, token_value));
 }
 
-t_token *get_next_token(char **input, int *exit_status)
+t_token *get_next_token(char **input)
 {
 	char *current;
-	(void)exit_status;
 
 	current = *input;
 	while (*current && ft_isspace(*current))

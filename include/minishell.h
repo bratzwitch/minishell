@@ -40,7 +40,7 @@ typedef struct s_prompt
 {
 	char				*input;
 	char				*path;
-	t_token				**token_lst;
+	t_token				*token_lst;
 }						t_prompt;
 
 typedef struct s_lexus
@@ -61,12 +61,10 @@ void					setup_handlers(void);
 // PROCESSES
 pid_t					create_child_process(void);
 void					handle_child_process(t_prompt *prompt, char **env);
-void					handle_parent_process(pid_t id, int *exit_status,
-							t_prompt *prompt);
+void					handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt);
 
-// COMMANDS
-int						handle_builtins(t_prompt *prompt, t_token **tokens,
-							char *args[], char **env);
+// EXEC
+int						handle_builtins(t_prompt *prompt, t_token *tokens, char *args[], char **env);
 char					*find_command(char *cmd_name, char *env_path);
 int						execute(char *cmd_name, char *args[], char **env);
 
@@ -78,11 +76,10 @@ int						handle_pwd(void);
 int						handle_exit(t_prompt *prompt);
 
 // LEXER
-t_token					**lexer(char *input);
-t_token					*get_next_token(char **input, int *exit_status);
+t_token					*lexer(char *input);
+t_token					*get_next_token(char **input);
 t_token					*create_token(enum e_token_type type, char *value);
-t_token					*handle_special_characters(char **current,
-							char **input);
+t_token					*handle_special_characters(char **current, char **input);
 t_token					*handle_dollar_sign(char **input);
 t_token					*handle_input_redirection(char **input);
 
@@ -90,16 +87,19 @@ t_token					*handle_input_redirection(char **input);
 int						input_redirection(const char *file_name);
 int						output_redirection(const char *file_name);
 
+// PIPE
+void					piping(t_token *tokens, int pipe_count, char *env);
+
 // UTILS
-void					piping(t_token **tokens, int pipe_count, char *env);
 bool					ft_isspace(const char c);
 bool					ft_is_special_character(const char *current);
-void					lst_cleanup(t_token **head, void (*del)(t_token *));
 void					lst_add_back(t_token **lst, t_token *new);
-void					ft_free(char **values);
-void					lst_print(t_token **token_lst);
+void					lst_print(t_token *token_lst);
 
 // FREE
+void					ft_free(char **values);
 void					free_token(t_token *t);
+void	cleanup_and_exit(t_prompt *prompt, int exit_code);
+void					lst_cleanup(t_token **head, void (*del)(t_token *));
 
 #endif

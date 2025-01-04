@@ -33,7 +33,7 @@ OBJS := $(SRC:.c=.o)
 all: $(NAME)
 
 go:
-	valgrind --leak-check=full -s --show-leak-kinds=all --suppressions=minishell.supp ./minishell
+	valgrind --leak-check=full -s --show-leak-kinds=all --track-origins=yes --suppressions=minishell.supp ./minishell
 
 $(NAME): $(OBJS)
 		@echo "Compiling this crap"
@@ -63,6 +63,7 @@ $(NAME): $(OBJS)
 		@echo "  ⣿⡿⢋⣴⣿⣎⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡉⣯⣿⣷⠆⠙⢿ "
 		@echo "  ⣏⠀⠈⠧⠡⠉⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠉⢉⣁⣀⣀⣾ "
 clean:
+		@make clean -C $(LIBFT_DIR)
 		@$(RM) $(OBJS)
 
 fclean:	clean

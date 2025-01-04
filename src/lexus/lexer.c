@@ -1,28 +1,43 @@
 #include "../../include/minishell.h"
 
-t_token	**lexer(char *input)
+void add_token(t_token **head, t_token *new_token)
 {
-	t_token	**token_head;
-	t_token	*new_token;
-	int		exit_status;
+    t_token *current;
 
-	token_head = malloc(sizeof(t_token *));
-	if (!token_head)
-		return (NULL);
-	*token_head = NULL;
+    if (!*head)
+    {
+        *head = new_token;
+        return;
+    }
+    current = *head;
+    while (current->next)
+        current = current->next;
+    current->next = new_token;
+}
+
+t_token *lexer(char *input)
+{
+    t_token *token_head = NULL;
+    t_token *new_token = NULL;
+
+	token_head  = NULL;
 	new_token = NULL;
-	exit_status = 0;
-	while ((new_token = get_next_token(&input, &exit_status)) != NULL
-		&& new_token->type != TOKEN_EOF)
-	{
-		if (new_token->type == TOKEN_ERROR || !new_token)
-			break ;
-		printf("Token Type: %d, Token Value: %s\n", new_token->type,
-			new_token->value);
-		lst_add_back(token_head, new_token);
-	}
-	free_token(new_token);
-	return (token_head);
+    while (*input)
+    {
+        while (*input && ft_isspace(*input))
+            input++;
+        if (*input == '\0')
+            break;
+        new_token = get_next_token(&input);
+        if (!new_token || new_token->type == TOKEN_ERROR)
+        {
+            free_token(new_token);
+            lst_cleanup(&token_head, free_token);
+            return (NULL);
+        }
+        add_token(&token_head, new_token);
+    }
+    return (token_head);
 }
 
 // ⣿⣿⣿⣿⣿⣿⣿⠿⠿⢛⣋⣙⣋⣩⣭⣭⣭⣭⣍⣉⡛⠻⢿⣿⣿⣿⣿

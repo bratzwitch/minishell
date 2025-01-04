@@ -27,7 +27,7 @@ void	lst_cleanup(t_token **head, void (*del)(t_token *))
 		del(token); // it's the same as free_token(token);
 		token = next;
 	}
-	free(head);
+	*head = NULL;
 }
 
 void	lst_add_back(t_token **lst, t_token *new)

@@ -8,6 +8,7 @@ char	*ft_prompt(void)
 	if (input == NULL) // detect EOF; handle ctrl+D
 	{
 		write(1, "vpizdu..\n", 9);
+		rl_clear_history();
 		exit (0);
 	}
 	return (input);
