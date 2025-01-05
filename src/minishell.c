@@ -27,7 +27,7 @@ int main(int argc, char **argv, char **env)
 	{
 		if ((prompt.input = ft_prompt()) == NULL)
 			break;
-
+		
 		prompt.token_lst = lexer(prompt.input); // we need to validate input in the parent process
 		handle_builtins(&prompt, prompt.token_lst, env); // and handle builtins in the parent process.
 		// and then fork the chil process for execution of external commands
