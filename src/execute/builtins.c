@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-int handle_builtins(t_prompt *prompt, t_token *tokens, char *args[], char **env)
+int handle_builtins(t_prompt *prompt, t_token *tokens, char **env)
 {
     t_token *tmp = tokens;
 
@@ -17,13 +17,19 @@ int handle_builtins(t_prompt *prompt, t_token *tokens, char *args[], char **env)
     else if (!strcmp(tmp->value, "echo"))
         return (handle_echo(&tokens));
     // else if (!strcmp(tmp->value, "export"))
-    //     return(handle_export())
+    //     return(handle_export(tokens));
     // else if (!strcmp(tmp->value, "unset"))
     //     return(handle_cd())
-    else
-        return (execute(tmp->value, args, env));
+    // else
+    //     return (execute(tmp->value, env));
     return (1);
 }
+
+/*  inter-process communication (IPC)
+
+A pipe is a unidirectional communication channel that connects
+    the output of one process to the input of another.
+    It allows data to flow in one direction only. */
 
 // ◦ echo with option -n - input
 // ◦ cd with only a relative or absolute path - input

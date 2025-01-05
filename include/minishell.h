@@ -64,9 +64,9 @@ void					handle_child_process(t_prompt *prompt, char **env);
 void					handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt);
 
 // EXEC
-int						handle_builtins(t_prompt *prompt, t_token *tokens, char *args[], char **env);
+int						handle_builtins(t_prompt *prompt, t_token *tokens, char **env);
 char					*find_command(char *cmd_name, char *env_path);
-int						execute(char *cmd_name, char *args[], char **env);
+int execute(char *cmd_name, char **env);
 
 // BUILT-INS
 int						handle_echo(t_token **token);
@@ -74,6 +74,7 @@ int						handle_cd(t_token **token);
 int						handle_env(char **env);
 int						handle_pwd(void);
 int						handle_exit(t_prompt *prompt);
+int handle_export(t_token *token);
 
 // LEXER
 t_token					*lexer(char *input);
@@ -89,10 +90,12 @@ int						output_redirection(const char *file_name);
 
 // PIPE
 void					piping(t_token *tokens, int pipe_count, char *env);
+int count_pipes(t_token *token_lst);
 
 // UTILS
 bool					ft_isspace(const char c);
 bool					ft_is_special_character(const char *current);
+bool is_history(char *input);
 void					lst_add_back(t_token **lst, t_token *new);
 void					lst_print(t_token *token_lst);
 

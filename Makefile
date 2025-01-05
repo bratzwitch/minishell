@@ -15,6 +15,7 @@ SRC :=	$(SRC_DIR)/minishell.c \
 		$(SRC_DIR)/processes.c \
 		$(SRC_DIR)/redirections.c \
 		$(SRC_DIR)/signal.c \
+		$(SRC_DIR)/pipe_utils.c \
 		$(SRC_DIR)/piping.c \
 		$(SRC_DIR)/utils.c \
 		$(LEXER_DIR)/dollar.c \
@@ -33,7 +34,7 @@ OBJS := $(SRC:.c=.o)
 all: $(NAME)
 
 go:
-	valgrind --leak-check=full -s --show-leak-kinds=all --track-origins=yes --suppressions=minishell.supp ./minishell
+	valgrind --leak-check=full -s --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=minishell.supp ./minishell
 
 $(NAME): $(OBJS)
 		@echo "Compiling this crap"

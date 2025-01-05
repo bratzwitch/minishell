@@ -103,3 +103,9 @@ void piping(t_token *tokens, int pipe_count, char *env)
 		pipes[i][1]: Write end of the pipe.
 	However, you cannot use variable-length arrays.
 		You’ll need to dynamically allocate memory instead. */
+
+/* pipe() creates a pair of file descriptors, one for reading and one for writing. 
+		pipefd[0] refers to the read end of the pipe.
+		pipefd[1] refers to the write end of the pipe.
+	On  success,  zero  is  returned.   On  error, -1 is returned, 
+			errno is set appropriately, and pipefd is left unchanged. */
