@@ -7,9 +7,10 @@ char *ft_prompt(t_prompt *prompt)
 	input = readline("minishell$>");
 	if (input == NULL) // detect EOF; handle ctrl+D
 	{
-		write(1, "vpizdu..\n", 9);
-		rl_clear_history();
+		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
 		free(prompt->exported_vars);
+		free(prompt->path);
+		rl_clear_history();
 		exit(0);
 	}
 	return (input);
@@ -24,15 +25,19 @@ int main(int argc, char **argv, char **env)
 	(void)argv;
 
 	prompt.exported_vars = NULL;
+	prompt.path = NULL;
 	setup_handlers();
 	while (1)
 	{
 		if ((prompt.input = ft_prompt(&prompt)) == NULL)
 			break;
-		prompt.token_lst = lexer(prompt.input);
-		if (handle_builtins(&prompt, env) != 0)
+		if ((prompt.token_lst = lexer(prompt.input)) != NULL)
 		{
-			if (validator(&prompt, prompt.token_lst->value, env) == 0)
+			if (handle_builtins(&prompt, env) == 0)
+				printf("minishell: command is built-in: %s\n", prompt.token_lst->value);
+			if (validator(&prompt, prompt.token_lst->value) != 0)
+				printf("minishell: command not found externally: %s\n", prompt.token_lst->value);
+			else
 			{
 				id = create_child_process();
 				if (id == -1)
@@ -42,9 +47,6 @@ int main(int argc, char **argv, char **env)
 				else
 					handle_parent_process(id, &exit_status, &prompt);
 			}
-		}
-		else
-		{
 			add_history(prompt.input);
 			free(prompt.input);
 			lst_cleanup(&prompt.token_lst, free_token);
@@ -54,6 +56,8 @@ int main(int argc, char **argv, char **env)
 }
 
 // A lexer, short for lexical analyser.
+
+// TAB?
 
 /* Slav, look at your ft_calloc and check if there are any variables
 that you for some mysterious reason do not use. and also ft_strmapi */

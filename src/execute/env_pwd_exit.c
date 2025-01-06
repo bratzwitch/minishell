@@ -29,8 +29,8 @@ int handle_pwd()
 
 int handle_exit(t_prompt *prompt)
 {
-    printf("Vp*zdu.\n");
+    printf("exit\n");
     rl_clear_history();
-    cleanup_and_exit(prompt, 0);
-    return(0);
+    cleanup(prompt);
+    exit(0);
 }

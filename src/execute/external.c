@@ -42,25 +42,13 @@ char *find_command(char *cmd_name, char *env_path)
 	return (NULL);
 }
 
-int validator(t_prompt *prompt, char *cmd_name, char **env)
+int validator(t_prompt *prompt, char *cmd_name)
 {
-	(void)env;
 	prompt->path = find_command(cmd_name, getenv("PATH")); // dont forget to free later
 	if (!prompt->path)
 	{
-		printf("Command not recognised: %s\n", cmd_name);
+		free(prompt->path);
 		return (127);
 	}
-	printf("Found the command at: %s\n", prompt->path);
-	// free(prompt->path);
-	return(0);
-}
-
-int execute(t_prompt *prompt, char *cmd_name, char **env)
-{
-	char *arg_single[2] = {cmd_name, NULL};
-
-	execve(prompt->path, arg_single, env);
-	free(prompt->path);
-	return(0);
+	return (0);
 }

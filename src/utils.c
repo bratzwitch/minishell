@@ -1,8 +1,8 @@
 #include "../include/minishell.h"
 
-void	ft_free(char **values)
+void ft_free(char **values)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (values[i])
@@ -13,7 +13,6 @@ void	ft_free(char **values)
 	free(values);
 }
 
-
 void free_token(t_token *t)
 {
 	if (t->type == TOKEN_ARGUMENT)
@@ -21,19 +20,10 @@ void free_token(t_token *t)
 	free(t);
 }
 
-void cleanup_and_exit(t_prompt *prompt, int exit_code)
+void lst_cleanup(t_token **head, void (*del)(t_token *))
 {
-	free(prompt->input);
-	free(prompt->exported_vars);
-	lst_cleanup(&prompt->token_lst, free_token);
-	rl_clear_history();
-	exit(exit_code);
-}
-
-void	lst_cleanup(t_token **head, void (*del)(t_token *))
-{
-	t_token	*token;
-	t_token	*next;
+	t_token *token;
+	t_token *next;
 
 	token = *head;
 	while (token != NULL)
@@ -45,14 +35,23 @@ void	lst_cleanup(t_token **head, void (*del)(t_token *))
 	*head = NULL;
 }
 
-void	lst_add_back(t_token **lst, t_token *new)
+void cleanup(t_prompt *prompt)
 {
-	t_token	*last;
+	free(prompt->input);
+	free(prompt->path);
+	free(prompt->exported_vars);
+	lst_cleanup(&prompt->token_lst, free_token);
+	rl_clear_history();
+}
+
+void lst_add_back(t_token **lst, t_token *new)
+{
+	t_token *last;
 
 	if (!*lst)
 	{
 		*lst = new;
-		return ;
+		return;
 	}
 	last = *lst;
 	while (last->next)

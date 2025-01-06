@@ -66,6 +66,7 @@ void wait_for_children(int pipe_count)
 	Each command runs in a child process, and the pipes manage data flow between them. */
 void piping(t_token *tokens, int pipe_count, char **env)
 {
+	(void)env;
 	int fd[2];
 	int prev_pipe = -1;
 	t_token *temp = tokens;
@@ -102,7 +103,7 @@ void piping(t_token *tokens, int pipe_count, char **env)
 			close(fd[1]);
 			dup2(fd[0],STDIN_FILENO);
 			printf("EXECUTED_OUTPUT");
-			execute(temp->next->next->value,env);
+			// execute(temp->next->next->value,env);
     		close(fd[0]);
 			waitpid(pid, NULL, 0); 
 		}

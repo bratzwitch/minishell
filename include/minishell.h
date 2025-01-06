@@ -40,8 +40,8 @@ typedef struct s_prompt
 {
 	char				*input; // requires freeing in the end
 	char *path; // needs to be freed
-	t_token				*token_lst; // requires freeing in the end
 	char *exported_vars;
+	t_token				*token_lst; // requires freeing in the end
 }						t_prompt;
 
 typedef struct s_lexus
@@ -64,10 +64,9 @@ void					handle_child_process(t_prompt *prompt, char **env);
 void					handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt);
 
 // EXEC
-int validator(t_prompt *prompt, char *cmd_name, char **env);
+int validator(t_prompt *prompt, char *cmd_name);
 int handle_builtins(t_prompt *prompt, char **env);
 char					*find_command(char *cmd_name, char *env_path);
-int execute(t_prompt *prompt, char *cmd_name, char **env);
 
 // BUILT-INS
 int						handle_echo(t_token **token);
@@ -103,7 +102,7 @@ void					lst_print(t_token *token_lst);
 // FREE
 void					ft_free(char **values);
 void					free_token(t_token *t);
-void	cleanup_and_exit(t_prompt *prompt, int exit_code);
+void cleanup(t_prompt *prompt);
 void					lst_cleanup(t_token **head, void (*del)(t_token *));
 
 #endif
