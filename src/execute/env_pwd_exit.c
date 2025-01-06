@@ -6,7 +6,7 @@ int handle_env(char **env)
         return (1);
     while (*env)
     {
-        printf("%s\n", *env);
+        ft_putendl_fd(*env, 1);
         env++;
     }
     return (0);
@@ -32,5 +32,5 @@ int handle_exit(t_prompt *prompt)
     printf("Vp*zdu.\n");
     rl_clear_history();
     cleanup_and_exit(prompt, 0);
-    exit(0);
+    return(0);
 }

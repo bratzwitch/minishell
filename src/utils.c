@@ -13,24 +13,21 @@ void	ft_free(char **values)
 	free(values);
 }
 
+
+void free_token(t_token *t)
+{
+	if (t->type == TOKEN_ARGUMENT)
+		free(t->value);
+	free(t);
+}
+
 void cleanup_and_exit(t_prompt *prompt, int exit_code)
 {
 	free(prompt->input);
+	free(prompt->exported_vars);
 	lst_cleanup(&prompt->token_lst, free_token);
+	rl_clear_history();
 	exit(exit_code);
-}
-
-bool is_history(char *input)
-{
-	char *trimmed_input = ft_strtrim(input, " \t\n\v\f\r");
-
-	if (trimmed_input[0] == '\0')
-	{
-		free(trimmed_input);
-		return (false);
-	}
-	free(trimmed_input);
-	return (true);
 }
 
 void	lst_cleanup(t_token **head, void (*del)(t_token *))
@@ -38,8 +35,6 @@ void	lst_cleanup(t_token **head, void (*del)(t_token *))
 	t_token	*token;
 	t_token	*next;
 
-	if (head == NULL || del == NULL)
-		return ;
 	token = *head;
 	while (token != NULL)
 	{

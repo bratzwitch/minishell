@@ -10,12 +10,3 @@ bool ft_is_special_character(const char *current)
 	return (*current == '<' || *current == '>' || *current == '|' ||
 			strncmp(current, "<<", 2) == 0 || strncmp(current, ">>", 2) == 0); // original ft, dont forget to replace
 }
-
-void free_token(t_token *t)
-{
-	if (!t)
-		return;
-	if (t->type == TOKEN_ARGUMENT)
-		free(t->value);
-	free(t);
-}

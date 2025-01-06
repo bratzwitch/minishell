@@ -1,15 +1,16 @@
 #include "../include/minishell.h"
 
-char	*ft_prompt(void)
+char *ft_prompt(t_prompt *prompt)
 {
-	char	*input;
+	char *input;
 
 	input = readline("minishell$>");
 	if (input == NULL) // detect EOF; handle ctrl+D
 	{
 		write(1, "vpizdu..\n", 9);
 		rl_clear_history();
-		exit (0);
+		free(prompt->exported_vars);
+		exit(0);
 	}
 	return (input);
 }
@@ -22,26 +23,37 @@ int main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 
+	prompt.exported_vars = NULL;
 	setup_handlers();
 	while (1)
 	{
-		if ((prompt.input = ft_prompt()) == NULL)
+		if ((prompt.input = ft_prompt(&prompt)) == NULL)
 			break;
-		
-		prompt.token_lst = lexer(prompt.input); // we need to validate input in the parent process
-		handle_builtins(&prompt, prompt.token_lst, env); // and handle builtins in the parent process.
-		// and then fork the chil process for execution of external commands
-
-		id = create_child_process();
-		if (id == -1)
-			break;
-		if (id == 0)
-			handle_child_process(&prompt, env);
+		prompt.token_lst = lexer(prompt.input);
+		if (handle_builtins(&prompt, env) != 0)
+		{
+			if (validator(&prompt, prompt.token_lst->value, env) == 0)
+			{
+				id = create_child_process();
+				if (id == -1)
+					break;
+				if (id == 0)
+					handle_child_process(&prompt, env);
+				else
+					handle_parent_process(id, &exit_status, &prompt);
+			}
+		}
 		else
-			handle_parent_process(id, &exit_status, &prompt);
+		{
+			add_history(prompt.input);
+			free(prompt.input);
+			lst_cleanup(&prompt.token_lst, free_token);
+		}
 	}
 	return (0);
 }
+
+// A lexer, short for lexical analyser.
 
 /* Slav, look at your ft_calloc and check if there are any variables
 that you for some mysterious reason do not use. and also ft_strmapi */

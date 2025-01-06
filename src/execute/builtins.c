@@ -1,8 +1,8 @@
 #include "../../include/minishell.h"
 
-int handle_builtins(t_prompt *prompt, t_token *tokens, char **env)
+int handle_builtins(t_prompt *prompt, char **env)
 {
-    t_token *tmp = tokens;
+    t_token *tmp = prompt->token_lst;
 
     if (tmp == NULL)
         return (0);
@@ -13,11 +13,11 @@ int handle_builtins(t_prompt *prompt, t_token *tokens, char **env)
     else if (!strcmp(tmp->value, "exit"))
         return (handle_exit(prompt));
     else if (!strcmp(tmp->value, "cd"))
-        return(handle_cd(&tokens));
+        return(handle_cd(&prompt->token_lst));
     else if (!strcmp(tmp->value, "echo"))
-        return (handle_echo(&tokens));
+        return (handle_echo(&prompt->token_lst));
     else if (!strcmp(tmp->value, "export"))
-        return(handle_export(tokens, env));
+        return(handle_export(prompt, env));
     // else if (!strcmp(tmp->value, "unset"))
     //     return(handle_cd())
     // else

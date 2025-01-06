@@ -38,9 +38,10 @@ typedef struct s_token
 
 typedef struct s_prompt
 {
-	char				*input;
-	char				*path;
-	t_token				*token_lst;
+	char				*input; // requires freeing in the end
+	char *path; // needs to be freed
+	t_token				*token_lst; // requires freeing in the end
+	char *exported_vars;
 }						t_prompt;
 
 typedef struct s_lexus
@@ -54,7 +55,6 @@ typedef struct s_lexus
 }						t_lexus;
 
 // SIGNALS
-char					*ft_prompt(void);
 void					sig_handler(int signum);
 void					setup_handlers(void);
 
@@ -64,9 +64,10 @@ void					handle_child_process(t_prompt *prompt, char **env);
 void					handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt);
 
 // EXEC
-int						handle_builtins(t_prompt *prompt, t_token *tokens, char **env);
+int validator(t_prompt *prompt, char *cmd_name, char **env);
+int handle_builtins(t_prompt *prompt, char **env);
 char					*find_command(char *cmd_name, char *env_path);
-int execute(char *cmd_name, char **env);
+int execute(t_prompt *prompt, char *cmd_name, char **env);
 
 // BUILT-INS
 int						handle_echo(t_token **token);
@@ -74,7 +75,7 @@ int						handle_cd(t_token **token);
 int						handle_env(char **env);
 int						handle_pwd(void);
 int						handle_exit(t_prompt *prompt);
-int handle_export(t_token *token, char **env);
+int handle_export(t_prompt *prompt, char **env);
 
 // LEXER
 t_token					*lexer(char *input);
