@@ -24,6 +24,11 @@ t_token *lexer(char *input)
 	new_token = NULL;
     while (*input)
     {
+        if (input[0] == '|')
+	    {
+		    printf("no pipe at begin bro");
+		    exit(0);
+	    }
         while (*input && ft_isspace(*input))
             input++;
         if (*input == '\0')

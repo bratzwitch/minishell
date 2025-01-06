@@ -12,87 +12,117 @@ void wait_for_children(int pipe_count)
 	}
 }
 
-void close_all_pipes(int pipes[][2], int pipe_count)
-{
-	int i;
+// void close_all_pipes(int pipes[][2], int pipe_count)
+// {
+// 	int i;
 
-	i = 0;
-	while (i < pipe_count)
-	{
-		close(pipes[i][0]);
-		close(pipes[i][1]);
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < pipe_count)
+// 	{
+// 		close(pipes[i][0]);
+// 		close(pipes[i][1]);
+// 		i++;
+// 	}
+// }
 
-void execute_command(t_token *temp, int pipes[][2], int prev_pipe, int i, int pipe_count, char *env)
-{
-	char *args[] = {temp->value, NULL};
+// void execute_command(t_token *temp, int pipes[][2], int prev_pipe, int i, int pipe_count, char *env)
+// {
+// 	char *args[] = {temp->value, NULL};
 
-	if (prev_pipe != -1)
-	{
-		close(pipes[prev_pipe][1]);
-		dup2(pipes[prev_pipe][0], STDIN_FILENO);
-		close(pipes[prev_pipe][0]);
-	}
-	if (i < pipe_count)
-	{
-		close(pipes[i][0]);
-		dup2(pipes[i][1], STDOUT_FILENO);
-		close(pipes[i][1]);
-	}
-	execve(args[0], args, &env);
-	perror("execve");
-	exit(EXIT_FAILURE);
-}
+// 	if (prev_pipe != -1)
+// 	{
+// 		close(pipes[prev_pipe][1]);
+// 		dup2(pipes[prev_pipe][0], STDIN_FILENO);
+// 		close(pipes[prev_pipe][0]);
+// 	}
+// 	if (i < pipe_count)
+// 	{
+// 		close(pipes[i][0]);
+// 		dup2(pipes[i][1], STDOUT_FILENO);
+// 		close(pipes[i][1]);
+// 	}
+// 	execve(args[0], args, &env);
+// 	perror("execve");
+// 	exit(EXIT_FAILURE);
+// }
 
-bool create_pipes(int pipes[][2], int pipe_count)
-{
-	int i;
+// bool create_pipes(int pipes[][2], int pipe_count)
+// {
+// 	int i;
 
-	i = 0;
-	while (i < pipe_count)
-	{
-		if (pipe(pipes[i]) < 0)
-		{
-			perror("pipe");
-			return (false);
-		}
-		i++;
-	}
-	return (true);
-}
+// 	i = 0;
+// 	while (i < pipe_count)
+// 	{
+// 		if (pipe(pipes[i]) < 0)
+// 		{
+// 			perror("pipe");
+// 			return (false);
+// 		}
+// 		i++;
+// 	}
+// 	return (true);
+// }
 /* This function handles a pipeline of commands connected via pipes.
 	Each command runs in a child process, and the pipes manage data flow between them. */
-void piping(t_token *tokens, int pipe_count, char *env)
+void piping(t_token *tokens, int pipe_count, char **env)
 {
-	int pipes[pipe_count][2]; // it is not allowed - VLA
-	int prev_pipe = -1; // Keeps track of the previous pipe's index for connecting the pipeline.
+	int fd[2];
+	int prev_pipe = -1;
 	t_token *temp = tokens;
 	int i;
 	pid_t pid;
 
-	if (!create_pipes(pipes, pipe_count))
-		return;
+	// if (!create_pipes(pipes, pipe_count))
+	// 	return;
 	i = 0;
+	
 	while (temp && temp->type != TOKEN_EOF)
 	{
+		pipe(fd);
 		if (temp->type == TOKEN_PIPE)
 			temp = temp->next;
+		
 		pid = fork();
 		if (pid < 0)
 		{
 			perror("fork");
 			return;
 		}
-		if (pid == 0)
-			execute_command(temp, pipes, prev_pipe, i, pipe_count, env);
+		else if(pid == 0)
+		{
+			
+			close(fd[0]);
+			dup2(fd[1],STDOUT_FILENO);
+			printf("EXECUTED");
+			close(fd[1]);
+			exit(1);
+		}
+		else
+		{
+			close(fd[1]);
+			dup2(fd[0],STDIN_FILENO);
+			printf("EXECUTED_OUTPUT");
+			execute(temp->next->next->value,env);
+    		close(fd[0]);
+			waitpid(pid, NULL, 0); 
+		}
+		// need to implement remembering of output frfr
+		// handling multiple pipes also needed frfr
 		prev_pipe = i;
 		temp = temp->next;
+		
 		i++;
+		// printf("EXECUTED");
+		close (fd[0]);
+		close (fd[1]);
+		wait_for_children(pipe_count);
+		// if (pid == 0)
+		// 	execute_command(temp, pipes, prev_pipe, i, pipe_count, env);
+		
 	}
-	close_all_pipes(pipes, pipe_count);
-	wait_for_children(pipe_count);
+	
+	// close_all_pipes(pipes, pipe_count);
+	
 }
 
 /* 	int pipes[pipe_count][2]; - not allowed (VLA - variable-length arrays); see 42 norm */

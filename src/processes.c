@@ -16,11 +16,12 @@ void handle_child_process(t_prompt *prompt, char **env) // uses fd[1] - writing 
 
 	// prompt->token_lst = lexer(prompt->input);
 	lst_print(prompt->token_lst); // tests
-
+	
 	pipes = count_pipes(prompt->token_lst);
-	// if (pipes >= 1)
-	// 	piping(prompt->token_lst, pipes, *env);
-
+	
+	if (pipes >= 1)
+		piping(prompt->token_lst, pipes, env);
+	
 	// if you want to access the value of the token here's the syntax: (*prompt->token_lst)->value
 
 	if (prompt->input[0] == '\0')
