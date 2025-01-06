@@ -31,6 +31,7 @@ int main(int argc, char **argv, char **env)
 	{
 		if ((prompt.input = ft_prompt(&prompt)) == NULL)
 			break;
+		
 		if ((prompt.token_lst = lexer(prompt.input)) != NULL)
 		{
 			if (handle_builtins(&prompt, env) == 0)

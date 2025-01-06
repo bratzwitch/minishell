@@ -19,16 +19,20 @@ t_token *lexer(char *input)
 {
     t_token *token_head = NULL;
     t_token *new_token = NULL;
+    int trp;
 
+    trp = 0;
 	token_head = NULL;
 	new_token = NULL;
     while (*input)
     {
-        if (input[0] == '|')
+        if (input[0] == '|' && trp == 0)
 	    {
-		    printf("no pipe at begin bro");
-		    return (NULL);
+		    printf("no pipe at begin bro\n");
+		    return(NULL);
 	    }
+        else if(trp == 0)
+            trp = 1;
         while (*input && ft_isspace(*input))
             input++;
         if (*input == '\0')

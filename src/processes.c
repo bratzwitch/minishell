@@ -70,8 +70,8 @@ void handle_child_process(t_prompt *prompt, char **env) // uses fd[1] - writing 
 	int pipes;
 
 	pipes = count_pipes(prompt->token_lst);
-	// if (pipes >= 1)
-	// 	piping(prompt->token_lst, pipes, env);
+	if (pipes >= 1)
+		piping(prompt, pipes, env);
 
 	if (execute(prompt, env) < 0)
 		printf("No food today: %s\n", strerror(errno));
@@ -91,3 +91,6 @@ void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt) // uses
 // If both the read and write ends are open in both processes,
 // 	it can lead to deadlocks where both processes are waiting
 // 	for each other to perform an action.
+
+
+
