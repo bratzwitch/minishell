@@ -16,8 +16,8 @@ int handle_builtins(t_prompt *prompt, t_token *tokens, char **env)
         return(handle_cd(&tokens));
     else if (!strcmp(tmp->value, "echo"))
         return (handle_echo(&tokens));
-    // else if (!strcmp(tmp->value, "export"))
-    //     return(handle_export(tokens));
+    else if (!strcmp(tmp->value, "export"))
+        return(handle_export(tokens, env));
     // else if (!strcmp(tmp->value, "unset"))
     //     return(handle_cd())
     // else

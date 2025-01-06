@@ -74,7 +74,7 @@ int						handle_cd(t_token **token);
 int						handle_env(char **env);
 int						handle_pwd(void);
 int						handle_exit(t_prompt *prompt);
-int handle_export(t_token *token);
+int handle_export(t_token *token, char **env);
 
 // LEXER
 t_token					*lexer(char *input);
