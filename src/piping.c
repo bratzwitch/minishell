@@ -106,16 +106,18 @@ void	piping(t_prompt *prompt, int pipe_count, char **env)
 				close(fd[0]);
 				dup2(fd[1], STDOUT_FILENO);
 			}
-			else
-			{
-				close(fd[1]);
-			}
+			// else
+			// {
+			// 	close(fd[1]);
+			// }
 			tmp.token_lst = temp;
 			tmp.path = find_command(temp->value, getenv("PATH"));
 			if (tmp.path)
 			{
 				printf("Executing command: %s\n", temp->value);
 				execute(&tmp, env);
+				// if (execve(tmp.path, lst_to_arr(temp), env) < 0)
+                //     printf("no");
 			}
 			else
 				printf("no");
@@ -133,20 +135,20 @@ void	piping(t_prompt *prompt, int pipe_count, char **env)
 			prev_pipe = fd[0];
 			temp = temp->next;
 		}
+		i++;
 		// need to implement remembering of output frfr
 		// handling multiple pipes also needed frfr
 	}
-	while (wait(NULL) > 0)
-		;
+	wait_for_children(i);
 	if (prev_pipe != -1)
 		close(prev_pipe);
 	// close_all_pipes(pipes, pipe_count);
 }
 
-Surprise 💀, ✨compiling error✨, pls take a look on piping.c
-Eva plssss i need help with tokens, i dont understand wtf is goind on
-and what i can do to stop "ls" for example work with futher arguments
-here is example with multiple pipes, as you see all executing but ls still trying to work with all arguments
+// Surprise 💀, ✨compiling error✨, pls take a look on piping.c
+// Eva plssss i need help with tokens, i dont understand wtf is goind on
+// and what i can do to stop "ls" for example work with futher arguments
+// here is example with multiple pipes, as you see all executing but ls still trying to work with all arguments
 // minishell$>ls | pwd | ls
 // pipe counted 1
 // pipe counted 2
