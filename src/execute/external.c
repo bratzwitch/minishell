@@ -29,7 +29,10 @@ char *find_command(char *cmd_name, char *env_path)
 	{
 		full_path = build_path(dirs[i], cmd_name);
 		if (!full_path)
-			break;
+		{
+			free(dirs);
+			return(NULL);
+		}
 		if (access(full_path, X_OK) == 0)
 		{
 			ft_free(dirs);

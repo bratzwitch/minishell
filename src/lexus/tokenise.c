@@ -1,31 +1,35 @@
 #include "../../include/minishell.h"
 
-t_token *create_token(enum e_token_type type, char *value)
+t_token	*create_token(enum e_token_type type, char *value)
 {
-    t_token *new_token;
+	t_token	*new_token;
 
-    new_token = malloc(sizeof(t_token));
-    if (!new_token)
-    {
-        printf("Error creating a token: %s\n", strerror(errno));
-        return (NULL);
-    }
-    new_token->type = type;
-    new_token->value = value;
-    new_token->next = NULL;
-    return (new_token);
+	new_token = malloc(sizeof(t_token));
+	if (!new_token)
+	{
+		printf("Error creating a token: %s\n", strerror(errno));
+		return (NULL);
+	}
+	new_token->type = type;
+	new_token->value = value;
+	new_token->next = NULL;
+	return (new_token);
 }
 
-// leaves the input pointer to the next char after the command - points into space
-t_token *handle_argument(char **input)
+// leaves the input pointer to the next char after the command- points into space
+t_token	*handle_argument(char **input)
 {
-	char *current = *input;
-	char *start = current;
-	char *token_value;
+	char	*current;
+	char	*start;
+	char	*token_value;
 
-	while (*current && !ft_isspace(*current) && !ft_is_special_character(current))
+	current = *input;
+	start = current;
+	while (*current && !ft_isspace(*current)
+		&& !ft_is_special_character(current))
 		current++;
-	token_value = strndup(start, current - start); // original ft dont forget to replace with libft
+	token_value = strndup(start, current - start);
+		// original ft dont forget to replace with libft
 	if (!token_value)
 	{
 		printf("Memory allocation failed: %s\n", strerror(errno));
@@ -37,15 +41,20 @@ t_token *handle_argument(char **input)
 	return (create_token(TOKEN_ARGUMENT, token_value));
 }
 
-t_token *get_next_token(char **input)
+t_token	*get_next_token(char **input)
 {
-	char *current;
+	char	*current;
 
 	current = *input;
 	while (*current && ft_isspace(*current))
 		current++;
 	if (*current == '\0')
 		return (create_token(TOKEN_EOF, NULL));
+	if (*current == '|')
+	{
+		(*input)++;
+		return (create_token(TOKEN_PIPE, "|"));
+	}
 	if (ft_is_special_character(current))
 		return (handle_special_characters(&current, input));
 	if (*current == '$')
