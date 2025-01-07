@@ -67,11 +67,11 @@ int execute(t_prompt *prompt, char **env)
 // if you want to access the value of the token here's the syntax: (*prompt->token_lst)->value
 void handle_child_process(t_prompt *prompt, char **env) // uses fd[1] - writing end - close fd[0]
 {
-	int pipes;
+	// int pipes;
 
-	pipes = count_pipes(prompt->token_lst);
-	if (pipes >= 1)
-		piping(prompt, pipes, env);
+	// pipes = count_pipes(prompt->token_lst);
+	// if (pipes >= 1)
+	// 	piping(prompt, env);
 
 	if (execute(prompt, env) < 0)
 		printf("No food today: %s\n", strerror(errno));

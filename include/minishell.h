@@ -92,7 +92,7 @@ int						input_redirection(const char *file_name);
 int						output_redirection(const char *file_name);
 
 // PIPE
-void					piping(t_prompt *prompt, int pipe_count, char **env);
+void					piping(t_prompt *prompt, char **env);
 int						count_pipes(t_token *token_lst);
 
 // UTILS

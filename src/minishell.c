@@ -16,6 +16,22 @@ char *ft_prompt(t_prompt *prompt)
 	return (input);
 }
 
+int is_pipe(t_token *head)
+{
+	t_token *tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_PIPE)
+		{
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 int main(int argc, char **argv, char **env)
 {
 	t_prompt prompt;
@@ -31,26 +47,34 @@ int main(int argc, char **argv, char **env)
 	{
 		if ((prompt.input = ft_prompt(&prompt)) == NULL)
 			break;
-		
+
 		if ((prompt.token_lst = lexer(prompt.input)) != NULL)
 		{
-			if (handle_builtins(&prompt, env) == 0)
-				printf("minishell: command is built-in: %s\n", prompt.token_lst->value);
-			if (validator(&prompt, prompt.token_lst->value) != 0)
-				printf("minishell: command not found externally: %s\n", prompt.token_lst->value);
+			if (!is_pipe(prompt.token_lst))
+			{
+				if (handle_builtins(&prompt, env) == 0)
+					printf("minishell: command is built-in: %s\n", prompt.token_lst->value);
+				if (validator(&prompt, prompt.token_lst->value) != 0)
+					printf("minishell: command not found externally: %s\n", prompt.token_lst->value);
+				else
+				{
+					id = create_child_process();
+					if (id == -1)
+						break;
+					if (id == 0)
+						handle_child_process(&prompt, env);
+					else
+						handle_parent_process(id, &exit_status, &prompt);
+				}
+				add_history(prompt.input);
+				free(prompt.input);
+				lst_cleanup(&prompt.token_lst, free_token);
+			}
 			else
 			{
-				id = create_child_process();
-				if (id == -1)
-					break;
-				if (id == 0)
-					handle_child_process(&prompt, env);
-				else
-					handle_parent_process(id, &exit_status, &prompt);
+				add_history(prompt.input);
+				piping(&prompt, env);
 			}
-			add_history(prompt.input);
-			free(prompt.input);
-			lst_cleanup(&prompt.token_lst, free_token);
 		}
 	}
 	return (0);
