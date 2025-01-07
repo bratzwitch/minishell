@@ -5,7 +5,7 @@ char *ft_prompt(t_prompt *prompt)
 	char *input;
 
 	input = readline("minishell$>");
-	if (input == NULL) // detect EOF; handle ctrl+D
+	if (input == NULL) // detect EOF; handle ctrl+Dgit o
 	{
 		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
 		free(prompt->exported_vars);
