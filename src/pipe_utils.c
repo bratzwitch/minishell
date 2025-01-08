@@ -12,7 +12,7 @@ int count_pipes(t_token *token_lst)
 		if (temp->type == TOKEN_PIPE)
 		{
 			pipes += 1;
-			printf("pipe counted %d\n", pipes);
+			// printf("pipe counted %d\n", pipes);
 		}
 		temp = temp->next; // we had "temp++;" and it does not iterate the list
 	}

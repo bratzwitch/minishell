@@ -65,8 +65,8 @@ void lst_print(t_token *token_lst) // delete after finish testing
 
 	while (current != NULL)
 	{
-		printf("lst: Token Type: %d, Token Value: %s\n", current->type,
-			   current->value);
+		printf("%s->", current->value);
 		current = current->next;
 	}
+	printf("NULL\n");
 }

@@ -22,45 +22,6 @@ void split_tokens_by_pipe(t_token *head, t_token **list1, t_token **list2)
 	}
 }
 
-int pipe_execute(t_token *tokens, char **env)
-{
-	char **args;
-	char *path;
-
-	path = find_command(tokens->value, getenv("PATH"));
-	if (!path)
-	{
-		free(path);
-		printf("no such command sucker\n");
-		return (127);
-	}
-	args = lst_to_arr(tokens);
-	// printf("executed %s\n", path);
-	if (execve(path, args, env) < 0)
-	{
-		printf("no execve today\n");
-		return (-1);
-	}
-	return (0);
-}
-
-void execute_pipe_segment(t_token *segment, int input_fd, int output_fd, char **env)
-{
-	if (input_fd != -1)
-	{
-		dup2(input_fd, STDIN_FILENO);
-		close(input_fd);
-	}
-	(void)output_fd;
-	// if (output_fd != -1)
-	// {
-	// 	dup2(output_fd, STDOUT_FILENO);
-	// 	close(output_fd);
-	// }
-	pipe_execute(segment, env);
-	exit(1);
-}
-
 void close_unused_pipe(int pipe_fd)
 {
 	if (pipe_fd != -1)
@@ -83,7 +44,7 @@ void create_pipes(int i, int pipe_count, int fd[2])
 	if (i < pipe_count && pipe(fd) == -1)
 	{
 		perror("pipe");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 }
 
@@ -93,67 +54,69 @@ pid_t create_fork()
 	if (pid < 0)
 	{
 		perror("fork");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
-	printf("forked pid: %d\n", pid);
 	return (pid);
+}
+
+int pipe_execute(t_token *tokens, char **env)
+{
+	char **args;
+	char *path;
+
+	args = lst_to_arr(tokens);
+	path = find_command(tokens->value, getenv("PATH"));
+	if (!path)
+	{
+		printf("no such command sucker\n");
+		return (127);
+	}
+	execve(path, args, env);
+	perror("execve");
+	exit(1);
 }
 
 void handle_child_process_pipe(int prev_pipe, int i, int pipe_count, int fd[2], t_token *list1, char **env)
 {
-	if (prev_pipe != -1)
+	if (prev_pipe != -1) // If there's a previous pipe, redirect input
 	{
-		dup2(prev_pipe, STDIN_FILENO);
+		if (dup2(prev_pipe, STDIN_FILENO) == 1)
+			perror("dup2 fd[1]");
 		close(prev_pipe);
 	}
-	(void)i;
-	(void)pipe_count;
-	// if (i < pipe_count)
-	// {
-	// 	close(fd[0]);
-	// 	dup2(fd[1], STDOUT_FILENO);
-	// 	close(fd[1]);
-	// }
-	// else
-	// {
-	// 	close(fd[1]);
-	// 	dup2(fd[0], STDIN_FILENO);
-	// 	close(fd[0]);
-	// }
-	execute_pipe_segment(list1, prev_pipe, fd[1], env);
+	if (i < pipe_count) // Redirect output if not the last command
+	{
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+			perror("dup2 fd[1]");
+		// close(fd[1]);
+	}
+	close(fd[0]);
+	pipe_execute(list1, env);
 	exit(1);
 }
 
-void handle_parent_process_pipe(int fd[2], int *prev_pipe)
+void handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
 {
+	waitpid(id, NULL, 0);
 	close(fd[1]);
 	if (*prev_pipe != -1)
 		close(*prev_pipe);
 	*prev_pipe = fd[0];
 }
-void init_piping_vars(t_prompt *prompt, int *prev_pipe, t_token **current_tokens, int *pipe_count)
-{
-	*prev_pipe = -1;
-	*current_tokens = prompt->token_lst;
-	*pipe_count = count_pipes(*current_tokens);
-}
 
 void piping(t_prompt *prompt, char **env)
 {
-	int prev_pipe;
+	int prev_pipe = -1;
 	int fd[2];
-	int pipe_count;
+	int pipe_count = count_pipes(prompt->token_lst);
 	int i = 0;
-	t_token *current_tokens;
-	t_token *list1;
-	t_token *list2;
+	t_token *current_tokens = prompt->token_lst;
+	t_token *list1 = NULL;
+	t_token *list2 = NULL;
 	pid_t pid;
 
-	init_piping_vars(prompt, &prev_pipe, &current_tokens, &pipe_count);
 	while (i <= pipe_count)
 	{
-		list1 = NULL;
-		list2 = NULL;
 		split_tokens_by_pipe(current_tokens, &list1, &list2);
 		current_tokens = list2;
 		create_pipes(i, pipe_count, fd);
@@ -161,12 +124,20 @@ void piping(t_prompt *prompt, char **env)
 		if (pid == 0)
 			handle_child_process_pipe(prev_pipe, i, pipe_count, fd, list1, env);
 		else
-			handle_parent_process_pipe(fd, &prev_pipe);
+			handle_parent_process_pipe(fd, &prev_pipe, pid);
 		i++;
 	}
 	close_unused_pipe(prev_pipe);
 	wait_for_children(pipe_count + 1);
 }
+
+/* SLAVA. tested some of the commands bellow - YEVA 8.1.25
+			ls -l | wc -l
+			ls -la | grep something | wc -l
+			cat test | grep something
+			env | grep someshit
+	WHEN YOU USE GREP DO NOT USE THE QUOTES ("") AND FOR NOW IT CAN ONLY TAKE ONE WORD I THINK
+*/
 
 /* This function handles a pipeline of commands connected via pipes.
 	Each command runs in a child process,
