@@ -44,6 +44,20 @@ void cleanup(t_prompt *prompt)
 	rl_clear_history();
 }
 
+int is_pipe(t_token *head)
+{
+	t_token *tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_PIPE)
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
 void lst_add_back(t_token **lst, t_token *new)
 {
 	t_token *last;
@@ -69,4 +83,48 @@ void lst_print(t_token *token_lst) // delete after finish testing
 		current = current->next;
 	}
 	printf("NULL\n");
+}
+
+int count_tokens(t_token *lst)
+{
+	int i;
+
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
+
+char **lst_to_arr(t_token *tokens)
+{
+	t_token *tmp;
+	char **args;
+	int count;
+	int i;
+
+	tmp = tokens;
+	count = count_tokens(tokens);
+	args = (char **)malloc((count + 1) * sizeof(char *));
+	i = 0;
+	while (i < count && tmp)
+	{
+		args[i] = tmp->value;
+		tmp = tmp->next;
+		i++;
+	}
+	args[i] = NULL;
+	return (args);
+}
+
+void print_args(char **args)
+{
+	int i = 0;
+	while (args[i])
+	{
+		printf("args: %s\n", args[i]);
+		i++;
+	}
 }

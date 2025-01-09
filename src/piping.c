@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-void split_tokens_by_pipe(t_token *head, t_token **list1, t_token **list2)
+void split_tokens_by_pipe(t_token *head, t_token **list1, t_token **list2) // move to general utils
 {
 	t_token *current = head;
 	t_token *prev = NULL;
@@ -22,13 +22,7 @@ void split_tokens_by_pipe(t_token *head, t_token **list1, t_token **list2)
 	}
 }
 
-void close_unused_pipe(int pipe_fd)
-{
-	if (pipe_fd != -1)
-		close(pipe_fd);
-}
-
-void wait_for_children(int child_count)
+void wait_for_children(int child_count) // move to pipe_utils
 {
 	int i = 0;
 
@@ -39,7 +33,7 @@ void wait_for_children(int child_count)
 	}
 }
 
-void create_pipes(int i, int pipe_count, int fd[2])
+void create_pipes(int i, int pipe_count, int fd[2]) // move to pipe_utils
 {
 	if (i < pipe_count && pipe(fd) == -1)
 	{
@@ -48,9 +42,11 @@ void create_pipes(int i, int pipe_count, int fd[2])
 	}
 }
 
-pid_t create_fork()
+pid_t create_child_process(void) // we reuse it from main; move to "processes.c"
 {
-	pid_t pid = fork();
+	pid_t pid;
+	
+	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork");
@@ -59,39 +55,22 @@ pid_t create_fork()
 	return (pid);
 }
 
-int pipe_execute(t_token *tokens, char **env)
+void handle_child_process_pipe(t_pipe *pipe, char **env)
 {
-	char **args;
-	char *path;
-
-	args = lst_to_arr(tokens);
-	path = find_command(tokens->value, getenv("PATH"));
-	if (!path)
+	if (pipe->prev_pipe != -1) // If there's a previous pipe, redirect input
 	{
-		printf("no such command sucker\n");
-		return (127);
-	}
-	execve(path, args, env);
-	perror("execve");
-	exit(1);
-}
-
-void handle_child_process_pipe(int prev_pipe, int i, int pipe_count, int fd[2], t_token *list1, char **env)
-{
-	if (prev_pipe != -1) // If there's a previous pipe, redirect input
-	{
-		if (dup2(prev_pipe, STDIN_FILENO) == 1)
+		if (dup2(pipe->prev_pipe, STDIN_FILENO) == 1)
 			perror("dup2 fd[1]");
-		close(prev_pipe);
+		close(pipe->prev_pipe);
 	}
-	if (i < pipe_count) // Redirect output if not the last command
+	if (pipe->i < pipe->pipe_count) // Redirect output if not the last command
 	{
-		if (dup2(fd[1], STDOUT_FILENO) == -1)
+		if (dup2(pipe->fd[1], STDOUT_FILENO) == -1)
 			perror("dup2 fd[1]");
-		// close(fd[1]);
+		close(pipe->fd[1]);
 	}
-	close(fd[0]);
-	pipe_execute(list1, env);
+	close(pipe->fd[0]);
+	execute(pipe->list1, NULL, env);
 	exit(1);
 }
 
@@ -106,36 +85,36 @@ void handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
 
 void piping(t_prompt *prompt, char **env)
 {
-	int prev_pipe = -1;
-	int fd[2];
-	int pipe_count = count_pipes(prompt->token_lst);
-	int i = 0;
-	t_token *current_tokens = prompt->token_lst;
-	t_token *list1 = NULL;
-	t_token *list2 = NULL;
-	pid_t pid;
+	t_pipe pipe;
 
-	while (i <= pipe_count)
+	pipe.current_tokens = prompt->token_lst; // if you want to get more spare lines in piping function you can write something like "void initialise_pipe(pipe)" 
+	pipe.list1 = NULL;
+	pipe.list2 = NULL;
+	pipe.pipe_count = count_pipes(prompt->token_lst);
+	pipe.prev_pipe = -1;
+	pipe.i = 0;
+	while (pipe.i <= pipe.pipe_count)
 	{
-		split_tokens_by_pipe(current_tokens, &list1, &list2);
-		current_tokens = list2;
-		create_pipes(i, pipe_count, fd);
-		pid = create_fork();
-		if (pid == 0)
-			handle_child_process_pipe(prev_pipe, i, pipe_count, fd, list1, env);
+		split_tokens_by_pipe(pipe.current_tokens, &pipe.list1, &pipe.list2);
+		pipe.current_tokens = pipe.list2;
+		create_pipes(pipe.i, pipe.pipe_count, pipe.fd);
+		pipe.pid = create_child_process();
+		if (pipe.pid == 0)
+			handle_child_process_pipe(&pipe, env);
 		else
-			handle_parent_process_pipe(fd, &prev_pipe, pid);
-		i++;
+			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe, pipe.pid);
+		pipe.i++;
 	}
-	close_unused_pipe(prev_pipe);
-	wait_for_children(pipe_count + 1);
+	if (pipe.prev_pipe != -1)
+		close(pipe.prev_pipe);
+	wait_for_children(pipe.pipe_count + 1);
 }
 
 /* SLAVA. tested some of the commands bellow - YEVA 8.1.25
 			ls -l | wc -l
 			ls -la | grep something | wc -l
 			cat test | grep something
-			env | grep someshit
+			env | grep PWD
 	WHEN YOU USE GREP DO NOT USE THE QUOTES ("") AND FOR NOW IT CAN ONLY TAKE ONE WORD I THINK
 */
 

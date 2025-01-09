@@ -26,8 +26,8 @@ SRC :=	$(SRC_DIR)/minishell.c \
 		$(EXEC_DIR)/builtins.c \
 		$(EXEC_DIR)/echo_cd.c \
 		$(EXEC_DIR)/env_pwd_exit.c \
-		$(EXEC_DIR)/export_unset.c \
-		$(EXEC_DIR)/external.c
+		$(EXEC_DIR)/execute.c \
+		$(EXEC_DIR)/export_unset.c
 
 OBJS := $(SRC:.c=.o)
 

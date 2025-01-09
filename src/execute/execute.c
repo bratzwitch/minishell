@@ -45,13 +45,30 @@ char *find_command(char *cmd_name, char *env_path)
 	return (NULL);
 }
 
-int validator(t_prompt *prompt, char *cmd_name)
+char *validator(char *cmd_name)
 {
-	prompt->path = find_command(cmd_name, getenv("PATH")); // dont forget to free later
-	if (!prompt->path)
+	char *path;
+
+	path = find_command(cmd_name, getenv("PATH")); // dont forget to free later
+	if (!path)
 	{
-		free(prompt->path);
-		return (127);
+		free(path);
+		return (NULL);
 	}
-	return (0);
+	return (path);
+}
+
+int execute(t_token *tokens, char *path, char **env)
+{
+	char **args;
+	char *path_exec;
+
+	args = lst_to_arr(tokens);
+	if (path)
+		path_exec = path;
+	else
+		path_exec = validator(tokens->value);
+	execve(path_exec, args, env);
+	perror("execve");
+	exit(1);
 }

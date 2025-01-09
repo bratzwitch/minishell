@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-int handle_builtins(t_prompt *prompt, char **env)
+int builtins(t_prompt *prompt, char **env)
 {
     t_token *tmp = prompt->token_lst;
 

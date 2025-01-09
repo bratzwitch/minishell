@@ -5,7 +5,7 @@ char *ft_prompt(t_prompt *prompt)
 	char *input;
 
 	input = readline("minishell$>");
-	if (input == NULL) // detect EOF; handle ctrl+Dgit o
+	if (input == NULL) // detect EOF; handle ctrl+D
 	{
 		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
 		free(prompt->exported_vars);
@@ -16,66 +16,47 @@ char *ft_prompt(t_prompt *prompt)
 	return (input);
 }
 
-int is_pipe(t_token *head)
+void handle_single_cmd(t_prompt *prompt, char **env)
 {
-	t_token *tmp;
+	pid_t pid;
 
-	tmp = head;
-	while (tmp)
+	if (!builtins(prompt, env))
+		return;
+	if (!(prompt->path = validator(prompt->token_lst->value)))
+		printf("minishell: command not found: %s\n", prompt->token_lst->value);
+	else
 	{
-		if (tmp->type == TOKEN_PIPE)
-		{
-			return (1);
-		}
-		tmp = tmp->next;
+		pid = create_child_process();
+		if (pid == 0)
+			handle_child_process(prompt, env);
+		else
+			handle_parent_process(pid, &prompt->exit_status, prompt);
 	}
-	return (0);
 }
 
 int main(int argc, char **argv, char **env)
 {
 	t_prompt prompt;
-	pid_t id;
-	int exit_status;
+
 	(void)argc;
 	(void)argv;
-
 	prompt.exported_vars = NULL;
 	prompt.path = NULL;
 	setup_handlers();
 	while (1)
 	{
-		if ((prompt.input = ft_prompt(&prompt)) == NULL)
+		if (!(prompt.input = ft_prompt(&prompt)))
 			break;
-
-		if ((prompt.token_lst = lexer(prompt.input)) != NULL)
+		if ((prompt.token_lst = lexer(prompt.input)))
 		{
-			if (!is_pipe(prompt.token_lst))
-			{
-				if (handle_builtins(&prompt, env) == 0)
-					printf("minishell: command is built-in: %s\n", prompt.token_lst->value);
-				if (validator(&prompt, prompt.token_lst->value) != 0)
-					printf("minishell: command not found externally: %s\n", prompt.token_lst->value);
-				else
-				{
-					id = create_child_process();
-					if (id == -1)
-						break;
-					if (id == 0)
-						handle_child_process(&prompt, env);
-					else
-						handle_parent_process(id, &exit_status, &prompt);
-				}
-				add_history(prompt.input);
-				free(prompt.input);
-				lst_cleanup(&prompt.token_lst, free_token);
-			}
-			else
-			{
-				add_history(prompt.input);
+			if (is_pipe(prompt.token_lst))
 				piping(&prompt, env);
-			}
+			else
+				handle_single_cmd(&prompt, env);
 		}
+		add_history(prompt.input);
+		free(prompt.input);
+		lst_cleanup(&prompt.token_lst, free_token);
 	}
 	return (0);
 }

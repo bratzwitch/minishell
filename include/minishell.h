@@ -36,23 +36,25 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_token;
 
+typedef struct s_pipe {
+	t_token *current_tokens;
+	t_token *list1;
+	t_token *list2;
+	pid_t pid;
+	int fd[2];
+	int pipe_count;
+	int prev_pipe;
+	int i;
+} t_pipe;
+
 typedef struct s_prompt
 {
 	char *input; // requires freeing in the end
 	char *path;  // needs to be freed
 	char				*exported_vars;
 	t_token *token_lst; // requires freeing in the end
+	int exit_status;
 }						t_prompt;
-
-typedef struct s_lexus
-{
-	char				*input_copy;
-	char				*commands;
-	char				*options;
-	char				*arguments;
-	int					token_num;
-	int					error_flag;
-}						t_lexus;
 
 // SIGNALS
 void					sig_handler(int signum);
@@ -65,9 +67,9 @@ void					handle_parent_process(pid_t id, int *exit_status,
 							t_prompt *prompt);
 
 // EXEC
-int						execute(t_prompt *prompt, char **env);
-int						validator(t_prompt *prompt, char *cmd_name);
-int						handle_builtins(t_prompt *prompt, char **env);
+int execute(t_token *tokens, char *path, char **env);
+char *validator(char *cmd_name);
+int						builtins(t_prompt *prompt, char **env);
 char					*find_command(char *cmd_name, char *env_path);
 
 // BUILT-INS
@@ -99,9 +101,11 @@ int						count_pipes(t_token *token_lst);
 char					**lst_to_arr(t_token *token_lst);
 bool					ft_isspace(const char c);
 bool					ft_is_special_character(const char *current);
-bool					is_history(char *input);
 void					lst_add_back(t_token **lst, t_token *new);
-void					lst_print(t_token *token_lst);
+char **lst_to_arr(t_token *tokens);
+int is_pipe(t_token *head);
+void					lst_print(t_token *token_lst); // tests
+void print_args(char **args); // tests
 
 // FREE
 void					ft_free(char **values);
