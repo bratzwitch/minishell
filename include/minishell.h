@@ -36,16 +36,17 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_token;
 
-typedef struct s_pipe {
-	t_token *current_tokens;
-	t_token *list1;
-	t_token *list2;
-	pid_t pid;
-	int fd[2];
-	int pipe_count;
-	int prev_pipe;
-	int i;
-} t_pipe;
+typedef struct s_pipe
+{
+	t_token				*current_tokens;
+	t_token				*list1;
+	t_token				*list2;
+	pid_t				pid;
+	int					fd[2];
+	int					pipe_count;
+	int					prev_pipe;
+	int					i;
+}						t_pipe;
 
 typedef struct s_prompt
 {
@@ -53,7 +54,7 @@ typedef struct s_prompt
 	char *path;  // needs to be freed
 	char				*exported_vars;
 	t_token *token_lst; // requires freeing in the end
-	int exit_status;
+	int					exit_status;
 }						t_prompt;
 
 // SIGNALS
@@ -67,9 +68,15 @@ void					handle_parent_process(pid_t id, int *exit_status,
 							t_prompt *prompt);
 
 // EXEC
+<<<<<<< HEAD
 int execute(t_token *tokens, char *path, char **env);
 char *validator(char *cmd_name);
 int builtins(t_prompt *prompt, t_token *tokens, char **env);
+=======
+int						execute(t_token *tokens, char *path, char **env);
+char					*validator(char *cmd_name);
+int						builtins(t_prompt *prompt, char **env);
+>>>>>>> 0202b154822bba4c6f3ce8e9b2a6d6b67a22e602
 char					*find_command(char *cmd_name, char *env_path);
 
 // BUILT-INS
@@ -88,6 +95,7 @@ t_token					*handle_special_characters(char **current,
 							char **input);
 t_token					*handle_dollar_sign(char **input);
 t_token					*handle_input_redirection(char **input);
+int						ft_quotes(char *str, int size);
 
 // REDIRECTIONS
 int						input_redirection(const char *file_name);
@@ -102,10 +110,10 @@ char					**lst_to_arr(t_token *token_lst);
 bool					ft_isspace(const char c);
 bool					ft_is_special_character(const char *current);
 void					lst_add_back(t_token **lst, t_token *new);
-char **lst_to_arr(t_token *tokens);
-int is_pipe(t_token *head);
-void					lst_print(t_token *token_lst); // tests
-void print_args(char **args); // tests
+char					**lst_to_arr(t_token *tokens);
+int						is_pipe(t_token *head);
+void	lst_print(t_token *token_lst); // tests
+void	print_args(char **args);       // tests
 
 // FREE
 void					ft_free(char **values);

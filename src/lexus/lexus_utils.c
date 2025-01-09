@@ -10,3 +10,25 @@ bool ft_is_special_character(const char *current)
 	return (*current == '<' || *current == '>' || *current == '|' ||
 			strncmp(current, "<<", 2) == 0 || strncmp(current, ">>", 2) == 0); // original ft, dont forget to replace
 }
+
+int ft_quotes(char *str,int size)
+{
+	int i;
+	int trigger;
+	
+	i = 0;
+	trigger = 0;
+	while(str[i] && i != size)
+	{
+		if (trigger == 0 && str[i] == '\"')
+			trigger = 2;
+		else if (trigger == 0 && str[i] == '\'')
+			trigger = 1;
+		else if (trigger == 2 && str[i] == '\"')
+			trigger = 0;
+		else if (trigger == 1 && str[i] == '\'')
+			trigger = 0;
+		i++;
+	}
+	return trigger;
+}

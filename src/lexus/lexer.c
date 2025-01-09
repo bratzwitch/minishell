@@ -20,17 +20,35 @@ t_token	*lexer(char *input)
 	t_token	*token_head;
 	t_token	*new_token;
 	int		trp;
+	int		sq;
 
+	sq = 0;
 	token_head = NULL;
 	new_token = NULL;
 	trp = 0;
+	if (ft_quotes(input, ft_strlen(input)))
+	{
+		printf("not closed\n");
+		exit(0);
+	}
 	while (*input)
 	{
+		if (*input == '\'')
+		{
+			input++;
+			sq = 1;
+			while (*input != '\'')
+				input++;
+			printf("sq closed\n");
+			new_token = get_next_token(&input);
+			add_token(&token_head, new_token);
+			return (token_head);
+		}
 		while (*input && ft_isspace(*input))
 			input++;
 		if (*input == '\0')
 			break ;
-		if (*input == '|' && trp == 0)
+		if (*input == '|' && trp == 0 && sq == 0)
 		{
 			new_token = create_token(TOKEN_PIPE, "|");
 			add_token(&token_head, new_token);

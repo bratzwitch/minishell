@@ -35,8 +35,15 @@ t_token	*handle_argument(char **input)
 		printf("Memory allocation failed: %s\n", strerror(errno));
 		return (NULL);
 	}
+	// if(ft_quotes(current, ft_strlen(token_value)))
+	// {
+	// 	printf("close quote");
+	// 	exit(0);
+	// }
 	while (*current && ft_isspace(*current))
+	{
 		current++;
+	}
 	*input = current;
 	return (create_token(TOKEN_ARGUMENT, token_value));
 }
@@ -46,6 +53,15 @@ t_token	*get_next_token(char **input)
 	char	*current;
 
 	current = *input;
+	if(*current == '\'')
+	{
+		while(*current)
+		{
+			current++;
+			if(*current == '\'')
+				return (handle_argument(input));
+		}
+	}
 	while (*current && ft_isspace(*current))
 		current++;
 	if (*current == '\0')
