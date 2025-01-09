@@ -20,10 +20,7 @@ void add_new_var(char **env, char *new_var)
 char *ft_setenv(char *name, char **env, char *new_var)
 {
     if (name == NULL || ft_strchr(name, '=') == NULL)
-    {
-        printf("minishell: export: '%s': not a valid identifier\n", name);
         return (NULL);
-    }
     new_var = ft_strdup(name);
     if (!new_var)
         return (NULL);
@@ -31,21 +28,25 @@ char *ft_setenv(char *name, char **env, char *new_var)
     return (new_var);
 }
 
-int handle_export(t_prompt *prompt, char **env)
+int handle_export(t_prompt *prompt, t_token *tokens, char **env)
 {
-    t_token *tmp = prompt->token_lst;
+    t_token *tmp = tokens;
+    char *vars;
 
-    (void)tmp;
-    prompt->exported_vars = ft_setenv("LOL=C1", env, prompt->exported_vars);
-    if (prompt->exported_vars != NULL)
+    vars = NULL;
+    while (tmp && tmp->next)
     {
-        return (0);
+        vars = ft_setenv(tmp->next->value, env, vars);
+        tmp = tmp->next;
     }
-    else
+    if (!vars)
     {
-        perror("setenv");
+        printf("minishell: export: error\n");
         return (1);
     }
+    if (prompt)
+        prompt->exported_vars = vars;
+    return (0);
 }
 
 // error example: bash: export: `C1+LOL': not a valid identifier

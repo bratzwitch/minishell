@@ -37,11 +37,13 @@ void lst_cleanup(t_token **head, void (*del)(t_token *))
 
 void cleanup(t_prompt *prompt)
 {
+	rl_clear_history();
+	if (!prompt)
+		return ;
 	free(prompt->input);
 	free(prompt->path);
 	free(prompt->exported_vars);
 	lst_cleanup(&prompt->token_lst, free_token);
-	rl_clear_history();
 }
 
 int is_pipe(t_token *head)

@@ -20,9 +20,9 @@ void handle_single_cmd(t_prompt *prompt, char **env)
 {
 	pid_t pid;
 
-	if (!builtins(prompt, env))
+	if (!builtins(prompt, prompt->token_lst, env))
 		return;
-	if (!(prompt->path = validator(prompt->token_lst->value)))
+	else if (!(prompt->path = validator(prompt->token_lst->value)))
 		printf("minishell: command not found: %s\n", prompt->token_lst->value);
 	else
 	{

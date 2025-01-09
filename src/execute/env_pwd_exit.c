@@ -30,7 +30,6 @@ int handle_pwd()
 int handle_exit(t_prompt *prompt)
 {
     printf("exit\n");
-    rl_clear_history();
     cleanup(prompt);
     exit(0);
 }

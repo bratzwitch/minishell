@@ -38,7 +38,7 @@ int handle_cd(t_token **token)
         home = getenv("HOME");
         if (!home)
         {
-            fprintf(stderr, "cd: HOME not set\n");
+            perror("cd: HOME not set");
             return (1);
         }
         path = home;

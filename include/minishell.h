@@ -69,7 +69,7 @@ void					handle_parent_process(pid_t id, int *exit_status,
 // EXEC
 int execute(t_token *tokens, char *path, char **env);
 char *validator(char *cmd_name);
-int						builtins(t_prompt *prompt, char **env);
+int builtins(t_prompt *prompt, t_token *tokens, char **env);
 char					*find_command(char *cmd_name, char *env_path);
 
 // BUILT-INS
@@ -78,7 +78,7 @@ int						handle_cd(t_token **token);
 int						handle_env(char **env);
 int						handle_pwd(void);
 int						handle_exit(t_prompt *prompt);
-int						handle_export(t_prompt *prompt, char **env);
+int handle_export(t_prompt *prompt, t_token *tokens, char **env);
 
 // LEXER
 t_token					*lexer(char *input);

@@ -1,27 +1,23 @@
 #include "../../include/minishell.h"
 
-int builtins(t_prompt *prompt, char **env)
+int builtins(t_prompt *prompt, t_token *tokens, char **env)
 {
-    t_token *tmp = prompt->token_lst;
-
-    if (tmp == NULL)
+    if (tokens == NULL)
         return (0);
-    if (!strcmp(tmp->value, "env"))
+    if (!strcmp(tokens->value, "env"))
         return (handle_env(env));
-    else if (!strcmp(tmp->value, "pwd"))
+    else if (!strcmp(tokens->value, "pwd"))
         return (handle_pwd());
-    else if (!strcmp(tmp->value, "exit"))
-        return (handle_exit(prompt));
-    else if (!strcmp(tmp->value, "cd"))
-        return(handle_cd(&prompt->token_lst));
-    else if (!strcmp(tmp->value, "echo"))
-        return (handle_echo(&prompt->token_lst));
-    else if (!strcmp(tmp->value, "export"))
-        return(handle_export(prompt, env));
-    // else if (!strcmp(tmp->value, "unset"))
+    else if (!strcmp(tokens->value, "exit"))
+        return (handle_exit(prompt)); //
+    else if (!strcmp(tokens->value, "cd"))
+        return(handle_cd(&tokens));
+    else if (!strcmp(tokens->value, "echo"))
+        return (handle_echo(&tokens));
+    else if (!strcmp(tokens->value, "export"))
+        return(handle_export(prompt, tokens, env));
+    // else if (!strcmp(tokens->value, "unset"))
     //     return(handle_cd())
-    // else
-    //     return (execute(tmp->value, env));
     return (1);
 }
 
