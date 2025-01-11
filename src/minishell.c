@@ -63,11 +63,6 @@ int main(int argc, char **argv, char **env)
 
 // A lexer, short for lexical analyser.
 
-// TAB?
-
-/* Slav, look at your ft_calloc and check if there are any variables
-that you for some mysterious reason do not use. and also ft_strmapi */
-
 // Readline and Terminal Handling
 // readline(prompt): Reads a line of input from the user, displaying the given prompt. Allows for command-line editing and history navigation.
 // rl_clear_history(): Clears the history of commands stored by readline.

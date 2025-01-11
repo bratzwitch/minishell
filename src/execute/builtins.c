@@ -9,15 +9,15 @@ int builtins(t_prompt *prompt, t_token *tokens, char **env)
     else if (!strcmp(tokens->value, "pwd"))
         return (handle_pwd());
     else if (!strcmp(tokens->value, "exit"))
-        return (handle_exit(prompt)); //
+        return (handle_exit(prompt));
     else if (!strcmp(tokens->value, "cd"))
-        return(handle_cd(&tokens));
+        return(handle_cd(prompt, tokens, env));
     else if (!strcmp(tokens->value, "echo"))
         return (handle_echo(&tokens));
     else if (!strcmp(tokens->value, "export"))
         return(handle_export(prompt, tokens, env));
-    // else if (!strcmp(tokens->value, "unset"))
-    //     return(handle_cd())
+    else if (!strcmp(tokens->value, "unset"))
+        return(handle_unset(tokens, env));
     return (1);
 }
 

@@ -68,31 +68,26 @@ void					handle_parent_process(pid_t id, int *exit_status,
 							t_prompt *prompt);
 
 // EXEC
-<<<<<<< HEAD
-int execute(t_token *tokens, char *path, char **env);
-char *validator(char *cmd_name);
-int builtins(t_prompt *prompt, t_token *tokens, char **env);
-=======
 int						execute(t_token *tokens, char *path, char **env);
 char					*validator(char *cmd_name);
-int						builtins(t_prompt *prompt, char **env);
->>>>>>> 0202b154822bba4c6f3ce8e9b2a6d6b67a22e602
+int						builtins(t_prompt *prompt, t_token *tokens, char **env);
 char					*find_command(char *cmd_name, char *env_path);
 
 // BUILT-INS
 int						handle_echo(t_token **token);
-int						handle_cd(t_token **token);
+int handle_cd(t_prompt *prompt, t_token *token, char **env);
 int						handle_env(char **env);
 int						handle_pwd(void);
 int						handle_exit(t_prompt *prompt);
 int handle_export(t_prompt *prompt, t_token *tokens, char **env);
+int handle_unset(t_token *tokens, char **env);
+int find_var(char *name, char **env);
 
 // LEXER
 t_token					*lexer(char *input);
 t_token					*get_next_token(char **input);
 t_token					*create_token(enum e_token_type type, char *value);
-t_token					*handle_special_characters(char **current,
-							char **input);
+t_token					*handle_special_characters(char **current, char **input);
 t_token					*handle_dollar_sign(char **input);
 t_token					*handle_input_redirection(char **input);
 int						ft_quotes(char *str, int size);
@@ -112,6 +107,7 @@ bool					ft_is_special_character(const char *current);
 void					lst_add_back(t_token **lst, t_token *new);
 char					**lst_to_arr(t_token *tokens);
 int						is_pipe(t_token *head);
+void	add_token(t_token **head, t_token *new_token);
 void	lst_print(t_token *token_lst); // tests
 void	print_args(char **args);       // tests
 

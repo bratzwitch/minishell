@@ -27,28 +27,3 @@ int handle_echo(t_token **token)
         ft_putchar_fd('\n', 1);
     return (0);
 }
-
-int handle_cd(t_token **token)
-{
-    char *path;
-    char *home;
-
-    if (!(*token)->next)
-    {
-        home = getenv("HOME");
-        if (!home)
-        {
-            perror("cd: HOME not set");
-            return (1);
-        }
-        path = home;
-    }
-    else
-        path = (*token)->next->value;
-    if (chdir(path) == -1)
-    {
-        perror("cd");
-        return (1);
-    }
-    return (0);
-}

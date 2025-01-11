@@ -24,10 +24,12 @@ SRC :=	$(SRC_DIR)/minishell.c \
 		$(LEXER_DIR)/operators.c \
 		$(LEXER_DIR)/tokenise.c \
 		$(EXEC_DIR)/builtins.c \
-		$(EXEC_DIR)/echo_cd.c \
-		$(EXEC_DIR)/env_pwd_exit.c \
 		$(EXEC_DIR)/execute.c \
-		$(EXEC_DIR)/export_unset.c
+		$(EXEC_DIR)/builtins/cd.c \
+		$(EXEC_DIR)/builtins/echo.c \
+		$(EXEC_DIR)/builtins/env_pwd_exit.c \
+		$(EXEC_DIR)/builtins/export.c \
+		$(EXEC_DIR)/builtins/unset.c
 
 OBJS := $(SRC:.c=.o)
 
@@ -39,13 +41,6 @@ go:
 $(NAME): $(OBJS)
 		@echo "Compiling this crap"
 		@make -C $(LIBFT_DIR)
-# idk if we're allowed to do that but i wanted to add something fun
-		# @bash -c 'for i in {1..50}; do \
-		# 	sleep 0.1; \
-		# 	printf "\033[32m#\033[0m"; \
-		# done'
-		# @echo ""
-# $(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME) $(LIBFT_DIR)/libft.a
 		$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LIBFT_DIR)/libft.a
 		@echo "All good you can rest(no)" 
 		@echo "  ⣿⣿⣿⣿⣿⣿⣿⠿⠿⢛⣋⣙⣋⣩⣭⣭⣭⣭⣍⣉⡛⠻⢿⣿⣿⣿⣿"
