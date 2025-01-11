@@ -22,6 +22,7 @@ SRC :=	$(SRC_DIR)/minishell.c \
 		$(LEXER_DIR)/lexer.c \
 		$(LEXER_DIR)/lexus_utils.c \
 		$(LEXER_DIR)/operators.c \
+		$(LEXER_DIR)/quotes.c \
 		$(LEXER_DIR)/tokenise.c \
 		$(EXEC_DIR)/builtins.c \
 		$(EXEC_DIR)/execute.c \

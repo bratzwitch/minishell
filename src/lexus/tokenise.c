@@ -1,8 +1,8 @@
 #include "../../include/minishell.h"
 
-t_token	*create_token(enum e_token_type type, char *value)
+t_token *create_token(enum e_token_type type, char *value)
 {
-	t_token	*new_token;
+	t_token *new_token;
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
@@ -16,61 +16,41 @@ t_token	*create_token(enum e_token_type type, char *value)
 	return (new_token);
 }
 
-// leaves the input pointer to the next char after the command- points into space
-t_token	*handle_argument(char **input)
+t_token *handle_argument(char **input)
 {
-	char	*current;
-	char	*start;
-	char	*token_value;
+	char *current;
+	char *start;
+	char *token_value;
 
 	current = *input;
 	start = current;
-	while (*current && !ft_isspace(*current)
-		&& !ft_is_special_character(current))
+	while (*current && !ft_isspace(*current) && !ft_is_special_character(current))
 		current++;
 	token_value = strndup(start, current - start);
-		// original ft dont forget to replace with libft
 	if (!token_value)
 	{
 		printf("Memory allocation failed: %s\n", strerror(errno));
 		return (NULL);
 	}
-	// if(ft_quotes(current, ft_strlen(token_value)))
-	// {
-	// 	printf("close quote");
-	// 	exit(0);
-	// }
 	while (*current && ft_isspace(*current))
-	{
 		current++;
-	}
 	*input = current;
 	return (create_token(TOKEN_ARGUMENT, token_value));
 }
 
-t_token	*get_next_token(char **input)
+t_token *get_next_token(char **input)
 {
-	char	*current;
+	char *current;
 
 	current = *input;
-	if(*current == '\'')
-	{
-		while(*current)
-		{
-			current++;
-			if(*current == '\'')
-				return (handle_argument(input));
-		}
-	}
+	if (*current == '\'')
+		return (handle_single_quotes_argument(input));
+	if (*current == '\"')
+		return (handle_double_quotes_argument(input));
 	while (*current && ft_isspace(*current))
 		current++;
 	if (*current == '\0')
 		return (create_token(TOKEN_EOF, NULL));
-	if (*current == '|')
-	{
-		(*input)++;
-		return (create_token(TOKEN_PIPE, "|"));
-	}
 	if (ft_is_special_character(current))
 		return (handle_special_characters(&current, input));
 	if (*current == '$')

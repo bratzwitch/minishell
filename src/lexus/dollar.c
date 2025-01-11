@@ -29,7 +29,7 @@ t_token *handle_dollar_sign(char **input)
 		return (create_token(TOKEN_EXIT_STATUS, "$?"));
 	}
 	var_start = current;
-	while (isalnum(*current) || *current == '_') // original ft dont forget to replace with libft
+	while (ft_isalnum(*current) || *current == '_')
 		current++;
 	env_value = get_env_variable(&current, var_start);
 	while (*current && ft_isspace(*current))

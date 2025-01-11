@@ -90,7 +90,10 @@ t_token					*create_token(enum e_token_type type, char *value);
 t_token					*handle_special_characters(char **current, char **input);
 t_token					*handle_dollar_sign(char **input);
 t_token					*handle_input_redirection(char **input);
+t_token *handle_double_quotes_argument(char **input);
+t_token *handle_single_quotes_argument(char **input);
 int						ft_quotes(char *str, int size);
+char *get_env_variable(char **current, char *var_start);
 
 // REDIRECTIONS
 int						input_redirection(const char *file_name);

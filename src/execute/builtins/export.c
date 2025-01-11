@@ -1,4 +1,4 @@
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 /* Using ***env allows us to reallocate and replace the pointer to the env array itself. (e.g. *env = new_env;)
     This is necessary if we expand the environment list to add a new variable and want

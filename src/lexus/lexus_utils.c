@@ -11,14 +11,14 @@ bool ft_is_special_character(const char *current)
 			strncmp(current, "<<", 2) == 0 || strncmp(current, ">>", 2) == 0); // original ft, dont forget to replace
 }
 
-int ft_quotes(char *str,int size)
+int ft_quotes(char *str, int size)
 {
 	int i;
 	int trigger;
 	
 	i = 0;
 	trigger = 0;
-	while(str[i] && i != size)
+	while(str[i] && i < size)
 	{
 		if (trigger == 0 && str[i] == '\"')
 			trigger = 2;
@@ -30,5 +30,20 @@ int ft_quotes(char *str,int size)
 			trigger = 0;
 		i++;
 	}
-	return trigger;
+	return (trigger);
+}
+
+void	add_token(t_token **head, t_token *new_token)
+{
+	t_token	*current;
+
+	if (!*head)
+	{
+		*head = new_token;
+		return ;
+	}
+	current = *head;
+	while (current->next)
+		current = current->next;
+	current->next = new_token;
 }
