@@ -29,6 +29,12 @@ enum					e_token_type
 	TOKEN_ERROR
 };
 
+typedef struct s_redirection
+{
+	enum e_token_type type;
+	int (*handler)(const char *value);
+} t_redirection;
+
 typedef struct s_token
 {
 	enum e_token_type	type;
@@ -110,6 +116,8 @@ bool					ft_is_special_character(const char *current);
 void					lst_add_back(t_token **lst, t_token *new);
 char					**lst_to_arr(t_token *tokens);
 int						is_pipe(t_token *head);
+enum e_token_type ft_is_special_token(t_token *head);
+void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE);
 void	add_token(t_token **head, t_token *new_token);
 void	lst_print(t_token *token_lst); // tests
 void	print_args(char **args);       // tests

@@ -11,13 +11,13 @@ int builtins(t_prompt *prompt, t_token *tokens, char **env)
     else if (!strcmp(tokens->value, "exit"))
         return (handle_exit(prompt));
     else if (!strcmp(tokens->value, "cd"))
-        return(handle_cd(prompt, tokens, env));
+        return (handle_cd(prompt, tokens, env));
     else if (!strcmp(tokens->value, "echo"))
         return (handle_echo(&tokens));
     else if (!strcmp(tokens->value, "export"))
-        return(handle_export(prompt, tokens, env));
+        return (handle_export(prompt, tokens, env));
     else if (!strcmp(tokens->value, "unset"))
-        return(handle_unset(tokens, env));
+        return (handle_unset(tokens, env));
     return (1);
 }
 

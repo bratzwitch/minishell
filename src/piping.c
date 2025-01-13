@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-void split_tokens_by_pipe(t_token *head, t_token **list1, t_token **list2) // move to general utils
+void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE) // move to general utils
 {
 	t_token *current = head;
 	t_token *prev = NULL;
@@ -9,7 +9,7 @@ void split_tokens_by_pipe(t_token *head, t_token **list1, t_token **list2) // mo
 	*list2 = NULL;
 	while (current)
 	{
-		if (current->type == TOKEN_PIPE)
+		if (current->type == TOKEN_TYPE)
 		{
 			*list2 = current->next;
 			if (prev)
@@ -95,7 +95,7 @@ void piping(t_prompt *prompt, char **env)
 	pipe.i = 0;
 	while (pipe.i <= pipe.pipe_count)
 	{
-		split_tokens_by_pipe(pipe.current_tokens, &pipe.list1, &pipe.list2);
+		split_tokens(pipe.current_tokens, &pipe.list1, &pipe.list2, TOKEN_PIPE);
 		pipe.current_tokens = pipe.list2;
 		create_pipes(pipe.i, pipe.pipe_count, pipe.fd);
 		pipe.pid = create_child_process();
