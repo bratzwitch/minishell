@@ -1,7 +1,6 @@
 #include "../include/minishell.h"
 
 int	input_redirection(const char *file_name)
-// < ; pass token->value as a parameter
 {
 	int fd_in;
 
@@ -12,7 +11,6 @@ int	input_redirection(const char *file_name)
 		return (-1);
 	}
 	if (dup2(fd_in, STDIN_FILENO) == -1)
-	// any future reads from stdin will now read from fd
 	{
 		perror("Error redirecting input.");
 		close(fd_in);
@@ -27,7 +25,7 @@ int	output_redirection(const char *file_name)
 	int	fd_out;
 	int	flags;
 
-	flags = O_WRONLY | O_CREAT;
+	flags = O_WRONLY | O_CREAT | O_TRUNC;
 	// if (type == TOKEN_REDIRECT_APPEND)
 	// 	flags |= O_APPEND;
 	// else

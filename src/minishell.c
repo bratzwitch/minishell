@@ -22,15 +22,7 @@ void	handle_single_cmd(t_prompt *prompt, char **env)
 
 	if (!builtins(prompt, prompt->token_lst, env))
 		return ;
-	if (prompt->token_lst->type == TOKEN_HEREDOC)
-	{
-		pid = create_child_process();
-		if (pid == 0)
-			handle_child_process(prompt, env);
-		else
-			handle_parent_process(pid, &prompt->exit_status, prompt);
-	}
-	else if (!(prompt->path = validator(prompt->token_lst->value)))
+	else if (!(prompt->path = validator(prompt->token_lst->value)) && !(ft_is_special_character(prompt->input)))
 	{
 		printf("minishell: command not found: %s\n", prompt->token_lst->value);
 		return ;

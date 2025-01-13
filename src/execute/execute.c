@@ -72,7 +72,6 @@ char *validator(char *cmd_name)
 	return (path);
 }
 
-
 void handle_special_tokens(t_token *tokens)
 {
 	t_token *current = tokens;
@@ -81,8 +80,8 @@ void handle_special_tokens(t_token *tokens)
 	t_redirection redir[] = {
 		{TOKEN_REDIRECT_IN, input_redirection},
 		{TOKEN_REDIRECT_OUT, output_redirection},
-		{TOKEN_REDIRECT_APPEND, output_redirection},
-		{TOKEN_HEREDOC,heredoc_redirection},
+		{TOKEN_HEREDOC, heredoc_redirection},
+		// {TOKEN_REDIRECT_APPEND, output_redirection},
 		{0, NULL}};
 	int i;
 
@@ -94,6 +93,11 @@ void handle_special_tokens(t_token *tokens)
 			if (current->type == redir[i].type && redir[i].type > 0)
 			{
 				split_tokens(current, &list1, &list2, redir[i].type);
+				if (!list1 || !list1->value || !list2 || !list2->value)
+				{
+					fprintf(stderr, "minishell: syntax error near unexpected token '%s'\n", current->value);
+					return;
+				}
 				if (redir[i].handler(list2->value) == -1)
 				{
 					printf("Redirection failed for %s\n", strerror(errno));
@@ -104,16 +108,6 @@ void handle_special_tokens(t_token *tokens)
 			}
 			i++;
 		}
-		// if (current->type == TOKEN_HEREDOC)
-		// {
-		// 	split_tokens(current, &list1, &list2, TOKEN_HEREDOC);
-		// 	if (heredoc_redirection(list2->value) == -1)
-		// 	{
-		// 		printf("Heredoc failed\n");
-		// 		return;
-		// 	}
-		// 	current = list2;
-		// }
 		current = current->next;
 	}
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));

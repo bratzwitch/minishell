@@ -3,7 +3,6 @@
 // if you want to access the value of the token here's the syntax: (*prompt->token_lst)->value
 void handle_child_process(t_prompt *prompt, char **env) // uses fd[1] - writing end - close fd[0]
 {
-	printf("here");
 	execute(prompt->token_lst, prompt->path, env);
 	printf("No food today: %s\n", strerror(errno));
 	cleanup(prompt); // idk how it'll help but let it be

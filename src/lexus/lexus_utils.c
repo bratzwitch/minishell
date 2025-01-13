@@ -10,7 +10,6 @@ bool	ft_is_special_character(const char *current)
 {
 	return (*current == '<' || *current == '>' || *current == '|'
 		|| strncmp(current, "<<", 2) == 0 || strncmp(current, ">>", 2) == 0);
-		// original ft, dont forget to replace
 }
 
 int	ft_quotes(char *str, int size)
