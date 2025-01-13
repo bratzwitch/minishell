@@ -26,6 +26,7 @@ SRC :=	$(SRC_DIR)/minishell.c \
 		$(LEXER_DIR)/tokenise.c \
 		$(EXEC_DIR)/builtins.c \
 		$(EXEC_DIR)/execute.c \
+		$(EXEC_DIR)/heredoc.c \
 		$(EXEC_DIR)/builtins/cd.c \
 		$(EXEC_DIR)/builtins/echo.c \
 		$(EXEC_DIR)/builtins/env_pwd_exit.c \

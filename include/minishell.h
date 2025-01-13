@@ -31,9 +31,9 @@ enum					e_token_type
 
 typedef struct s_redirection
 {
-	enum e_token_type type;
-	int (*handler)(const char *value);
-} t_redirection;
+	enum e_token_type	type;
+	int					(*handler)(const char *value);
+}						t_redirection;
 
 typedef struct s_token
 {
@@ -81,27 +81,30 @@ char					*find_command(char *cmd_name, char *env_path);
 
 // BUILT-INS
 int						handle_echo(t_token **token);
-int handle_cd(t_prompt *prompt, t_token *token, char **env);
+int						handle_cd(t_prompt *prompt, t_token *token, char **env);
 int						handle_env(char **env);
 int						handle_pwd(void);
 int						handle_exit(t_prompt *prompt);
-int handle_export(t_prompt *prompt, t_token *tokens, char **env);
-int handle_unset(t_token *tokens, char **env);
-int find_var(char *name, char **env);
+int						handle_export(t_prompt *prompt, t_token *tokens,
+							char **env);
+int						handle_unset(t_token *tokens, char **env);
+int						find_var(char *name, char **env);
 
 // LEXER
 t_token					*lexer(char *input);
 t_token					*get_next_token(char **input);
 t_token					*create_token(enum e_token_type type, char *value);
-t_token					*handle_special_characters(char **current, char **input);
+t_token					*handle_special_characters(char **current,
+							char **input);
 t_token					*handle_dollar_sign(char **input);
 t_token					*handle_input_redirection(char **input);
-t_token *handle_double_quotes_argument(char **input);
-t_token *handle_single_quotes_argument(char **input);
+t_token					*handle_double_quotes_argument(char **input);
+t_token					*handle_single_quotes_argument(char **input);
 int						ft_quotes(char *str, int size);
-char *get_env_variable(char **current, char *var_start);
+char					*get_env_variable(char **current, char *var_start);
 
 // REDIRECTIONS
+int						heredoc_redirection(const char *delimiter);
 int						input_redirection(const char *file_name);
 int						output_redirection(const char *file_name);
 
@@ -116,9 +119,10 @@ bool					ft_is_special_character(const char *current);
 void					lst_add_back(t_token **lst, t_token *new);
 char					**lst_to_arr(t_token *tokens);
 int						is_pipe(t_token *head);
-enum e_token_type ft_is_special_token(t_token *head);
-void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE);
-void	add_token(t_token **head, t_token *new_token);
+enum e_token_type		ft_is_special_token(t_token *head);
+void					split_tokens(t_token *head, t_token **list1,
+							t_token **list2, enum e_token_type TOKEN_TYPE);
+void					add_token(t_token **head, t_token *new_token);
 void	lst_print(t_token *token_lst); // tests
 void	print_args(char **args);       // tests
 

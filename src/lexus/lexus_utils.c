@@ -1,24 +1,26 @@
 #include "../../include/minishell.h"
 
-bool ft_isspace(const char c)
+bool	ft_isspace(const char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v' || c == '\f');
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\v'
+		|| c == '\f');
 }
 
-bool ft_is_special_character(const char *current)
+bool	ft_is_special_character(const char *current)
 {
-	return (*current == '<' || *current == '>' || *current == '|' ||
-			strncmp(current, "<<", 2) == 0 || strncmp(current, ">>", 2) == 0); // original ft, dont forget to replace
+	return (*current == '<' || *current == '>' || *current == '|'
+		|| strncmp(current, "<<", 2) == 0 || strncmp(current, ">>", 2) == 0);
+		// original ft, dont forget to replace
 }
 
-int ft_quotes(char *str, int size)
+int	ft_quotes(char *str, int size)
 {
-	int i;
-	int trigger;
-	
+	int	i;
+	int	trigger;
+
 	i = 0;
 	trigger = 0;
-	while(str[i] && i < size)
+	while (str[i] && i < size)
 	{
 		if (trigger == 0 && str[i] == '\"')
 			trigger = 2;

@@ -1,6 +1,7 @@
 #include "../include/minishell.h"
 
-void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE) // move to general utils
+void	split_tokens(t_token *head, t_token **list1, t_token **list2,
+		enum e_token_type TOKEN_TYPE) // move to general utils
 {
 	t_token *current = head;
 	t_token *prev = NULL;
@@ -15,14 +16,14 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_
 			if (prev)
 				prev->next = NULL;
 			current->next = NULL;
-			return;
+			return ;
 		}
 		prev = current;
 		current = current->next;
 	}
 }
 
-void wait_for_children(int child_count) // move to pipe_utils
+void	wait_for_children(int child_count) // move to pipe_utils
 {
 	int i = 0;
 
@@ -33,7 +34,7 @@ void wait_for_children(int child_count) // move to pipe_utils
 	}
 }
 
-void create_pipes(int i, int pipe_count, int fd[2]) // move to pipe_utils
+void	create_pipes(int i, int pipe_count, int fd[2]) // move to pipe_utils
 {
 	if (i < pipe_count && pipe(fd) == -1)
 	{
@@ -42,10 +43,11 @@ void create_pipes(int i, int pipe_count, int fd[2]) // move to pipe_utils
 	}
 }
 
-pid_t create_child_process(void) // we reuse it from main; move to "processes.c"
+pid_t	create_child_process(void)
+		// we reuse it from main; move to "processes.c"
 {
 	pid_t pid;
-	
+
 	pid = fork();
 	if (pid < 0)
 	{
@@ -55,7 +57,7 @@ pid_t create_child_process(void) // we reuse it from main; move to "processes.c"
 	return (pid);
 }
 
-void handle_child_process_pipe(t_pipe *pipe, char **env)
+void	handle_child_process_pipe(t_pipe *pipe, char **env)
 {
 	if (pipe->prev_pipe != -1) // If there's a previous pipe, redirect input
 	{
@@ -74,7 +76,7 @@ void handle_child_process_pipe(t_pipe *pipe, char **env)
 	exit(1);
 }
 
-void handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
+void	handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
 {
 	waitpid(id, NULL, 0);
 	close(fd[1]);
@@ -83,11 +85,12 @@ void handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
 	*prev_pipe = fd[0];
 }
 
-void piping(t_prompt *prompt, char **env)
+void	piping(t_prompt *prompt, char **env)
 {
-	t_pipe pipe;
+	t_pipe	pipe;
 
-	pipe.current_tokens = prompt->token_lst; // if you want to get more spare lines in piping function you can write something like "void initialise_pipe(pipe)" 
+	pipe.current_tokens = prompt->token_lst;
+		// if you want to get more spare lines in piping function you can write something like "void initialise_pipe(pipe)"
 	pipe.list1 = NULL;
 	pipe.list2 = NULL;
 	pipe.pipe_count = count_pipes(prompt->token_lst);
@@ -124,8 +127,10 @@ void piping(t_prompt *prompt, char **env)
 
 // Surprise 💀, ✨compiling error✨, pls take a look on piping.c
 // Eva plssss i need help with tokens, i dont understand wtf is goind on
-// and what i can do to stop "ls" for example work with futh	// printf("executed %s\n", path);er arguments
-// here is example with multiple pipes, as you see all executing but ls still trying to work with all arguments
+// and what i can do to stop "ls" for example work with futh	// printf("executed
+	//	%s\n", path);er arguments
+// here is example with multiple pipes,
+	//as you see all executing but ls still trying to work with all arguments
 // minishell$>ls | pwd | ls
 // pipe counted 1
 // pipe counted 2

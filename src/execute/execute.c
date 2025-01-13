@@ -45,6 +45,20 @@ char *find_command(char *cmd_name, char *env_path)
 	return (NULL);
 }
 
+enum e_token_type ft_is_special_token(t_token *head)
+{
+	t_token *tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_REDIRECT_IN || tmp->type == TOKEN_REDIRECT_OUT || tmp->type == TOKEN_HEREDOC)
+			return (tmp->type);
+		tmp = tmp->next;
+	}
+	return (-1);
+}
+
 char *validator(char *cmd_name)
 {
 	char *path;
@@ -58,19 +72,6 @@ char *validator(char *cmd_name)
 	return (path);
 }
 
-enum e_token_type ft_is_special_token(t_token *head)
-{
-	t_token *tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		if (tmp->type == TOKEN_REDIRECT_IN || tmp->type == TOKEN_REDIRECT_OUT)
-			return (tmp->type);
-		tmp = tmp->next;
-	}
-	return (-1);
-}
 
 void handle_special_tokens(t_token *tokens)
 {
@@ -80,6 +81,8 @@ void handle_special_tokens(t_token *tokens)
 	t_redirection redir[] = {
 		{TOKEN_REDIRECT_IN, input_redirection},
 		{TOKEN_REDIRECT_OUT, output_redirection},
+		{TOKEN_REDIRECT_APPEND, output_redirection},
+		{TOKEN_HEREDOC,heredoc_redirection},
 		{0, NULL}};
 	int i;
 
@@ -101,6 +104,16 @@ void handle_special_tokens(t_token *tokens)
 			}
 			i++;
 		}
+		// if (current->type == TOKEN_HEREDOC)
+		// {
+		// 	split_tokens(current, &list1, &list2, TOKEN_HEREDOC);
+		// 	if (heredoc_redirection(list2->value) == -1)
+		// 	{
+		// 		printf("Heredoc failed\n");
+		// 		return;
+		// 	}
+		// 	current = list2;
+		// }
 		current = current->next;
 	}
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
