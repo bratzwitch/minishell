@@ -1,7 +1,7 @@
 #include "../include/minishell.h"
 
-void split_tokens(t_token *head, t_token **list1, t_token **list2,
-				  enum e_token_type TOKEN_TYPE) // move to general utils
+void	split_tokens(t_token *head, t_token **list1, t_token **list2,
+					enum e_token_type TOKEN_TYPE) // move to general utils
 {
 	t_token *current = head;
 	t_token *prev = NULL;
@@ -16,14 +16,14 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2,
 			if (prev)
 				prev->next = NULL;
 			current->next = NULL;
-			return;
+			return ;
 		}
 		prev = current;
 		current = current->next;
 	}
 }
 
-void wait_for_children(int child_count) // move to pipe_utils
+void	wait_for_children(int child_count) // move to pipe_utils
 {
 	int i = 0;
 
@@ -34,7 +34,7 @@ void wait_for_children(int child_count) // move to pipe_utils
 	}
 }
 
-void create_pipes(int i, int pipe_count, int fd[2]) // move to pipe_utils
+void	create_pipes(int i, int pipe_count, int fd[2]) // move to pipe_utils
 {
 	if (i < pipe_count && pipe(fd) == -1)
 	{
@@ -43,7 +43,7 @@ void create_pipes(int i, int pipe_count, int fd[2]) // move to pipe_utils
 	}
 }
 
-pid_t create_child_process(void)
+pid_t	create_child_process(void)
 // we reuse it from main; move to "processes.c"
 {
 	pid_t pid;
@@ -57,8 +57,16 @@ pid_t create_child_process(void)
 	return (pid);
 }
 
-void handle_child_process_pipe(t_pipe *pipe, char **env)
+void	handle_child_process_pipe(t_pipe *pipe, char **env, int heredoc_pipe)
 {
+	if (ft_is_special_token(pipe->list2) == TOKEN_HEREDOC)
+	{
+		if (heredoc_redirection(pipe->list2->next->value, heredoc_pipe) == -1)
+		{
+			printf("Heredoc redirection failed.\n");
+			return ;
+		}
+	}
 	if (pipe->prev_pipe != -1) // If there's a previous pipe, redirect input
 	{
 		if (dup2(pipe->prev_pipe, STDIN_FILENO) == 1)
@@ -71,12 +79,16 @@ void handle_child_process_pipe(t_pipe *pipe, char **env)
 			perror("dup2 fd[1]");
 		close(pipe->fd[1]);
 	}
+	else
+	{
+		close(pipe->fd[1]);
+	}
 	close(pipe->fd[0]);
 	execute(pipe->list1, NULL, env);
 	exit(1);
 }
 
-void handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
+void	handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
 {
 	waitpid(id, NULL, 0);
 	close(fd[1]);
@@ -85,9 +97,10 @@ void handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
 	*prev_pipe = fd[0];
 }
 
-void piping(t_prompt *prompt, char **env)
+void	piping(t_prompt *prompt, char **env)
 {
-	t_pipe pipe;
+	t_pipe	pipe;
+	int		heredoc_pipe;
 
 	pipe.current_tokens = prompt->token_lst;
 	pipe.list1 = NULL;
@@ -95,14 +108,25 @@ void piping(t_prompt *prompt, char **env)
 	pipe.pipe_count = count_pipes(prompt->token_lst);
 	pipe.prev_pipe = -1;
 	pipe.i = 0;
+	heredoc_pipe = 0;
+	if (is_pipe(pipe.current_tokens))
+		heredoc_pipe = 1;
 	while (pipe.i <= pipe.pipe_count)
 	{
 		split_tokens(pipe.current_tokens, &pipe.list1, &pipe.list2, TOKEN_PIPE);
 		pipe.current_tokens = pipe.list2;
+		// if (ft_is_special_token(pipe.list1) == TOKEN_HEREDOC)
+		// {
+		//     if (heredoc_redirection(pipe.list1->next->value,heredoc_pipe) == -1)
+		//     {
+		//         printf("Heredoc redirection failed.\n");
+		//         return ;
+		//     }
+		// }
 		create_pipes(pipe.i, pipe.pipe_count, pipe.fd);
 		pipe.pid = create_child_process();
 		if (pipe.pid == 0)
-			handle_child_process_pipe(&pipe, env);
+			handle_child_process_pipe(&pipe, env, heredoc_pipe);
 		else
 			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe, pipe.pid);
 		pipe.i++;
