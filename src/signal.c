@@ -11,19 +11,26 @@ SIGTERM: Termination signal.
 SIGALRM: Alarm clock signal.
 SIGCHLD: Child process terminated or stopped. */
 
+/* Normal Command Exit:
+0: Command executed successfully.
+1–125: Command failed for various reasons.
+
+Special Signal Exit:
+128 + SIGNAL_NUMBER: Indicates the process was terminated by a signal.
+Example: 130 for SIGINT (128 + 2).
+
+Shell Exit Codes:
+126: Command found but not executable.
+127: Command not found. */
+
 void sig_handler(int signum)
 {
-    (void)signum;
+    received_sig = 128 + signum;
     rl_replace_line("", 0);
     rl_on_new_line();
     write(STDOUT_FILENO, "\n", 1);
     rl_redisplay();
 }
- 
-// void global_handler(int signum)
-// {
-//     received_sig = signum;
-// }
 
 void setup_handlers(void)
 {
@@ -37,16 +44,15 @@ void setup_handlers(void)
         write(STDERR_FILENO, "Error: sigaction SIGINT\n", 25);
         exit(1);
     }
+    if (sigaction(SIGCHLD, &sa, NULL) == -1)
+    {
+        write(STDERR_FILENO, "Error: sigaction SIGCHLD\n", 26);
+        exit(1);
+    }
     sa.sa_handler = SIG_IGN;
     if (sigaction(SIGQUIT, &sa, NULL) == -1)
     {
-        write(STDERR_FILENO, "Error: sigaction SIGQUIT\n", 25);
+        write(STDERR_FILENO, "Error: sigaction SIGQUIT\n", 26);
         exit(1);
     }
-    // sa.sa_hadler = global_handler;
-    // if (sigaction(, &sa, NULL) == -1)
-    // {
-    //     write(STDERR_FILENO, "Error: sigaction \n", 25);
-    //     exit(1);
-    // }
 }
