@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-int	heredoc_redirection(const char *delimiter,int heredoc_pipe)
+int	heredoc_redirection(const char *delimiter)
 {
 	char	*line;
 	int		pipe_fd[2];
@@ -25,10 +25,7 @@ int	heredoc_redirection(const char *delimiter,int heredoc_pipe)
 		close(pipe_fd[0]);
 		while (1)
 		{
-			if(heredoc_pipe == 1)
-				line = readline("pipe heredoc> ");
-			else
-				line = readline("heredoc> ");
+			line = readline("heredoc> ");
 			if (line == NULL || strcmp(line, delimiter) == 0)
 			{
 				free(line);

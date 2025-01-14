@@ -112,8 +112,7 @@ char							*get_env_variable(char **current,
 									char *var_start);
 
 // REDIRECTIONS
-int								heredoc_redirection(const char *delimiter,
-									int heredoc_pipe);
+int								heredoc_redirection(const char *delimiter);
 int								input_redirection(const char *file_name);
 int								output_redirection(const char *file_name);
 
