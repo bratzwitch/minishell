@@ -9,7 +9,7 @@ t_token *lexer(char *input)
     new_token = NULL;
     if (ft_quotes(input, ft_strlen(input)))
     {
-        printf("Quotes not closed. God saw.\n");
+        printf("minishell: quotes not closed. God saw you.\n");
         return(NULL);
     }
     while (*input)

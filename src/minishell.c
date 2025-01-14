@@ -27,9 +27,7 @@ void	handle_single_cmd(t_prompt *prompt, char **env)
 	pid_t	pid;
 
 	if (!(received_sig = builtins(prompt, prompt->token_lst, env)))
-	{
 		return ;
-	}
 	else if (!(prompt->path = validator(prompt->token_lst->value)) && !(ft_is_special_character(prompt->input)))
 	{
 		printf("minishell: command not found: %s\n", prompt->token_lst->value);

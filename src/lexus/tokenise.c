@@ -38,15 +38,33 @@ t_token *handle_argument(char **input)
 	return (create_token(TOKEN_ARGUMENT, token_value));
 }
 
+bool is_quote(char *input)
+{
+	int i = 0;
+
+	while (input[i])
+	{
+		if (input[i] == '\'')
+		{
+			return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
 t_token *get_next_token(char **input)
 {
 	char *current;
 
 	current = *input;
-	if (*current == '\'')
-		return (handle_single_quotes_argument(input));
-	if (*current == '\"')
-		return (handle_double_quotes_argument(input));
+	if ()
+	{
+		if (*current == '\'')
+			return (handle_single_quotes_argument(input));
+		if (*current == '\"')
+			return (handle_double_quotes_argument(input));
+	}
 	while (*current && ft_isspace(*current))
 		current++;
 	if (*current == '\0')
