@@ -67,6 +67,7 @@ char *validator(char *cmd_name)
 	if (!path)
 	{
 		free(path);
+		received_sig = 127;
 		return (NULL);
 	}
 	return (path);

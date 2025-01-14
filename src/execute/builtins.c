@@ -3,7 +3,7 @@
 int builtins(t_prompt *prompt, t_token *tokens, char **env)
 {
     if (tokens == NULL)
-        return (0);
+        return (2);
     if (!strcmp(tokens->value, "env"))
         return (handle_env(env));
     else if (!strcmp(tokens->value, "pwd"))
@@ -18,7 +18,7 @@ int builtins(t_prompt *prompt, t_token *tokens, char **env)
         return (handle_export(prompt, tokens, env));
     else if (!strcmp(tokens->value, "unset"))
         return (handle_unset(tokens, env));
-    return (1);
+    return (2);
 }
 
 /*  inter-process communication (IPC)
