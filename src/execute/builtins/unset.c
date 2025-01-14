@@ -26,13 +26,12 @@ int handle_unset(t_token *tokens, char **env)
 
     while (tmp && tmp->next)
     {
-        if (ft_unsetenv(tmp->next->value, env) == 0)
-            printf("%s successfully removed.\n", tmp->next->value);
-        else
+        if (ft_unsetenv(tmp->next->value, env) != 0)
         {
             fprintf(stderr, "unset: failed to unset variable: %s\n", tmp->next->value);
             return (1);
         }
+        // printf("%s successfully removed.\n", tmp->next->value);
         tmp = tmp->next;
     }
     return (0);

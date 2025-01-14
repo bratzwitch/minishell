@@ -36,8 +36,7 @@ char *handle_dollar_in_double_quotes(char **current)
     if (*var_start == '?')
     {
         *current = var_start + 1;
-        printf("Encountered exit status.\n");
-        // return (???);
+        return(ft_itoa(received_sig));
     }
     while (ft_isalnum(*var_start) || *var_start == '_')
         var_start++;

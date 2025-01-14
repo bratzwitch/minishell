@@ -15,6 +15,8 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+extern volatile sig_atomic_t received_sig;
+
 enum					e_token_type
 {
 	TOKEN_ARGUMENT,

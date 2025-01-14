@@ -14,11 +14,21 @@ void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt) // uses
 	add_history(prompt->input);
 	waitpid(id, exit_status, 0);
 	if (WIFEXITED(*exit_status))
-		printf("Process exited with status %d\n", WEXITSTATUS(*exit_status));
+	{
+		received_sig = WEXITSTATUS(*exit_status);
+		// printf("Process exited with status %d\n", WEXITSTATUS(*exit_status));
+	}
 	else if (WIFSIGNALED(*exit_status))
-		printf("Process terminated by signal %d\n", 128 + WTERMSIG(*exit_status));
+	{
+		received_sig = 128 + WTERMSIG(*exit_status);
+		// printf("Process terminated by signal %d\n", 128 + WTERMSIG(*exit_status));
+	}
+	else if (WIFSTOPPED(*exit_status))
+	{
+		received_sig = WSTOPSIG(*exit_status);
+		// printf("stopped by signal %d\n", WSTOPSIG(*exit_status));
+	}
 }
-
-// If both the read and write ends are open in both processes,
-// 	it can lead to deadlocks where both processes are waiting
-// 	for each other to perform an action.
+	// If both the read and write ends are open in both processes,
+	// 	it can lead to deadlocks where both processes are waiting
+	// 	for each other to perform an action.

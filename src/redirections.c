@@ -26,10 +26,6 @@ int	output_redirection(const char *file_name)
 	int	flags;
 
 	flags = O_WRONLY | O_CREAT | O_TRUNC;
-	// if (type == TOKEN_REDIRECT_APPEND)
-	// 	flags |= O_APPEND;
-	// else
-	// 	flags |= O_TRUNC;
 	fd_out = open(file_name, flags, 0644);
 	if (fd_out == -1)
 	{

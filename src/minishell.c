@@ -1,5 +1,7 @@
 #include "../include/minishell.h"
 
+volatile sig_atomic_t received_sig = 0;
+
 char	*ft_prompt(t_prompt *prompt)
 {
 	char	*input;
@@ -15,6 +17,10 @@ char	*ft_prompt(t_prompt *prompt)
 	}
 	return (input);
 }
+
+/* The signal handler should not access or modify the main data structures of your program.
+	This is because signal handlers can interrupt your program at any point,
+	potentially causing data corruption or inconsistent states if they modify shared data. */
 
 void	handle_single_cmd(t_prompt *prompt, char **env)
 {

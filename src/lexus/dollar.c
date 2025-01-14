@@ -26,7 +26,7 @@ t_token *handle_dollar_sign(char **input)
 	if (*current == '?')
 	{
 		*input = current + 1;
-		return (create_token(TOKEN_EXIT_STATUS, "$?"));
+		return (create_token(TOKEN_EXIT_STATUS, ft_itoa(received_sig)));
 	}
 	var_start = current;
 	while (ft_isalnum(*current) || *current == '_')

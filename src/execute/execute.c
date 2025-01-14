@@ -52,7 +52,7 @@ enum e_token_type ft_is_special_token(t_token *head)
 	tmp = head;
 	while (tmp)
 	{
-		if (tmp->type == TOKEN_REDIRECT_IN || tmp->type == TOKEN_REDIRECT_OUT || tmp->type == TOKEN_HEREDOC)
+		if (tmp->type == TOKEN_REDIRECT_IN || tmp->type == TOKEN_REDIRECT_OUT || tmp->type == TOKEN_HEREDOC || tmp->type == TOKEN_REDIRECT_APPEND)
 			return (tmp->type);
 		tmp = tmp->next;
 	}
@@ -81,7 +81,7 @@ void handle_special_tokens(t_token *tokens)
 		{TOKEN_REDIRECT_IN, input_redirection},
 		{TOKEN_REDIRECT_OUT, output_redirection},
 		{TOKEN_HEREDOC, heredoc_redirection},
-		// {TOKEN_REDIRECT_APPEND, output_redirection},
+		// {TOKEN_REDIRECT_APPEND, },
 		{0, NULL}};
 	int i;
 

@@ -15,7 +15,7 @@ int find_var(char *name, char **env)
     {
         if (strncmp(env[i], name, strlen(name)) == 0)
         {
-            printf("found var at %d\n", i);
+            // printf("found var at %d\n", i);
             return (i);
         }
         i++;
@@ -63,7 +63,7 @@ char *ft_setenv(char *name, char **env, char *new_var)
     cut_name = get_var_name(name);
     if (!cut_name)
         return (NULL);
-    printf("cut: %s\n", cut_name);
+    // printf("cut: %s\n", cut_name);
     i = find_var(cut_name, env);
     free(cut_name);
     add_new_var(env, new_var, i);
