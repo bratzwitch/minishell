@@ -7,7 +7,7 @@ int	heredoc_redirection(const char *delimiter)
 	pid_t	pid;
 	int		fd;
 
-	fd = open("/tmp/sh-thd-865008963", O_WRONLY | O_CREAT | O_EXCL | O_TRUNC,
+	fd = open("/tmp/.sh-thd-865008963", O_WRONLY | O_CREAT | O_EXCL | O_TRUNC,
 			0600);
 	if (fd == -1)
 	{
@@ -42,7 +42,7 @@ int	heredoc_redirection(const char *delimiter)
 	else
 	{
 		close(pipe_fd[1]);
-		unlink("/tmp/sh-thd-865008963");
+		unlink("/tmp/.sh-thd-865008963");
 		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
 		{
 			perror("No redir for heredoc");
