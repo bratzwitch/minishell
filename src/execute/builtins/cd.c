@@ -21,7 +21,6 @@ char *extract_var(char *name, char **env)
     i = find_var(name, env);
     result = ft_strchr(env[i], '=');
     result = result + 1;
-    // printf("the path is %s\n", result);
     return(result);
 }
 
@@ -34,11 +33,8 @@ t_token *assemble_name(char *path, char **env)
     new_lst = NULL;
     new_oldpwd = format_env_var("OLDPWD", extract_var("PWD", env));
     add_token(&new_lst, create_token(0, new_oldpwd));
-    // printf("new OLDPWD: %s\n", new_oldpwd); // tests
-
     new_pwd = format_env_var("PWD", path);
     add_token(&new_lst, create_token(0, new_pwd));
-    // printf("new PWD: %s\n", new_pwd); // tests
     return (new_lst);
 }
 
@@ -48,6 +44,11 @@ int handle_cd(t_prompt *prompt, t_token *token, char **env)
     char *home;
     t_token *var_lst;
 
+    if (count_tokens(token) > 2)
+    {
+        perror("cd");
+        return (1);
+    }
     if (!token->next)
     {
         home = getenv("HOME");

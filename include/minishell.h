@@ -98,11 +98,13 @@ t_token *create_token(enum e_token_type type, char *value);
 t_token *handle_special_characters(char **current, char **input);
 t_token *handle_dollar_sign(char **input);
 t_token *handle_input_redirection(char **input);
-t_token *handle_double_quotes_argument(char **input);
-t_token *handle_single_quotes_argument(char **input);
+char *handle_single_quotes(char **input, char *final_str);
+char *process_double_quote(char **input, char *final_str);
 int ft_quotes(char *str, int size);
 char *get_env_variable(char **current, char *var_start);
 t_token *handle_argument(char **input);
+char *dollar(char **current, char *final_str, char **start);
+char *append_to_final_str(char *final_str, const char *start, size_t len);
 
 // REDIRECTIONS
 int heredoc_redirection(const char *delimiter);
@@ -127,6 +129,7 @@ void add_token(t_token **head, t_token *new_token);
 bool ft_is_quotes(const char *current);
 void	wait_for_children(int child_count);
 void	create_pipes(int i, int pipe_count, int fd[2]);
+int count_tokens(t_token *lst);
 
 void lst_print(t_token *token_lst); // tests
 void print_args(char **args);		// tests

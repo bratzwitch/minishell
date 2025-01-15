@@ -87,19 +87,6 @@ void lst_print(t_token *token_lst) // delete after finish testing
 	printf("NULL\n");
 }
 
-int count_tokens(t_token *lst)
-{
-	int i;
-
-	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}
-
 void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
 {
 	t_token *current = head;
@@ -122,6 +109,19 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_
 		prev = current;
 		current = current->next;
 	}
+}
+
+int count_tokens(t_token *lst)
+{
+	int i;
+
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
 }
 
 char **lst_to_arr(t_token *tokens)

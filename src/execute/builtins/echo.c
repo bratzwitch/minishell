@@ -19,6 +19,8 @@ int handle_echo(t_token *token, int fd)
     while (tmp)
     {
         ft_putstr_fd(tmp->value, 1);
+        if (tmp->next)
+            ft_putchar_fd(' ', 1);
         tmp = tmp->next;
     }
     if (!is_n)

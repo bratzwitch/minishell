@@ -19,7 +19,7 @@ int handle_pwd()
     path = getcwd(NULL, 0);
     if (!path)
     {
-        perror("Error pwd.");
+        perror("pwd");
         return (2);
     }
     printf("%s\n", path);
@@ -27,13 +27,34 @@ int handle_pwd()
     return (0);
 }
 
+bool ft_is_num(char *str)
+{
+    int i = 0;
+
+    while (str[i])
+    {
+        if (ft_isalpha(str[i]))
+            return (false);
+        i++;
+    }
+    return (true);
+}
+
 int handle_exit(t_prompt *prompt)
 {
-    if (prompt->token_lst->next)
-    {
-        received_sig = ft_atoi(prompt->token_lst->next->value);
-    }
     printf("exit\n");
+    if (count_tokens(prompt->token_lst) > 2)
+    {
+        received_sig = 1;
+        printf("exit: too many arguments\n");
+    }
+    else if (prompt->token_lst->next && ft_is_num(prompt->token_lst->next->value))
+        received_sig = ft_atoi(prompt->token_lst->next->value);
+    else if (!ft_is_num(prompt->token_lst->next->value))
+    {
+        received_sig = 2;
+        printf("exit: numeric argument required\n");
+    }
     cleanup(prompt);
     exit(received_sig);
 }

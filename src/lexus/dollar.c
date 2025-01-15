@@ -16,27 +16,37 @@ char *get_env_variable(char **current, char *var_start) // thats execution at th
 		return ("");
 }
 
-t_token *handle_dollar_sign(char **input)
+char *process_dollar(char **current)
 {
-	char *current = *input;
-	char *var_start;
-	char *env_value;
+    char *var_start = *current + 1;
+    char *env_value;
 
-	current++;
-	if (*current == '?')
+    if (*var_start == '?')
+    {
+        *current = var_start + 1;
+        return(ft_itoa(received_sig));
+    }
+	if (!ft_isalnum(*var_start) && *var_start != '_')
 	{
-		*input = current + 1;
-		return (create_token(TOKEN_EXIT_STATUS, ft_itoa(received_sig)));
+		*current = var_start;
+		return("$");
 	}
-	var_start = current;
-	while (ft_isalnum(*current) || *current == '_')
-		current++;
-	env_value = get_env_variable(&current, var_start);
-	while (*current && ft_isspace(*current))
-		current++;
-	*input = current;
-	if (env_value)
-		return (create_token(TOKEN_ENV_VAR, env_value));
-	else
-		return (create_token(TOKEN_ENV_VAR, ""));
+    while (ft_isalnum(*var_start) || *var_start == '_')
+        var_start++;
+    env_value = get_env_variable(&var_start, *current + 1);
+    *current = var_start;
+    return (env_value);
+}
+
+char *dollar(char **current, char *final_str, char **start)
+{
+    char *temp;
+    char *env_value;
+
+    temp = append_to_final_str(final_str, *start, *current - *start);
+    env_value = process_dollar(current);
+    final_str = ft_strjoin(temp, env_value);
+    free(temp);
+    *start = *current;
+    return (final_str);
 }

@@ -55,7 +55,7 @@ char *ft_setenv(char *name, char **env, char *new_var)
     int i;
     char *cut_name;
 
-    if (name == NULL || ft_strchr(name, '=') == NULL)
+    if (!name || !ft_strchr(name, '='))
         return (NULL);
     new_var = ft_strdup(name);
     if (!new_var)
@@ -63,11 +63,24 @@ char *ft_setenv(char *name, char **env, char *new_var)
     cut_name = get_var_name(name);
     if (!cut_name)
         return (NULL);
-    // printf("cut: %s\n", cut_name);
     i = find_var(cut_name, env);
     free(cut_name);
     add_new_var(env, new_var, i);
     return (new_var);
+}
+
+int ft_is_valid_identifier(char *name)
+{
+    if (!ft_isalpha(*name) && *name != '_')
+        return (true);
+    name++;
+    while (*name && *name != '=')
+    {
+        if (!(ft_isalpha(*name)) && *name != '_')
+            return (true);
+        name++;
+    }
+    return (false);
 }
 
 int handle_export(t_prompt *prompt, t_token *tokens, char **env)
@@ -78,14 +91,16 @@ int handle_export(t_prompt *prompt, t_token *tokens, char **env)
     vars = NULL;
     while (tmp)
     {
+        if (ft_is_valid_identifier(tmp->value))
+        {
+            perror("export");
+            return (1);
+        }
         vars = ft_setenv(tmp->value, env, vars);
         tmp = tmp->next;
     }
     if (!vars)
-    {
-        printf("minishell: export: error\n");
-        return (1);
-    }
+        return (0);
     if (prompt)
         prompt->exported_vars = vars;
     return (0);
