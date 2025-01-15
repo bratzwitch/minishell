@@ -25,7 +25,7 @@ int	output_redirection(const char *file_name)
 	int	fd_out;
 	int	flags;
 
-	flags = O_WRONLY | O_CREAT | O_TRUNC;
+	flags = O_WRONLY | O_CREAT | O_APPEND;
 	fd_out = open(file_name, flags, 0644);
 	if (fd_out == -1)
 	{

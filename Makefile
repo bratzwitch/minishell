@@ -38,7 +38,7 @@ OBJS := $(SRC:.c=.o)
 all: $(NAME)
 
 go:
-	valgrind --leak-check=full -s --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=minishell.supp ./minishell
+	valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes --error-limit=no --suppressions=minishell.supp ./minishell
 
 $(NAME): $(OBJS)
 		@echo "Compiling this crap"
