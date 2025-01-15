@@ -76,9 +76,8 @@ void handle_child_process_pipe(t_pipe *pipe, char **env)
 	exit(1);
 }
 
-void handle_parent_process_pipe(int fd[2], int *prev_pipe, pid_t id)
+void handle_parent_process_pipe(int fd[2], int *prev_pipe)
 {
-	waitpid(id, NULL, 0);
 	close(fd[1]);
 	if (*prev_pipe != -1)
 		close(*prev_pipe);
@@ -104,7 +103,7 @@ void piping(t_prompt *prompt, char **env)
 		if (pipe.pid == 0)
 			handle_child_process_pipe(&pipe, env);
 		else
-			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe, pipe.pid);
+			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe);
 		pipe.i++;
 	}
 	if (pipe.prev_pipe != -1)
