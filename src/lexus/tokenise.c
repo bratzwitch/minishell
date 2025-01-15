@@ -24,7 +24,7 @@ t_token *handle_argument(char **input)
 
 	current = *input;
 	start = current;
-	while (*current && !ft_isspace(*current) && !ft_is_special_character(current))
+	while (*current && !ft_isspace(*current) && !ft_is_special_character(current) && !ft_is_quotes(current))
 		current++;
 	token_value = strndup(start, current - start);
 	if (!token_value)
@@ -38,33 +38,15 @@ t_token *handle_argument(char **input)
 	return (create_token(TOKEN_ARGUMENT, token_value));
 }
 
-bool is_quote(char *input)
-{
-	int i = 0;
-
-	while (input[i])
-	{
-		if (input[i] == '\'')
-		{
-			return (true);
-		}
-		i++;
-	}
-	return (false);
-}
-
 t_token *get_next_token(char **input)
 {
 	char *current;
 
 	current = *input;
-	if ()
-	{
-		if (*current == '\'')
-			return (handle_single_quotes_argument(input));
-		if (*current == '\"')
-			return (handle_double_quotes_argument(input));
-	}
+	if (*current == '\'')
+		return (handle_single_quotes_argument(input));
+	if (*current == '\"')
+		return (handle_double_quotes_argument(input));
 	while (*current && ft_isspace(*current))
 		current++;
 	if (*current == '\0')
@@ -75,4 +57,5 @@ t_token *get_next_token(char **input)
 		return (handle_dollar_sign(input));
 	return (handle_argument(input));
 }
+
 // (gdb) set follow-fork-mode child / parent

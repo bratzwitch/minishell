@@ -100,6 +100,30 @@ int count_tokens(t_token *lst)
 	return (i);
 }
 
+void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
+{
+	t_token *current = head;
+	t_token *prev = NULL;
+
+	*list1 = head;
+	*list2 = NULL;
+	if (TOKEN_TYPE == 0)
+		return ;
+	while (current)
+	{
+		if (current->type == TOKEN_TYPE)
+		{
+			*list2 = current->next;
+			if (prev)
+				prev->next = NULL;
+			current->next = NULL;
+			return ;
+		}
+		prev = current;
+		current = current->next;
+	}
+}
+
 char **lst_to_arr(t_token *tokens)
 {
 	t_token *tmp;

@@ -12,6 +12,11 @@ bool	ft_is_special_character(const char *current)
 		|| strncmp(current, "<<", 2) == 0 || strncmp(current, ">>", 2) == 0);
 }
 
+bool	ft_is_quotes(const char *current)
+{
+	return (*current == '\'' || *current == '\"');
+}
+
 int	ft_quotes(char *str, int size)
 {
 	int	i;

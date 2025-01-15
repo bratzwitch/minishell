@@ -1,5 +1,18 @@
 #include "../include/minishell.h"
 
+pid_t	create_child_process(void)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("fork");
+		exit(1);
+	}
+	return (pid);
+}
+
 // if you want to access the value of the token here's the syntax: (*prompt->token_lst)->value
 void handle_child_process(t_prompt *prompt, char **env) // uses fd[1] - writing end - close fd[0]
 {

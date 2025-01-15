@@ -13,11 +13,11 @@ EXEC_DIR := ./src/execute
 		
 SRC :=	$(SRC_DIR)/minishell.c \
 		$(SRC_DIR)/processes.c \
-		$(SRC_DIR)/redirections.c \
 		$(SRC_DIR)/signal.c \
 		$(SRC_DIR)/pipe_utils.c \
 		$(SRC_DIR)/piping.c \
 		$(SRC_DIR)/utils.c \
+		$(SRC_DIR)/validate.c \
 		$(LEXER_DIR)/dollar.c \
 		$(LEXER_DIR)/lexer.c \
 		$(LEXER_DIR)/lexus_utils.c \
@@ -27,6 +27,9 @@ SRC :=	$(SRC_DIR)/minishell.c \
 		$(EXEC_DIR)/builtins.c \
 		$(EXEC_DIR)/execute.c \
 		$(EXEC_DIR)/heredoc.c \
+		$(EXEC_DIR)/redirections.c \
+		$(EXEC_DIR)/redir_handlers.c \
+		$(EXEC_DIR)/exec_utils.c \
 		$(EXEC_DIR)/builtins/cd.c \
 		$(EXEC_DIR)/builtins/echo.c \
 		$(EXEC_DIR)/builtins/env_pwd_exit.c \

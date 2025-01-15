@@ -44,11 +44,6 @@ void setup_handlers(void)
         write(STDERR_FILENO, "Error: sigaction SIGINT\n", 25);
         exit(1);
     }
-    if (sigaction(SIGCHLD, &sa, NULL) == -1)
-    {
-        write(STDERR_FILENO, "Error: sigaction SIGCHLD\n", 26);
-        exit(1);
-    }
     sa.sa_handler = SIG_IGN;
     if (sigaction(SIGQUIT, &sa, NULL) == -1)
     {

@@ -70,3 +70,7 @@ int handle_cd(t_prompt *prompt, t_token *token, char **env)
     lst_cleanup(&var_lst, free_token);
     return (0);
 }
+
+// minishell$>cd manual_tests/
+// free(): invalid pointer
+// Aborted (core dumped)
