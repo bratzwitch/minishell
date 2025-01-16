@@ -82,7 +82,7 @@ char *find_command(char *cmd_name, char *env_path);
 void handle_special_tokens(t_token *tokens);
 
 // BUILT-INS
-int handle_echo(t_token *token, int fd);
+int handle_echo(t_token *token);
 int handle_cd(t_prompt *prompt, t_token *token, char **env);
 int handle_env(char **env);
 int handle_pwd(void);
@@ -96,10 +96,9 @@ t_token *lexer(char *input);
 t_token *get_next_token(char **input);
 t_token *create_token(enum e_token_type type, char *value);
 t_token *handle_special_characters(char **current, char **input);
-t_token *handle_dollar_sign(char **input);
 t_token *handle_input_redirection(char **input);
 char *handle_single_quotes(char **input, char *final_str);
-char *process_double_quote(char **input, char *final_str);
+char *handle_double_quote(char **input, char *final_str);
 int ft_quotes(char *str, int size);
 char *get_env_variable(char **current, char *var_start);
 t_token *handle_argument(char **input);
@@ -130,6 +129,8 @@ bool ft_is_quotes(const char *current);
 void	wait_for_children(int child_count);
 void	create_pipes(int i, int pipe_count, int fd[2]);
 int count_tokens(t_token *lst);
+bool ft_is_num(char *str);
+void concatenate_tokens(t_token **tokens, t_token *list2);
 
 void lst_print(t_token *token_lst); // tests
 void print_args(char **args);		// tests

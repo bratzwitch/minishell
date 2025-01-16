@@ -44,10 +44,10 @@ int save_stdinout(int *fdin_copy, int *fdout_copy)
 void restore_stdinout(int *fdin_copy, int *fdout_copy)
 {
 	if (dup2(*fdin_copy, STDIN_FILENO) == -1)
-		perror("dup2 fd[1]");
+		perror("dup2 fdin");
 	close(*fdin_copy);
 	if (dup2(*fdout_copy, STDOUT_FILENO) == -1)
-		perror("dup2 fd[1]");
+		perror("dup2 fdout");
 	close(*fdout_copy);
 }
 

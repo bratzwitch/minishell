@@ -1,18 +1,5 @@
 #include "../../include/minishell.h"
 
-// void concatenate_tokens(t_token **tokens, t_token *list2)
-// {
-// 	t_token *next;
-
-// 	while (list2)
-// 	{
-// 		next = list2->next;
-// 		list2->next = NULL;
-// 		add_token(tokens, list2);
-// 		list2 = next;
-// 	}
-// }
-
 void handle_special_tokens(t_token *tokens)
 {
 	t_token *current = tokens;
@@ -26,6 +13,8 @@ void handle_special_tokens(t_token *tokens)
 		{0, NULL}};
 	int i;
 
+	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
+	concatenate_tokens(&tokens, list2->next);
 	while (current)
 	{
 		i = 0;
@@ -51,10 +40,6 @@ void handle_special_tokens(t_token *tokens)
 		}
 		current = current->next;
 	}
-	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
-	// lst_print(tokens);
-	// concatenate_tokens(&tokens, list2);
-	// lst_print(tokens);
 }
 
 // printf("This goes to the file\n");

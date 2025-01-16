@@ -26,3 +26,16 @@ bool ft_is_num(char *str)
     }
     return (true);
 }
+
+void concatenate_tokens(t_token **tokens, t_token *list2)
+{
+	t_token *next;
+
+	while (list2)
+	{
+		next = list2->next;
+		list2->next = NULL;
+		add_token(tokens, list2);
+		list2 = next;
+	}
+}
