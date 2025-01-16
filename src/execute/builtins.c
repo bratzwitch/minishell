@@ -2,14 +2,6 @@
 
 int builtins(t_prompt *prompt, t_token *tokens, char **env)
 {
-    int fd_copy;
-
-    if ((fd_copy = dup(STDOUT_FILENO)) == -1)
-    {
-        perror("Error redirecting input.");
-        close(fd_copy);
-        return (-1);
-    }
     if (tokens == NULL)
         return (2);
     if (ft_is_special_token(tokens))
@@ -23,7 +15,7 @@ int builtins(t_prompt *prompt, t_token *tokens, char **env)
     else if (!strcmp(tokens->value, "cd"))
         return (handle_cd(prompt, tokens, env));
     else if (!strcmp(tokens->value, "echo"))
-        return (handle_echo(tokens, fd_copy));
+        return (handle_echo(tokens));
     else if (!strcmp(tokens->value, "export"))
         return (handle_export(prompt, tokens, env));
     else if (!strcmp(tokens->value, "unset"))

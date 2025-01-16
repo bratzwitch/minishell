@@ -30,7 +30,7 @@ char *handle_single_quotes(char **input, char *final_str)
     return (final_str);
 }
 
-char *process_double_quote(char **input, char *final_str)
+char *handle_double_quote(char **input, char *final_str)
 {
     char *current = *input + 1;
     char *start = current;

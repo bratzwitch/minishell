@@ -11,8 +11,11 @@ int execute(t_token *tokens, char *path, char **env)
 	if (path)
 		path_exec = path;
 	else
-		path_exec = validator(tokens->value);
+	{
+		if (!(path_exec = validator(tokens->value)))
+			received_sig = builtins(NULL, tokens, env);
+	}
 	execve(path_exec, args, env);
 	perror("execve");
-	exit(1);
+	exit(2);
 }

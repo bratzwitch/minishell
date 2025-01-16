@@ -1,6 +1,6 @@
 #include "../../../include/minishell.h"
 
-int handle_echo(t_token *token, int fd)
+int handle_echo(t_token *token)
 {
     t_token *tmp;
     bool is_n;
@@ -25,12 +25,5 @@ int handle_echo(t_token *token, int fd)
     }
     if (!is_n)
         ft_putchar_fd('\n', 1);
-    if (dup2(fd, STDOUT_FILENO) == -1)
-    {
-        perror("Error redirecting input.");
-        close(fd);
-        return (-1);
-    }
-    close(fd);
     return (0);
 }

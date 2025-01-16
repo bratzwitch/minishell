@@ -33,7 +33,7 @@ t_token *handle_argument(char **input)
 			if (quote == '\'')
 				final_str = handle_single_quotes(&current, final_str);
 			else if (quote == '\"')
-				final_str = process_double_quote(&current, final_str);
+				final_str = handle_double_quote(&current, final_str);
 			if (!final_str)
 				return (NULL);
 		}

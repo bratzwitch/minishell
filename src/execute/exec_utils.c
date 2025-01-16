@@ -13,3 +13,16 @@ enum e_token_type ft_is_special_token(t_token *head)
 	}
 	return (0);
 }
+
+bool ft_is_num(char *str)
+{
+    int i = 0;
+
+    while (str[i])
+    {
+        if (ft_isalpha(str[i]))
+            return (false);
+        i++;
+    }
+    return (true);
+}

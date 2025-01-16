@@ -1,38 +1,75 @@
 #include "../include/minishell.h"
 
+/* The signal handler should not access or modify the main data structures of your program.
+	This is because signal handlers can interrupt your program at any point,
+	potentially causing data corruption or inconsistent states if they modify shared data. */
+
 volatile sig_atomic_t received_sig = 0;
 
-char	*ft_prompt(t_prompt *prompt)
+char *ft_prompt(t_prompt *prompt)
 {
-	char	*input;
+	char *input;
 
-	input = readline("minishell$>");
+	input = NULL;
+	if (isatty(STDIN_FILENO)) // isatty - test whether a file descriptor refers to a terminal
+		input = readline("minishell$>");
 	if (input == NULL) // detect EOF; handle ctrl+D
 	{
 		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
 		free(prompt->exported_vars);
 		free(prompt->path);
 		rl_clear_history();
-		exit(0);
+		exit(received_sig);
 	}
 	return (input);
 }
 
-/* The signal handler should not access or modify the main data structures of your program.
-	This is because signal handlers can interrupt your program at any point,
-	potentially causing data corruption or inconsistent states if they modify shared data. */
-
-void	handle_single_cmd(t_prompt *prompt, char **env)
+int save_stdinout(int *fdin_copy, int *fdout_copy)
 {
-	pid_t	pid;
+	if ((*fdin_copy = dup(STDIN_FILENO)) == -1)
+	{
+		perror("Error redirecting input.");
+		close(*fdin_copy);
+		return (-1);
+	}
+	if ((*fdout_copy = dup(STDOUT_FILENO)) == -1)
+	{
+		perror("Error redirecting input.");
+		close(*fdout_copy);
+		return (-1);
+	}
+	return (0);
+}
 
+void restore_stdinout(int *fdin_copy, int *fdout_copy)
+{
+	if (dup2(*fdin_copy, STDIN_FILENO) == -1)
+		perror("dup2 fd[1]");
+	close(*fdin_copy);
+	if (dup2(*fdout_copy, STDOUT_FILENO) == -1)
+		perror("dup2 fd[1]");
+	close(*fdout_copy);
+}
+
+void handle_single_cmd(t_prompt *prompt, char **env)
+{
+	pid_t pid;
+	int fdin_copy;
+	int fdout_copy;
+
+	if (save_stdinout(&fdin_copy, &fdout_copy) == -1)
+		return;
 	received_sig = builtins(prompt, prompt->token_lst, env);
 	if (!received_sig || received_sig == 1)
-		return ;
+	{
+		restore_stdinout(&fdin_copy, &fdout_copy);
+		return;
+	}
 	else if (!(prompt->path = validator(prompt->token_lst->value)) && !(ft_is_special_character(prompt->input)))
 	{
 		printf("minishell: command not found: %s\n", prompt->token_lst->value);
-		return ;
+		restore_stdinout(&fdin_copy, &fdout_copy);
+		return;
 	}
 	else
 	{
@@ -42,11 +79,12 @@ void	handle_single_cmd(t_prompt *prompt, char **env)
 		else
 			handle_parent_process(pid, &prompt->exit_status, prompt);
 	}
+	restore_stdinout(&fdin_copy, &fdout_copy);
 }
 
-int	main(int argc, char **argv, char **env)
+int main(int argc, char **argv, char **env)
 {
-	t_prompt	prompt;
+	t_prompt prompt;
 
 	(void)argc;
 	(void)argv;
@@ -56,7 +94,7 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		if (!(prompt.input = ft_prompt(&prompt)))
-			break ;
+			break;
 		if ((prompt.token_lst = lexer(prompt.input)))
 		{
 			if (is_pipe(prompt.token_lst))

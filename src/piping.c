@@ -23,9 +23,7 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 		close(pipe->fd[1]);
 	}
 	else
-	{
 		close(pipe->fd[1]);
-	}
 	close(pipe->fd[0]);
 	execute(pipe->list1, NULL, env);
 	exit(1);

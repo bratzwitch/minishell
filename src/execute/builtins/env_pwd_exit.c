@@ -27,19 +27,6 @@ int handle_pwd()
     return (0);
 }
 
-bool ft_is_num(char *str)
-{
-    int i = 0;
-
-    while (str[i])
-    {
-        if (ft_isalpha(str[i]))
-            return (false);
-        i++;
-    }
-    return (true);
-}
-
 int handle_exit(t_prompt *prompt)
 {
     printf("exit\n");
