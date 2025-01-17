@@ -60,6 +60,7 @@ void restore_stdinout(int *fdin_copy, int *fdout_copy)
 void handle_single_cmd(t_prompt *prompt)
 {
 	pid_t pid;
+	pid = 0;
 	int fdin_copy;
 	int fdout_copy;
 
@@ -85,6 +86,7 @@ void handle_single_cmd(t_prompt *prompt)
 		else
 			handle_parent_process(pid, &prompt->exit_status, prompt);
 	}
+	free(prompt->path);
 	restore_stdinout(&fdin_copy, &fdout_copy);
 }
 
