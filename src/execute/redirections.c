@@ -35,6 +35,7 @@ void handle_special_tokens(t_token *tokens)
 		}
 		current = current->next;
 	}
+	lst_cleanup(&current,free_token);
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
 	// concatenate_tokens(&list1, list2->next);
 }

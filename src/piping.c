@@ -23,7 +23,14 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 	else
 		close(pipe->fd[1]);
 	close(pipe->fd[0]);
-	execute(pipe->list1, NULL, env);
+	if(validator(pipe->list1->value))
+		execute(pipe->list1, NULL, env);
+	else
+	{
+		ft_free(env);
+		lst_cleanup(&pipe->list1,free_token);
+		lst_cleanup(&pipe->current_tokens,free_token);
+	}
 	exit(1);
 }
 

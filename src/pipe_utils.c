@@ -55,8 +55,6 @@ void wait_for_children(int child_count)
     	{
         	write(STDOUT_FILENO, "\n", 1);
     	}
-		else
-			printf("child did not exit normally.\n");
 		i++;
 	}
 }
