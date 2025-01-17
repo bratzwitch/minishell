@@ -130,6 +130,7 @@ void add_token(t_token **head, t_token *new_token);
 bool ft_is_quotes(const char *current);
 void	wait_for_children(int child_count);
 void	create_pipes(int i, int pipe_count, int fd[2]);
+int create_pipe(int pipe_fd[2]);
 int count_tokens(t_token *lst);
 bool ft_is_num(char *str);
 void concatenate_tokens(t_token **tokens, t_token *list2);

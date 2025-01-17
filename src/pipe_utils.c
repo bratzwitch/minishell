@@ -16,12 +16,22 @@ int count_pipes(t_token *token_lst)
 	return (pipes);
 }
 
+int create_pipe(int pipe_fd[2])
+{
+	if (pipe(pipe_fd) == -1)
+	{
+		perror("Error creating pipe");
+		return (-1);
+	}
+	return (0);
+}
+
 void create_pipes(int i, int pipe_count, int fd[2])
 {
-	if (i < pipe_count && pipe(fd) == -1)
+	if (i < pipe_count)
 	{
-		perror("pipe");
-		exit(1);
+		if (create_pipe(fd) == -1)
+			exit (1);
 	}
 }
 

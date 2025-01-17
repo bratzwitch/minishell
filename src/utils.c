@@ -146,6 +146,31 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_
 	}
 }
 
+// void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
+// {
+// 	t_token *current = head;
+// 	t_token *prev = NULL;
+
+// 	*list1 = NULL;
+// 	*list2 = NULL;
+// 	if (TOKEN_TYPE == 0)
+// 		return;
+// 	while (current)
+// 	{
+// 		if (current->type == TOKEN_TYPE)
+// 		{
+// 			*list2 = current->next;
+// 			if (prev)
+// 				prev->next = NULL;
+// 			current->next = NULL;
+// 			break;
+// 		}
+// 		*list1 = current;
+// 		prev = current;
+// 		current = current->next;
+// 	}
+// }
+
 int count_tokens(t_token *lst)
 {
 	int i;

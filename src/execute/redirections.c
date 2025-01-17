@@ -13,8 +13,6 @@ void handle_special_tokens(t_token *tokens)
 		{0, NULL}};
 	int i;
 
-	// split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
-	// concatenate_tokens(&tokens, list2->next);
 	while (current)
 	{
 		i = 0;
@@ -23,11 +21,8 @@ void handle_special_tokens(t_token *tokens)
 			if (current->type == redir[i].type && redir[i].type > 0)
 			{
 				split_tokens(current, &list1, &list2, redir[i].type);
-				if (!list1 || !list1->value || !list2 || !list2->value)
-				{
-					fprintf(stderr, "minishell: syntax error near unexpected token '%s'\n", current->value);
-					return;
-				}
+				lst_print(list1);
+				lst_print(list2);
 				if (redir[i].handler(list2->value) == -1)
 				{
 					printf("Redirection failed for %s\n", strerror(errno));
@@ -41,6 +36,7 @@ void handle_special_tokens(t_token *tokens)
 		current = current->next;
 	}
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
+	// concatenate_tokens(&list1, list2->next);
 }
 
 // printf("This goes to the file\n");
