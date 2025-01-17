@@ -54,6 +54,7 @@ void restore_stdinout(int *fdin_copy, int *fdout_copy)
 void handle_single_cmd(t_prompt *prompt, char **env)
 {
 	pid_t pid;
+	pid = 0;
 	int fdin_copy;
 	int fdout_copy;
 

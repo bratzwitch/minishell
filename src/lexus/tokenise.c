@@ -24,7 +24,10 @@ t_token *handle_argument(char **input)
 	char quote;
 
 	if (!final_str)
+	{
+		free(current);
 		return (NULL);
+	}
 	while (*current && !ft_isspace(*current))
 	{
 		if (ft_is_quotes(current))
@@ -41,7 +44,10 @@ t_token *handle_argument(char **input)
 		{
 			final_str = dollar(&current, final_str, &current);
 			if (!final_str)
-				return (NULL);
+			{
+				free(current);
+				return NULL;
+			}
 		}
 		else
 		{
@@ -49,6 +55,11 @@ t_token *handle_argument(char **input)
 			while (*current && !ft_isspace(*current) && !ft_is_special_character(current) && !ft_is_quotes(current))
 				current++;
 			final_str = append_to_final_str(final_str, start, current - start);
+			if (!final_str)
+			{
+				free(current);
+				return NULL;
+			}
 		}
 	}
 	while (*current && ft_isspace(*current))
