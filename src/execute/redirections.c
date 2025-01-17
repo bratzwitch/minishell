@@ -13,8 +13,8 @@ void handle_special_tokens(t_token *tokens)
 		{0, NULL}};
 	int i;
 
-	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
-	concatenate_tokens(&tokens, list2->next);
+	// split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
+	// concatenate_tokens(&tokens, list2->next);
 	while (current)
 	{
 		i = 0;
@@ -40,6 +40,7 @@ void handle_special_tokens(t_token *tokens)
 		}
 		current = current->next;
 	}
+	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
 }
 
 // printf("This goes to the file\n");

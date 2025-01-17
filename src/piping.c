@@ -37,7 +37,7 @@ void handle_parent_process_pipe(int fd[2], int *prev_pipe)
 	*prev_pipe = fd[0];
 }
 
-void	piping(t_prompt *prompt, char **env)
+void	piping(t_prompt *prompt)
 {
 	t_pipe	pipe;
 
@@ -62,7 +62,7 @@ void	piping(t_prompt *prompt, char **env)
 		create_pipes(pipe.i, pipe.pipe_count, pipe.fd);
 		pipe.pid = create_child_process();
 		if (pipe.pid == 0)
-			handle_child_process_pipe(&pipe, env);
+			handle_child_process_pipe(&pipe, prompt->env_copy);
 		else
 			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe);
 		pipe.i++;

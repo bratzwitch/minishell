@@ -60,7 +60,7 @@ typedef struct s_prompt
 {
 	char *input; // requires freeing in the end
 	char *path;	 // needs to be freed
-	char *exported_vars;
+	char **env_copy;
 	t_token *token_lst; // requires freeing in the end
 	int exit_status;
 } t_prompt;
@@ -83,11 +83,11 @@ void handle_special_tokens(t_token *tokens);
 
 // BUILT-INS
 int handle_echo(t_token *token);
-int handle_cd(t_prompt *prompt, t_token *token, char **env);
+int handle_cd(t_token *token, char **env);
 int handle_env(char **env);
 int handle_pwd(void);
 int handle_exit(t_prompt *prompt);
-int handle_export(t_prompt *prompt, t_token *tokens, char **env);
+int handle_export(t_token *tokens, char **env);
 int handle_unset(t_token *tokens, char **env);
 int find_var(char *name, char **env);
 
@@ -110,9 +110,11 @@ int heredoc_redirection(const char *delimiter);
 int input_redirection(const char *file_name);
 int output_redirection(const char *file_name);
 int append_redirection(const char *file_name);
+int save_stdinout(int *fdin_copy, int *fdout_copy);
+void restore_stdinout(int *fdin_copy, int *fdout_copy);
 
 // PIPE
-void piping(t_prompt *prompt, char **env);
+void	piping(t_prompt *prompt);
 int count_pipes(t_token *token_lst);
 
 // UTILS
@@ -131,6 +133,7 @@ void	create_pipes(int i, int pipe_count, int fd[2]);
 int count_tokens(t_token *lst);
 bool ft_is_num(char *str);
 void concatenate_tokens(t_token **tokens, t_token *list2);
+char **copy_env(char **env);
 
 void lst_print(t_token *token_lst); // tests
 void print_args(char **args);		// tests
