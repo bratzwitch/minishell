@@ -16,8 +16,8 @@ char *ft_prompt(t_prompt *prompt)
 	if (input == NULL) // detect EOF; handle ctrl+D
 	{
 		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
-		free(prompt->exported_vars);
 		free(prompt->path);
+		ft_free(prompt->env_copy);
 		rl_clear_history();
 		exit(received_sig);
 	}
@@ -26,13 +26,13 @@ char *ft_prompt(t_prompt *prompt)
 
 int save_stdinout(int *fdin_copy, int *fdout_copy)
 {
-	if ((*fdin_copy = dup(STDIN_FILENO)) == -1)
+	if (fdin_copy && ((*fdin_copy = dup(STDIN_FILENO)) == -1))
 	{
 		perror("Error redirecting input.");
 		close(*fdin_copy);
 		return (-1);
 	}
-	if ((*fdout_copy = dup(STDOUT_FILENO)) == -1)
+	if (fdout_copy && ((*fdout_copy = dup(STDOUT_FILENO)) == -1))
 	{
 		perror("Error redirecting input.");
 		close(*fdout_copy);
@@ -43,15 +43,21 @@ int save_stdinout(int *fdin_copy, int *fdout_copy)
 
 void restore_stdinout(int *fdin_copy, int *fdout_copy)
 {
-	if (dup2(*fdin_copy, STDIN_FILENO) == -1)
-		perror("dup2 fdin");
-	close(*fdin_copy);
-	if (dup2(*fdout_copy, STDOUT_FILENO) == -1)
-		perror("dup2 fdout");
-	close(*fdout_copy);
+	if (fdin_copy)
+	{
+		if (dup2(*fdin_copy, STDIN_FILENO) == -1)
+			perror("dup2 fdin");
+		close(*fdin_copy);
+	}
+	if (fdout_copy)
+	{
+		if (dup2(*fdout_copy, STDOUT_FILENO) == -1)
+			perror("dup2 fdout");
+		close(*fdout_copy);
+	}
 }
 
-void handle_single_cmd(t_prompt *prompt, char **env)
+void handle_single_cmd(t_prompt *prompt)
 {
 	pid_t pid;
 	pid = 0;
@@ -60,7 +66,7 @@ void handle_single_cmd(t_prompt *prompt, char **env)
 
 	if (save_stdinout(&fdin_copy, &fdout_copy) == -1)
 		return;
-	received_sig = builtins(prompt, prompt->token_lst, env);
+	received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
 	if (!received_sig || received_sig == 1)
 	{
 		restore_stdinout(&fdin_copy, &fdout_copy);
@@ -76,7 +82,7 @@ void handle_single_cmd(t_prompt *prompt, char **env)
 	{
 		pid = create_child_process();
 		if (pid == 0)
-			handle_child_process(prompt, env);
+			handle_child_process(prompt, prompt->env_copy);
 		else
 			handle_parent_process(pid, &prompt->exit_status, prompt);
 	}
@@ -89,8 +95,9 @@ int main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	prompt.exported_vars = NULL;
+
 	prompt.path = NULL;
+	prompt.env_copy = copy_env(env);
 	setup_handlers();
 	while (1)
 	{
@@ -99,9 +106,9 @@ int main(int argc, char **argv, char **env)
 		if ((prompt.token_lst = lexer(prompt.input)))
 		{
 			if (is_pipe(prompt.token_lst))
-				piping(&prompt, env);
+				piping(&prompt);
 			else
-				handle_single_cmd(&prompt, env);
+				handle_single_cmd(&prompt);
 		}
 		add_history(prompt.input);
 		free(prompt.input);

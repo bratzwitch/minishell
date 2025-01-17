@@ -13,7 +13,11 @@ void handle_special_tokens(t_token *tokens)
 		{0, NULL}};
 	int i;
 
+<<<<<<< HEAD
 	
+=======
+	// split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
+>>>>>>> a5e4fa3532ceff43229b3a184de7dfc3f31a61a4
 	// concatenate_tokens(&tokens, list2->next);
 	while (current)
 	{

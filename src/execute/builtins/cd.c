@@ -21,7 +21,7 @@ char *extract_var(char *name, char **env)
     i = find_var(name, env);
     result = ft_strchr(env[i], '=');
     result = result + 1;
-    return(result);
+    return (result);
 }
 
 t_token *assemble_name(char *path, char **env)
@@ -38,7 +38,7 @@ t_token *assemble_name(char *path, char **env)
     return (new_lst);
 }
 
-int handle_cd(t_prompt *prompt, t_token *token, char **env)
+int handle_cd(t_token *token, char **env)
 {
     char *path;
     char *home;
@@ -66,9 +66,13 @@ int handle_cd(t_prompt *prompt, t_token *token, char **env)
         perror("cd");
         return (1);
     }
+    if (!(path = getcwd(NULL, 0)))
+    {
+        perror("pwd");
+        return (1);
+    }
     var_lst = assemble_name(path, env);
-    handle_export(prompt, var_lst, env);
-    lst_cleanup(&var_lst, free_token);
+    handle_export(var_lst, env);
     return (0);
 }
 

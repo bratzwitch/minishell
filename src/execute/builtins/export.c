@@ -6,68 +6,13 @@
     However, if you're only appending to the existing env without replacing
         it entirely, **env is sufficient. */
 
-int find_var(char *name, char **env)
-{
-    int i;
+    /* Summary of Pointer Levels
+char ***env: Used when the pointer itself may need to be updated.
+char **env: Used when only the contents of the pointer are modified, not the pointer itself.
 
-    i = 0;
-    while (env[i])
-    {
-        if (strncmp(env[i], name, strlen(name)) == 0)
-        {
-            // printf("found var at %d\n", i);
-            return (i);
-        }
-        i++;
-    }
-    return (-1);
-}
-
-void add_new_var(char **env, char *new_var, int index)
-{
-    int i = 0;
-
-    if (index >= 0)
-        env[index] = new_var;
-    else
-    {
-        while (env[i])
-            i++;
-        env[i] = new_var;
-        env[i + 1] = NULL;
-    }
-}
-
-char *get_var_name(const char *name)
-{
-    char *equal_sign;
-    size_t len;
-
-    equal_sign = strchr(name, '=');
-    if (!equal_sign)
-        return (NULL);
-    len = equal_sign - name;
-    return (strndup(name, len));
-}
-
-char *ft_setenv(char *name, char **env, char *new_var)
-{
-    int i;
-    char *cut_name;
-
-    if (!name || !ft_strchr(name, '='))
-        return (NULL);
-    new_var = ft_strdup(name);
-    if (!new_var)
-        return (NULL);
-    cut_name = get_var_name(name);
-    if (!cut_name)
-        return (NULL);
-    i = find_var(cut_name, env);
-    free(cut_name);
-    add_new_var(env, new_var, i);
-    return (new_var);
-}
+Think of it like this:
+char ***env: A manager who can hire a new assistant (assign a new address).
+char **env: An assistant who only works with files on their desk (data at the address). */
 
 int ft_is_valid_identifier(char *name)
 {
@@ -83,26 +28,99 @@ int ft_is_valid_identifier(char *name)
     return (false);
 }
 
-int handle_export(t_prompt *prompt, t_token *tokens, char **env)
+char *get_var_name(const char *name)
+{
+    char *equal_sign;
+    size_t len;
+
+    equal_sign = strchr(name, '=');
+    if (!equal_sign)
+        return (NULL);
+    len = equal_sign - name;
+    return (strndup(name, len));
+}
+
+
+char **expand_env(char **env, int new_size)
+{
+    char **new_env;
+    int i = 0;
+
+    new_env = malloc((new_size + 1) * sizeof(char *));
+    if (!new_env)
+        return (NULL);
+    while (env && env[i])
+    {
+        new_env[i] = env[i];
+        i++;
+    }
+    new_env[i] = NULL;
+    free(env);
+    return (new_env);
+}
+
+void add_new_var(char ***env, char *new_var, int index)
+{
+    int i = 0;
+    int size = 0;
+
+    while (*env && (*env)[size])
+        size++;
+    if (index >= 0)
+    {
+        free((*env)[index]);
+        (*env)[index] = new_var;
+    }
+    else
+    {
+        if (i >= size)
+        {
+            *env = expand_env(*env, size + 1);
+            if (!*env)
+            {
+                perror("Failed to expand env");
+                free(new_var);
+                return;
+            }
+        }
+        while ((*env)[i])
+            i++;
+        (*env)[i] = new_var;
+        (*env)[i + 1] = NULL;
+    }
+}
+
+char *ft_setenv(char *name, char **env)
+{
+    int i;
+    char *new_var;
+    char *cut_name;
+
+    if (!name || !ft_strchr(name, '='))
+        return (NULL);
+    new_var = ft_strdup(name);
+    if (!new_var)
+        return (NULL);
+    cut_name = get_var_name(name);
+    if (!cut_name)
+        return (NULL);
+    i = find_var(cut_name, env);
+    free(cut_name);
+    add_new_var(&env, new_var, i);
+    return (new_var);
+}
+
+int handle_export(t_token *tokens, char **env)
 {
     t_token *tmp = tokens;
-    char *vars;
 
-    vars = NULL;
     while (tmp)
     {
         if (ft_is_valid_identifier(tmp->value))
-        {
-            perror("export");
             return (1);
-        }
-        vars = ft_setenv(tmp->value, env, vars);
+        ft_setenv(tmp->value, env);
         tmp = tmp->next;
     }
-    if (!vars)
-        return (0);
-    if (prompt)
-        prompt->exported_vars = vars;
     return (0);
 }
 

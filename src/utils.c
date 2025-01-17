@@ -1,10 +1,40 @@
 #include "../include/minishell.h"
 
+char **copy_env(char **env)
+{
+	int i;
+	char **copy;
+
+	i = 0;
+	while (env[i])
+		i++;
+	copy = malloc((i + 1) * sizeof(char *));
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (env[i])
+	{
+		copy[i] = strdup(env[i]);
+		if (!copy[i])
+		{
+			while (--i >= 0)
+				free(copy[i]);
+			free(copy);
+			return (NULL);
+		}
+		i++;
+	}
+	copy[i] = NULL;
+	return (copy);
+}
+
 void ft_free(char **values)
 {
 	int i;
 
 	i = 0;
+	if (!values)
+		return;
 	while (values[i])
 	{
 		free(values[i]);
@@ -39,10 +69,9 @@ void cleanup(t_prompt *prompt)
 {
 	rl_clear_history();
 	if (!prompt)
-		return ;
+		return;
 	free(prompt->input);
 	free(prompt->path);
-	free(prompt->exported_vars);
 	lst_cleanup(&prompt->token_lst, free_token);
 }
 
@@ -95,7 +124,7 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_
 	*list1 = head;
 	*list2 = NULL;
 	if (TOKEN_TYPE == 0)
-		return ;
+		return;
 	while (current)
 	{
 		if (current->type == TOKEN_TYPE)
@@ -104,7 +133,7 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_
 			if (prev)
 				prev->next = NULL;
 			current->next = NULL;
-			return ;
+			return;
 		}
 		prev = current;
 		current = current->next;
