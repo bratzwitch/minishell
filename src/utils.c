@@ -45,9 +45,14 @@ void ft_free(char **values)
 
 void free_token(t_token *t)
 {
-	if (t->type == TOKEN_ARGUMENT)
+	// if (t->type == TOKEN_ARGUMENT)
+	// 	free(t->value);
+	// free(t);
+	if(t)
+	{
 		free(t->value);
-	free(t);
+		free(t);
+	}
 }
 
 void lst_cleanup(t_token **head, void (*del)(t_token *))
@@ -133,6 +138,7 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_
 			if (prev)
 				prev->next = NULL;
 			current->next = NULL;
+			free(current);
 			return;
 		}
 		prev = current;

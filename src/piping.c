@@ -2,6 +2,12 @@
 
 void	handle_child_process_pipe(t_pipe *pipe, char **env)
 {
+	struct sigaction sa_default;
+
+    sigemptyset(&sa_default.sa_mask);
+    sa_default.sa_flags = 0;
+    sa_default.sa_handler = SIG_DFL;
+    sigaction(SIGINT, &sa_default, NULL);
 	if (ft_is_special_token(pipe->list2) == TOKEN_HEREDOC)
 	{
 		if (heredoc_redirection(pipe->list2->next->value) == -1)
@@ -31,6 +37,12 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 
 void handle_parent_process_pipe(int fd[2], int *prev_pipe)
 {
+	struct sigaction sa_ignore, sa_orig;
+
+    sigemptyset(&sa_ignore.sa_mask);
+    sa_ignore.sa_flags = 0;
+    sa_ignore.sa_handler = SIG_IGN;
+    sigaction(SIGINT, &sa_ignore, &sa_orig);
 	close(fd[1]);
 	if (*prev_pipe != -1)
 		close(*prev_pipe);
@@ -69,6 +81,9 @@ void	piping(t_prompt *prompt)
 	}
 	if (pipe.prev_pipe != -1)
 		close(pipe.prev_pipe);
+	lst_cleanup(&pipe.list1,free_token);
+	lst_cleanup(&pipe.list2,free_token);
+	lst_cleanup(&pipe.current_tokens,free_token);
 	wait_for_children(pipe.pipe_count + 1);
 }
 

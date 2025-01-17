@@ -41,6 +41,10 @@ void wait_for_children(int child_count)
 			else if (WIFSTOPPED(exit_status))
 				received_sig = WSTOPSIG(exit_status);
 		}
+		if (WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == SIGINT)
+    	{
+        	write(STDOUT_FILENO, "\n", 1);
+    	}
 		else
 			printf("child did not exit normally.\n");
 		i++;

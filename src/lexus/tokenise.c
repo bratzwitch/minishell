@@ -25,6 +25,7 @@ t_token *handle_argument(char **input)
 
 	if (!final_str)
 	{
+		free(final_str);
 		free(current);
 		return (NULL);
 	}
@@ -38,13 +39,17 @@ t_token *handle_argument(char **input)
 			else if (quote == '\"')
 				final_str = handle_double_quote(&current, final_str);
 			if (!final_str)
+			{
+				free(final_str);
 				return (NULL);
+			}
 		}
 		else if (*current == '$' && *(current + 1))
 		{
 			final_str = dollar(&current, final_str, &current);
 			if (!final_str)
 			{
+				free(final_str);
 				free(current);
 				return NULL;
 			}
@@ -57,6 +62,7 @@ t_token *handle_argument(char **input)
 			final_str = append_to_final_str(final_str, start, current - start);
 			if (!final_str)
 			{
+				free(final_str);
 				free(current);
 				return NULL;
 			}

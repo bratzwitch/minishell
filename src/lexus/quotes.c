@@ -2,14 +2,17 @@
 
 char *append_to_final_str(char *final_str, const char *start, size_t len)
 {
-    char *token_value;
-    char *temp;
+    char *new_str;
+    size_t old_len;
 
-    token_value = strndup(start, len);
-    temp = ft_strjoin(final_str, token_value);
-    free(token_value);
+    old_len = ft_strlen(final_str);
+    new_str = malloc(old_len + len + 1);
+    if (!new_str)
+        return (NULL);
+    strcpy(new_str, final_str);
+    strncat(new_str, start, len);
     free(final_str);
-    return (temp);
+    return (new_str);
 }
 
 char *handle_single_quotes(char **input, char *final_str)

@@ -16,7 +16,7 @@ char *ft_prompt(t_prompt *prompt)
 	if (input == NULL) // detect EOF; handle ctrl+D
 	{
 		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
-		free(prompt->path);
+		// free(prompt->path);
 		ft_free(prompt->env_copy);
 		rl_clear_history();
 		exit(received_sig);
@@ -66,6 +66,8 @@ void handle_single_cmd(t_prompt *prompt)
 
 	if (save_stdinout(&fdin_copy, &fdout_copy) == -1)
 		return;
+	if(!strncmp(prompt->token_lst->value,"exit",4))
+		restore_stdinout(&fdin_copy, &fdout_copy);
 	received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
 	if (!received_sig || received_sig == 1)
 	{
@@ -104,6 +106,12 @@ int main(int argc, char **argv, char **env)
 	{
 		if (!(prompt.input = ft_prompt(&prompt)))
 			break;
+		if(prompt.input[0] == '|')
+		{
+			printf("parse error near `|'\n");
+			ft_free(prompt.env_copy);
+			break;
+		}
 		if ((prompt.token_lst = lexer(prompt.input)))
 		{
 			if (is_pipe(prompt.token_lst))
