@@ -11,17 +11,9 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 		}
 	}
 	if (pipe->prev_pipe != -1) // If there's a previous pipe, redirect input
-	{
-		if (dup2(pipe->prev_pipe, STDIN_FILENO) == 1)
-			perror("dup2 fd[1]");
-		close(pipe->prev_pipe);
-	}
+		restore_stdinout(&pipe->prev_pipe, NULL);
 	if (pipe->i < pipe->pipe_count) // Redirect output if not the last command
-	{
-		if (dup2(pipe->fd[1], STDOUT_FILENO) == -1)
-			perror("dup2 fd[1]");
-		close(pipe->fd[1]);
-	}
+		restore_stdinout(NULL, &pipe->fd[1]);
 	else
 		close(pipe->fd[1]);
 	close(pipe->fd[0]);
@@ -51,14 +43,6 @@ void	piping(t_prompt *prompt)
 	{
 		split_tokens(pipe.current_tokens, &pipe.list1, &pipe.list2, TOKEN_PIPE);
 		pipe.current_tokens = pipe.list2;
-		// if (ft_is_special_token(pipe.list1) == TOKEN_HEREDOC)
-		// {
-		//     if (heredoc_redirection(pipe.list1->next->value,heredoc_pipe) == -1)
-		//     {
-		//         printf("Heredoc redirection failed.\n");
-		//         return ;
-		//     }
-		// }
 		create_pipes(pipe.i, pipe.pipe_count, pipe.fd);
 		pipe.pid = create_child_process();
 		if (pipe.pid == 0)
