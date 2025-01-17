@@ -47,6 +47,7 @@ char *dollar(char **current, char *final_str, char **start)
     env_value = process_dollar(current);
     final_str = ft_strjoin(temp, env_value);
     free(temp);
+    free(env_value);
     *start = *current;
     return (final_str);
 }

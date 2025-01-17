@@ -86,6 +86,7 @@ void handle_single_cmd(t_prompt *prompt)
 		else
 			handle_parent_process(pid, &prompt->exit_status, prompt);
 	}
+	free(prompt->path);
 	restore_stdinout(&fdin_copy, &fdout_copy);
 }
 
