@@ -10,7 +10,6 @@ void child_heredoc_process(int write_fd, const char *delimiter)
 {
 	char *line;
 
-	// close(STDIN_FILENO);
 	while (1)
 	{
 		line = readline("heredoc> ");
@@ -36,13 +35,11 @@ int heredoc_redirection(const char *delimiter)
 	pid = create_child_process();
 	if (pid == 0)
 	{
-		printf("Closing FD: %d\n", pipe_fd[0]);
 		close(pipe_fd[0]);
 		child_heredoc_process(pipe_fd[1], delimiter);
 	}
 	else
 	{
-		printf("Closing FD: %d\n", pipe_fd[1]);
 		close(pipe_fd[1]);
 		waitpid(pid, NULL, 0);
 		if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
@@ -51,11 +48,8 @@ int heredoc_redirection(const char *delimiter)
 			close(pipe_fd[0]);
 			return (-1);
 		}
-		unlink("/tmp/.sh-thd-865008961");
-		printf("Closing FD: %d\n", pipe_fd[0]);
 		close(pipe_fd[0]);
+		printf("Parent process handling delimiter: %s\n", delimiter);
 	}
-	printf("Closing FD: %d\n", fd);
-	close(fd);
 	return (0);
 }
