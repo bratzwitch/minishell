@@ -1,5 +1,7 @@
 #include "../include/minishell.h"
 
+volatile sig_atomic_t g_received_sig = 0;
+
 pid_t	create_child_process(void)
 {
 	pid_t pid;
@@ -41,11 +43,11 @@ void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 	waitpid(id, exit_status, 0);
 	sigaction(SIGINT, &sa_orig, NULL);
 	if (WIFEXITED(*exit_status))
-		received_sig = WEXITSTATUS(*exit_status);
+		g_received_sig = WEXITSTATUS(*exit_status);
 	else if (WIFSIGNALED(*exit_status))
-		received_sig = 128 + WTERMSIG(*exit_status);
+		g_received_sig = 128 + WTERMSIG(*exit_status);
 	else if (WIFSTOPPED(*exit_status))
-		received_sig = WSTOPSIG(*exit_status);
+		g_received_sig = WSTOPSIG(*exit_status);
 	if (WIFSIGNALED(*exit_status) && WTERMSIG(*exit_status) == SIGINT)
     {
         write(STDOUT_FILENO, "\n", 1);

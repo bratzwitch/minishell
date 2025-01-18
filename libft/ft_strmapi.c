@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:26:27 by vmoroz            #+#    #+#             */
-/*   Updated: 2024/02/12 15:48:11 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 11:46:49 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 char	f(unsigned int i, char c)
 {
 	char	str;
-	(void)i;
 
-	// i = 0;
+	(void)i;
 	str = c;
 	return (str);
 }

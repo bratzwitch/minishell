@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_pwd_exit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 11:47:52 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 11:51:36 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/minishell.h"
 
 int	handle_env(char **env)
@@ -27,31 +39,51 @@ int	handle_pwd(void)
 	return (0);
 }
 
-int	handle_exit(t_prompt *prompt)
+static int	validate_exit_arguments(t_token *token_lst)
 {
-	printf("exit\n");
-	if (prompt->token_lst == NULL)
+	int	token_count;
+
+	token_count = count_tokens(token_lst);
+	if (token_count > 2)
 	{
-		printf("Error: token list is NULL\n");
+		printf("exit: too many arguments\n");
 		return (1);
 	}
-	if (count_tokens(prompt->token_lst) > 2)
+	if (token_lst->next && !ft_is_num(token_lst->next->value))
 	{
-		received_sig = 1;
-		printf("exit: too many arguments\n");
+		printf("exit: numeric argument required\n");
+		return (2);
 	}
-	if (prompt->token_lst->next)
+	return (0);
+}
+
+static int	get_exit_status(t_token *token_lst)
+{
+	if (token_lst->next && ft_is_num(token_lst->next->value))
+		return (ft_atoi(token_lst->next->value));
+	return (0);
+}
+
+int	handle_exit(t_prompt *prompt)
+{
+	int	validation_status;
+
+	printf("bye\n");
+	if (!prompt->token_lst)
 	{
-		if (prompt->token_lst->next && ft_is_num(prompt->token_lst->next->value))
-		    received_sig = ft_atoi(prompt->token_lst->next->value);
-		else if (!ft_is_num(prompt->token_lst->next->value))
-		{
-			received_sig = 2;
-			printf("exit: numeric argument required\n");
-		}
+		printf("Error: token list is NULL\n");
+		exit(1);
 	}
-    ft_free(prompt->env_copy);
+	validation_status = validate_exit_arguments(prompt->token_lst);
+	if (validation_status > 0)
+	{
+		g_received_sig = validation_status;
+		if (validation_status == 1)
+			return (1);
+	}
+	g_received_sig = get_exit_status(prompt->token_lst);
+	ft_free(prompt->env_copy);
 	lst_cleanup(&prompt->token_lst, free_token);
 	cleanup(prompt);
-	exit(received_sig);
+	exit(g_received_sig);
 }

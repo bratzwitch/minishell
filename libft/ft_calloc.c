@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 16:26:02 by vmoroz            #+#    #+#             */
-/*   Updated: 2024/02/12 15:48:11 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 11:46:30 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@ void	*ft_calloc(size_t num, size_t size)
 {
 	size_t	total_size;
 	void	*ptr;
-	// size_t	i;
 
 	total_size = num * size;
-	// i = 0;
 	if (num == 0 || size == 0)
 	{
 		ptr = malloc(0);

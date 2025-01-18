@@ -2,7 +2,7 @@
 
 void sig_handler(int signum)
 {
-    received_sig = 128 + signum;
+    g_received_sig = 128 + signum;
     write(STDOUT_FILENO, "\n", 1);
     rl_replace_line("", 0);
     rl_on_new_line();

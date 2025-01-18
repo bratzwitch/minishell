@@ -13,7 +13,7 @@ int execute(t_token *tokens, char *path, char **env)
 	else
 	{
 		if (!(path_exec = validator(tokens->value)))
-			received_sig = builtins(NULL, tokens, env);
+			g_received_sig = builtins(NULL, tokens, env);
 	}
 	execve(path_exec, args, env);
 	perror("execve");

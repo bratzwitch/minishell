@@ -56,7 +56,7 @@ char *validator(char *cmd_name)
 		else
 		{
 			perror("error");
-			received_sig = 127;
+			g_received_sig = 127;
 			return (NULL);
 		}
 	}
@@ -64,7 +64,7 @@ char *validator(char *cmd_name)
 	if (!path)
 	{
 		free(path);
-		received_sig = 127;
+		g_received_sig = 127;
 		return (NULL);
 	}
 	return (path);

@@ -21,8 +21,6 @@ void handle_special_tokens(t_token *tokens)
 			if (current->type == redir[i].type && redir[i].type > 0)
 			{
 				split_tokens(current, &list1, &list2, redir[i].type);
-				lst_print(list1);
-				lst_print(list2);
 				if (redir[i].handler(list2->value) == -1)
 				{
 					printf("Redirection failed for %s\n", strerror(errno));

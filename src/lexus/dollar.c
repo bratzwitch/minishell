@@ -24,7 +24,7 @@ char *process_dollar(char **current)
     if (*var_start == '?')
     {
         *current = var_start + 1;
-        return(ft_itoa(received_sig));
+        return(ft_itoa(g_received_sig));
     }
 	if (!ft_isalnum(*var_start) && *var_start != '_')
 	{

@@ -45,11 +45,11 @@ void wait_for_children(int child_count)
 		if (wait(&exit_status) > 0)
 		{
 			if (WIFEXITED(exit_status))
-				received_sig = WEXITSTATUS(exit_status);
+				g_received_sig = WEXITSTATUS(exit_status);
 			else if (WIFSIGNALED(exit_status))
-				received_sig = 128 + WTERMSIG(exit_status);
+				g_received_sig = 128 + WTERMSIG(exit_status);
 			else if (WIFSTOPPED(exit_status))
-				received_sig = WSTOPSIG(exit_status);
+				g_received_sig = WSTOPSIG(exit_status);
 		}
 		if (WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == SIGINT)
     	{
