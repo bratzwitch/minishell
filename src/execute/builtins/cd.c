@@ -75,7 +75,3 @@ int handle_cd(t_token *token, char **env)
     handle_export(var_lst, env);
     return (0);
 }
-
-// minishell$>cd manual_tests/
-// free(): invalid pointer
-// Aborted (core dumped)

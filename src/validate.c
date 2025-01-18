@@ -60,7 +60,7 @@ char *validator(char *cmd_name)
 			return (NULL);
 		}
 	}
-	path = find_command(cmd_name, getenv("PATH")); // dont forget to free later
+	path = find_command(cmd_name, getenv("PATH"));
 	if (!path)
 	{
 		free(path);

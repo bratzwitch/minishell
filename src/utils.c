@@ -64,7 +64,7 @@ void lst_cleanup(t_token **head, void (*del)(t_token *))
 	while (token != NULL)
 	{
 		next = token->next;
-		del(token); // it's the same as free_token(token);
+		del(token);
 		token = next;
 	}
 	*head = NULL;
@@ -109,7 +109,7 @@ void lst_add_back(t_token **lst, t_token *new)
 	last->next = new;
 }
 
-void lst_print(t_token *token_lst) // delete after finish testing
+void lst_print(t_token *token_lst) // remove after the project is done
 {
 	t_token *current = token_lst;
 
@@ -146,31 +146,6 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_
 	}
 }
 
-// void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
-// {
-// 	t_token *current = head;
-// 	t_token *prev = NULL;
-
-// 	*list1 = NULL;
-// 	*list2 = NULL;
-// 	if (TOKEN_TYPE == 0)
-// 		return;
-// 	while (current)
-// 	{
-// 		if (current->type == TOKEN_TYPE)
-// 		{
-// 			*list2 = current->next;
-// 			if (prev)
-// 				prev->next = NULL;
-// 			current->next = NULL;
-// 			break;
-// 		}
-// 		*list1 = current;
-// 		prev = current;
-// 		current = current->next;
-// 	}
-// }
-
 int count_tokens(t_token *lst)
 {
 	int i;
@@ -205,7 +180,7 @@ char **lst_to_arr(t_token *tokens)
 	return (args);
 }
 
-void print_args(char **args)
+void print_args(char **args) // remove after the project is done
 {
 	int i = 0;
 	while (args[i])

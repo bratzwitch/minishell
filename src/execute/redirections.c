@@ -39,19 +39,3 @@ void handle_special_tokens(t_token *tokens)
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
 	// concatenate_tokens(&list1, list2->next);
 }
-
-// printf("This goes to the file\n");
-// dup2(stdout_copy, STDOUT_FILENO);
-// close(stdout_copy); // not closing file descriptors can lead to memory leaks
-/*
-O_WRONLY: This flag specifies that the file is opened for write-only access.
-O_CREAT: This flag tells the system to create the file if it does not exist.
-O_TRUNC: This flag clears its contents if it already exists.
-0644: rw-r--r-- (Owner can read/write, group and others can read)
-
-dup vs dup2
-- dup duplicates an existing file descriptor to the lowest available file descriptor. E.g. int new_fd = dup(fd);
-- dup2 allows you to specify exactly which file descriptor to duplicate to. E.g. dup2(fd,
-	STDIN_FILENO);
-stdin (standard input) is a predefined file descriptor (0) that a program uses to read input.
-*/

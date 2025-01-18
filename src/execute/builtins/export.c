@@ -1,19 +1,5 @@
 #include "../../../include/minishell.h"
 
-/* Using ***env allows us to reallocate and replace the pointer to the env array itself. (e.g. *env = new_env;)
-    This is necessary if we expand the environment list to add a new variable and want
-        the change to persist outside the function.
-    However, if you're only appending to the existing env without replacing
-        it entirely, **env is sufficient. */
-
-    /* Summary of Pointer Levels
-char ***env: Used when the pointer itself may need to be updated.
-char **env: Used when only the contents of the pointer are modified, not the pointer itself.
-
-Think of it like this:
-char ***env: A manager who can hire a new assistant (assign a new address).
-char **env: An assistant who only works with files on their desk (data at the address). */
-
 int ft_is_valid_identifier(char *name)
 {
     if (!ft_isalpha(*name) && *name != '_')
@@ -123,5 +109,3 @@ int handle_export(t_token *tokens, char **env)
     }
     return (0);
 }
-
-// error example: bash: export: `C1+LOL': not a valid identifier

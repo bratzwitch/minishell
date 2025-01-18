@@ -22,17 +22,3 @@ int builtins(t_prompt *prompt, t_token *tokens, char **env)
         return (handle_unset(tokens, env));
     return (2);
 }
-
-/*  inter-process communication (IPC)
-
-A pipe is a unidirectional communication channel that connects
-    the output of one process to the input of another.
-    It allows data to flow in one direction only. */
-
-// ◦ echo with option -n - input
-// ◦ cd with only a relative or absolute path - input
-// ◦ pwd with no options - done - no input
-// ◦ export with no options - input
-// ◦ unset with no options - input
-// ◦ env with no options or arguments - done - no input
-// ◦ exit with no options - done - no input

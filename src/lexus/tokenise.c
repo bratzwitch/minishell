@@ -87,5 +87,3 @@ t_token *get_next_token(char **input)
 		return (handle_special_characters(&current, input));
 	return (handle_argument(input));
 }
-
-// (gdb) set follow-fork-mode child / parent

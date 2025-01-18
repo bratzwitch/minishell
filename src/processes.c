@@ -13,8 +13,7 @@ pid_t	create_child_process(void)
 	return (pid);
 }
 
-// if you want to access the value of the token here's the syntax: (*prompt->token_lst)->value
-void handle_child_process(t_prompt *prompt, char **env) // uses fd[1] - writing end - close fd[0]
+void handle_child_process(t_prompt *prompt, char **env)
 {
 	struct sigaction sa_default;
 
@@ -25,11 +24,11 @@ void handle_child_process(t_prompt *prompt, char **env) // uses fd[1] - writing 
 
 	execute(prompt->token_lst, prompt->path, env);
 	printf("No food today: %s\n", strerror(errno));
-	cleanup(prompt); // idk how it'll help but let it be
+	cleanup(prompt);
 	exit(1);
 }
 
-void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt) // uses fd[0] - reading end - close fd[1]
+void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 {
 	struct sigaction sa_ignore, sa_orig;
 
@@ -52,6 +51,3 @@ void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt) // uses
         write(STDOUT_FILENO, "\n", 1);
     }
 }
-	// If both the read and write ends are open in both processes,
-	// 	it can lead to deadlocks where both processes are waiting
-	// 	for each other to perform an action.

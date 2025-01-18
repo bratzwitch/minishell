@@ -1,13 +1,13 @@
 #include "../../include/minishell.h"
 
-char *get_env_variable(char **current, char *var_start) // thats execution at this point, no?
+char *get_env_variable(char **current, char *var_start)
 {
 	char *env_value;
 	char *token_value;
 	size_t len;
 
 	len = *current - var_start;
-	token_value = strndup(var_start, len); // original ft dont forget to replace with libft
+	token_value = strndup(var_start, len);
 	env_value = getenv(token_value);
 	free(token_value);
 	if (env_value)

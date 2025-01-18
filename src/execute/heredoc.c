@@ -1,10 +1,4 @@
 #include "../../include/minishell.h"
-/* What Does Heredoc Do?
-1. A heredoc reads the input provided between a delimiter (e.g., <<END)
-and passes it as standard input (stdin) to a command.
-
-2. Instead of reading input from a file or line by line interactively,
-heredoc enables you to type out all the input inline. */
 
 void child_heredoc_process(int write_fd, const char *delimiter)
 {
@@ -53,3 +47,6 @@ int heredoc_redirection(const char *delimiter)
 	}
 	return (0);
 }
+
+// two heredocs dont work. try prompt: cat <<HERE <<DOC
+// the thing is in how we manage our pipes.
