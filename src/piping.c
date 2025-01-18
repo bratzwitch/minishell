@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   piping.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 14:00:16 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	handle_child_process_pipe(t_pipe *pipe, char **env)
@@ -18,7 +30,7 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 	else
 		close(pipe->fd[1]);
 	close(pipe->fd[0]);
-	if(validator(pipe->list1->value))
+	if (validator(pipe->list1->value))
 		execute(pipe->list1, NULL, env);
 	else
 	{
@@ -29,7 +41,7 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 	exit(1);
 }
 
-void handle_parent_process_pipe(int fd[2], int *prev_pipe)
+void	handle_parent_process_pipe(int fd[2], int *prev_pipe)
 {
 	ignore_signals();
 	close(fd[1]);
@@ -38,14 +50,14 @@ void handle_parent_process_pipe(int fd[2], int *prev_pipe)
 	*prev_pipe = fd[0];
 }
 
-void initialise_pipe(t_pipe *pipe, t_prompt *prompt)
+void	initialise_pipe(t_pipe *pipe, t_prompt *prompt)
 {
-    pipe->current_tokens = prompt->token_lst;
-    pipe->list1 = NULL;
-    pipe->list2 = NULL;
-    pipe->pipe_count = count_pipes(prompt->token_lst);
-    pipe->prev_pipe = -1;
-    pipe->i = 0;
+	pipe->current_tokens = prompt->token_lst;
+	pipe->list1 = NULL;
+	pipe->list2 = NULL;
+	pipe->pipe_count = count_pipes(prompt->token_lst);
+	pipe->prev_pipe = -1;
+	pipe->i = 0;
 }
 
 void	piping(t_prompt *prompt)

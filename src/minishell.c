@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 14:01:25 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-volatile sig_atomic_t g_received_sig = 0;
+volatile sig_atomic_t	g_received_sig = 0;
 
-char *ft_prompt(t_prompt *prompt)
+char	*ft_prompt(t_prompt *prompt)
 {
-	char *input;
+	char	*input;
 
 	input = NULL;
 	if (isatty(STDIN_FILENO))
@@ -19,7 +31,7 @@ char *ft_prompt(t_prompt *prompt)
 	return (input);
 }
 
-int save_stdinout(int *fdin_copy, int *fdout_copy) // reuse these, they're very helpful. you dont have to necessarily pass both at the same time. pass like save_stdinout(NULL, &fdout); or the opposite
+int	save_stdinout(int *fdin_copy, int *fdout_copy)
 {
 	if (fdin_copy && ((*fdin_copy = dup(STDIN_FILENO)) == -1))
 	{
@@ -36,7 +48,7 @@ int save_stdinout(int *fdin_copy, int *fdout_copy) // reuse these, they're very 
 	return (0);
 }
 
-void restore_stdinout(int *fdin_copy, int *fdout_copy) // reuse these
+void	restore_stdinout(int *fdin_copy, int *fdout_copy)
 {
 	if (fdin_copy)
 	{
@@ -52,24 +64,25 @@ void restore_stdinout(int *fdin_copy, int *fdout_copy) // reuse these
 	}
 }
 
-void handle_single_cmd(t_prompt *prompt)
+void	handle_single_cmd(t_prompt *prompt)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	pid = 0;
 	if (save_stdinout(&prompt->fdin_copy, &prompt->fdout_copy) == -1)
-		return;
+		return ;
 	g_received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
 	if (!g_received_sig || g_received_sig == 1)
 	{
 		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
-		return;
+		return ;
 	}
-	else if (!(prompt->path = validator(prompt->token_lst->value)) && !(ft_is_special_character(prompt->input)))
+	else if (!(prompt->path = validator(prompt->token_lst->value))
+		&& !(ft_is_special_character(prompt->input)))
 	{
 		printf("minishell: command not found: %s\n", prompt->token_lst->value);
 		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
-		return;
+		return ;
 	}
 	else
 	{
@@ -83,25 +96,24 @@ void handle_single_cmd(t_prompt *prompt)
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
-	t_prompt prompt;
+	t_prompt	prompt;
 
 	(void)argc;
 	(void)argv;
-
 	prompt.path = NULL;
 	prompt.env_copy = copy_env(env);
 	setup_handlers();
 	while (1)
 	{
 		if (!(prompt.input = ft_prompt(&prompt)))
-			break;
-		if(prompt.input[0] == '|')
+			break ;
+		if (prompt.input[0] == '|')
 		{
 			printf("parse error near `|'\n");
 			ft_free(prompt.env_copy);
-			break;
+			break ;
 		}
 		if ((prompt.token_lst = lexer(prompt.input)))
 		{

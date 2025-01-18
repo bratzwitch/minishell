@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   processes.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 14:00:07 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 14:00:08 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 pid_t	create_child_process(void)
 {
-	pid_t pid;
+	pid_t	pid;
 
 	pid = fork();
 	if (pid < 0)
@@ -13,7 +25,7 @@ pid_t	create_child_process(void)
 	return (pid);
 }
 
-void handle_child_process(t_prompt *prompt, char **env)
+void	handle_child_process(t_prompt *prompt, char **env)
 {
 	setup_dfl_signals();
 	execute(prompt->token_lst, prompt->path, env);
@@ -22,7 +34,7 @@ void handle_child_process(t_prompt *prompt, char **env)
 	exit(1);
 }
 
-void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
+void	handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 {
 	ignore_signals();
 	add_history(prompt->input);

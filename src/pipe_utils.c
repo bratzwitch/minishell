@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 14:00:35 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 14:00:36 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-int count_pipes(t_token *token_lst)
+int	count_pipes(t_token *token_lst)
 {
-	t_token *temp;
-	int pipes;
+	t_token	*temp;
+	int		pipes;
 
 	pipes = 0;
 	temp = token_lst;
@@ -16,7 +28,7 @@ int count_pipes(t_token *token_lst)
 	return (pipes);
 }
 
-int create_pipe(int pipe_fd[2])
+int	create_pipe(int pipe_fd[2])
 {
 	if (pipe(pipe_fd) == -1)
 	{
@@ -26,20 +38,21 @@ int create_pipe(int pipe_fd[2])
 	return (0);
 }
 
-void create_pipes(int i, int pipe_count, int fd[2])
+void	create_pipes(int i, int pipe_count, int fd[2])
 {
 	if (i < pipe_count)
 	{
 		if (create_pipe(fd) == -1)
-			exit (1);
+			exit(1);
 	}
 }
 
-void wait_for_children(int child_count)
+void	wait_for_children(int child_count)
 {
-	int i = 0;
-	int exit_status;
+	int	i;
+	int	exit_status;
 
+	i = 0;
 	while (i < child_count)
 	{
 		if (wait(&exit_status) > 0)
@@ -52,9 +65,9 @@ void wait_for_children(int child_count)
 				g_received_sig = WSTOPSIG(exit_status);
 		}
 		if (WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == SIGINT)
-    	{
-        	write(STDOUT_FILENO, "\n", 1);
-    	}
+		{
+			write(STDOUT_FILENO, "\n", 1);
+		}
 		i++;
 	}
 }
