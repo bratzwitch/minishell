@@ -12,6 +12,7 @@ LEXER_DIR := ./src/lexus
 EXEC_DIR := ./src/execute
 		
 SRC :=	$(SRC_DIR)/minishell.c \
+		$(SRC_DIR)/minibig.c \
 		$(SRC_DIR)/processes.c \
 		$(SRC_DIR)/signal.c \
 		$(SRC_DIR)/pipe_utils.c \

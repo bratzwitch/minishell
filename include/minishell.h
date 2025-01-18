@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:49:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 14:41:06 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ typedef struct s_prompt
 // SIGNALS
 void							sig_handler(int signum);
 void							setup_handlers(void);
-void setup_dfl_signals(void);
-void ignore_signals(void);
+void							setup_dfl_signals(void);
+void							ignore_signals(void);
 
 // PROCESSES
 pid_t							create_child_process(void);
@@ -151,6 +151,7 @@ void							piping(t_prompt *prompt);
 int								count_pipes(t_token *token_lst);
 
 // UTILS
+char							*ft_prompt(t_prompt *prompt);
 int								ft_is_valid_identifier(char *name);
 char							*get_var_name(const char *name);
 char							**expand_env(char **env, int new_size);
