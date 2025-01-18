@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 14:40:38 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 14:51:58 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,8 @@ void	handle_single_cmd(t_prompt *prompt)
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
-int	init(t_prompt *prompt, char **env)
+int	init(t_prompt *prompt)
 {
-	(void)env;
 	prompt->input = ft_prompt(prompt);
 	if (!prompt->input)
 		return (1);
@@ -90,7 +89,7 @@ int	main(int argc, char **argv, char **env)
 	setup_handlers();
 	while (1)
 	{
-		if (init(&prompt, env) == 1)
+		if (init(&prompt) == 1)
 			break ;
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:58 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 11:53:29 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 15:10:00 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	find_var(char *name, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (strncmp(env[i], name, strlen(name)) == 0)
+		if (strncmp(env[i], name, strlen(name)) == 0) // slava
 			return (i);
 		i++;
 	}
@@ -30,9 +30,9 @@ int	ft_unsetenv(char *name, char **env)
 {
 	int	i;
 
-	if (!name || !*name || strchr(name, '=') != NULL)
+	if (!name || !*name || strchr(name, '=') != NULL) // slava
 	{
-		fprintf(stderr, "unsetenv: invalid variable name\n");
+		fprintf(stderr, "unsetenv: invalid variable name\n"); // slava forbidden ft
 		return (-1);
 	}
 	i = find_var(name, env);

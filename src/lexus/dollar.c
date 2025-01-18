@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:19 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 14:04:06 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 15:42:49 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ char	*get_env_variable(char **current, char *var_start)
 	size_t	len;
 
 	len = *current - var_start;
-	token_value = strndup(var_start, len);
+	token_value = strndup(var_start, len); // slava
 	env_value = getenv(token_value);
 	free(token_value);
 	if (env_value)
-		return (env_value);
+		return (ft_strdup(env_value));
 	else
-		return ("");
+		return (ft_strdup(""));
 }
 
 char	*process_dollar(char **current)
@@ -42,7 +42,7 @@ char	*process_dollar(char **current)
 	if (!ft_isalnum(*var_start) && *var_start != '_')
 	{
 		*current = var_start;
-		return ("$");
+		return (ft_strdup("$"));
 	}
 	while (ft_isalnum(*var_start) || *var_start == '_')
 		var_start++;

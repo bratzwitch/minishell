@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:55 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:38:07 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 16:11:33 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	add_new_var(char ***env, char *new_var, int index)
 		add_new_var_to_env(env, new_var);
 }
 
-char	*ft_setenv(char *name, char **env)
+char	*ft_setenv(char *name, char ***env)
 {
 	int		i;
 	char	*new_var;
@@ -54,9 +54,9 @@ char	*ft_setenv(char *name, char **env)
 	cut_name = get_var_name(name);
 	if (!cut_name)
 		return (NULL);
-	i = find_var(cut_name, env);
+	i = find_var(cut_name, *env);
 	free(cut_name);
-	add_new_var(&env, new_var, i);
+	add_new_var(env, new_var, i);
 	return (new_var);
 }
 
@@ -64,25 +64,23 @@ static int	validate_and_set_var(t_token *token, char ***env)
 {
 	if (ft_is_valid_identifier(token->value))
 	{
-		fprintf(stderr, "export: '%s': not a valid identifier\n", token->value);
+		ft_putendl_fd("minishell: export: not a valid identifier", STDERR_FILENO);
 		return (1);
 	}
-	ft_setenv(token->value, *env);
+	ft_setenv(token->value, env);
 	return (0);
 }
 
-int	handle_export(t_token *tokens, char **env)
+int	handle_export(t_token *tokens, char ***env)
 {
 	t_token	*tmp;
-	int		status;
 
 	tmp = tokens;
-	status = 0;
 	while (tmp)
 	{
-		if (validate_and_set_var(tmp, &env))
-			status = 1;
+		if (validate_and_set_var(tmp, env))
+			g_received_sig = 1;
 		tmp = tmp->next;
 	}
-	return (status);
+	return (g_received_sig);
 }
