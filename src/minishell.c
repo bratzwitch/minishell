@@ -12,25 +12,11 @@ char *ft_prompt(t_prompt *prompt)
 	if (input == NULL)
 	{
 		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
-		// ft_free(prompt->env_copy);
-		free_prompt(prompt);
+		ft_free(prompt->env_copy);
 		rl_clear_history();
 		exit(g_received_sig);
 	}
 	return (input);
-}
-
-void free_prompt(t_prompt *prompt)
-{
-	if (prompt->input)
-		free(prompt->input);
-	if (prompt->path)
-		free(prompt->path);
-	if (prompt->env_copy)
-		ft_free(prompt->env_copy);
-	if (prompt->token_lst)
-		lst_cleanup(&prompt->token_lst, free_token);
-	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
 int save_stdinout(int *fdin_copy, int *fdout_copy) // reuse these, they're very helpful. you dont have to necessarily pass both at the same time. pass like save_stdinout(NULL, &fdout); or the opposite
@@ -114,8 +100,7 @@ int main(int argc, char **argv, char **env)
 		if(prompt.input[0] == '|')
 		{
 			printf("parse error near `|'\n");
-			// ft_free(prompt.env_copy);
-			free_prompt(&prompt);
+			ft_free(prompt.env_copy);
 			break;
 		}
 		if ((prompt.token_lst = lexer(prompt.input)))
@@ -126,9 +111,8 @@ int main(int argc, char **argv, char **env)
 				handle_single_cmd(&prompt);
 		}
 		add_history(prompt.input);
-		// free(prompt.input);
-		// lst_cleanup(&prompt.token_lst, free_token);
-		free_prompt(&prompt);
+		free(prompt.input);
+		lst_cleanup(&prompt.token_lst, free_token);
 	}
 	return (0);
 }
