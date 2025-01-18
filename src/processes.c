@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-pid_t create_child_process(void)
+pid_t	create_child_process(void)
 {
 	pid_t pid;
 
@@ -49,7 +49,5 @@ void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 	else if (WIFSTOPPED(*exit_status))
 		g_received_sig = WSTOPSIG(*exit_status);
 	if (WIFSIGNALED(*exit_status) && WTERMSIG(*exit_status) == SIGINT)
-	{
 		write(STDOUT_FILENO, "\n", 1);
-	}
 }

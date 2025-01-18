@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 12:56:44 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:15:21 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ typedef struct s_prompt
 	char						**env_copy;
 	t_token						*token_lst;
 	int							exit_status;
-	sigset_t block_mask;
-	sigset_t prev_mask;
 }								t_prompt;
 
 // SIGNALS
@@ -111,6 +109,10 @@ int								find_var(char *name, char **env);
 char	*format_env_var(char *name, char *value);
 
 // LEXER
+char							*process_whitespace(char *current);
+char							*process_current_char(char **current,
+									char *final_str);
+char							*handle_dollar(char **current, char *final_str);
 t_token							*lexer(char *input);
 t_token							*get_next_token(char **input);
 t_token							*create_token(enum e_token_type type,

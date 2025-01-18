@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dollar.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 12:39:19 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 12:39:20 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-char *get_env_variable(char **current, char *var_start)
+char	*get_env_variable(char **current, char *var_start)
 {
-	char *env_value;
-	char *token_value;
-	size_t len;
+	char	*env_value;
+	char	*token_value;
+	size_t	len;
 
 	len = *current - var_start;
 	token_value = strndup(var_start, len);
@@ -16,38 +28,39 @@ char *get_env_variable(char **current, char *var_start)
 		return ("");
 }
 
-char *process_dollar(char **current)
+char	*process_dollar(char **current)
 {
-    char *var_start = *current + 1;
-    char *env_value;
+	char	*var_start;
+	char	*env_value;
 
-    if (*var_start == '?')
-    {
-        *current = var_start + 1;
-        return(ft_itoa(g_received_sig));
-    }
+	var_start = *current + 1;
+	if (*var_start == '?')
+	{
+		*current = var_start + 1;
+		return (ft_itoa(g_received_sig));
+	}
 	if (!ft_isalnum(*var_start) && *var_start != '_')
 	{
 		*current = var_start;
-		return("$");
+		return ("$");
 	}
-    while (ft_isalnum(*var_start) || *var_start == '_')
-        var_start++;
-    env_value = get_env_variable(&var_start, *current + 1);
-    *current = var_start;
-    return (env_value);
+	while (ft_isalnum(*var_start) || *var_start == '_')
+		var_start++;
+	env_value = get_env_variable(&var_start, *current + 1);
+	*current = var_start;
+	return (env_value);
 }
 
-char *dollar(char **current, char *final_str, char **start)
+char	*dollar(char **current, char *final_str, char **start)
 {
-    char *temp;
-    char *env_value;
+	char	*temp;
+	char	*env_value;
 
-    temp = append_to_final_str(final_str, *start, *current - *start);
-    env_value = process_dollar(current);
-    final_str = ft_strjoin(temp, env_value);
-    free(temp);
-    free(env_value);
-    *start = *current;
-    return (final_str);
+	temp = append_to_final_str(final_str, *start, *current - *start);
+	env_value = process_dollar(current);
+	final_str = ft_strjoin(temp, env_value);
+	free(temp);
+	free(env_value);
+	*start = *current;
+	return (final_str);
 }
