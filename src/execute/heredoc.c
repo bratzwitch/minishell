@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 13:14:03 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 13:14:04 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-void child_heredoc_process(int write_fd, const char *delimiter)
+void	child_heredoc_process(int write_fd, const char *delimiter)
 {
-	char *line;
+	char	*line;
 
 	while (1)
 	{
@@ -10,7 +22,7 @@ void child_heredoc_process(int write_fd, const char *delimiter)
 		if (!line || !strcmp(line, delimiter))
 		{
 			free(line);
-			break;
+			break ;
 		}
 		ft_putendl_fd(line, write_fd);
 		free(line);
@@ -19,10 +31,10 @@ void child_heredoc_process(int write_fd, const char *delimiter)
 	exit(0);
 }
 
-int heredoc_redirection(const char *delimiter)
+int	heredoc_redirection(const char *delimiter)
 {
-	int pipe_fd[2];
-	pid_t pid;
+	int		pipe_fd[2];
+	pid_t	pid;
 
 	if (create_pipe(pipe_fd) == -1)
 		return (-1);

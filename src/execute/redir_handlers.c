@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir_handlers.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 13:14:06 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 13:14:06 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-int input_redirection(const char *file_name)
+int	input_redirection(const char *file_name)
 {
-	int fd_in;
+	int	fd_in;
 
 	fd_in = open(file_name, O_RDONLY);
 	if (fd_in == -1)
@@ -20,9 +32,9 @@ int input_redirection(const char *file_name)
 	return (0);
 }
 
-int redirect_stdout(const char *file_name, int flags)
+int	redirect_stdout(const char *file_name, int flags)
 {
-	int fd_out;
+	int	fd_out;
 
 	fd_out = open(file_name, flags, 0644);
 	if (fd_out == -1)
@@ -40,17 +52,17 @@ int redirect_stdout(const char *file_name, int flags)
 	return (0);
 }
 
-int output_redirection(const char *file_name)
+int	output_redirection(const char *file_name)
 {
-	int flags;
+	int	flags;
 
 	flags = O_WRONLY | O_CREAT | O_TRUNC;
 	return (redirect_stdout(file_name, flags));
 }
 
-int append_redirection(const char *file_name)
+int	append_redirection(const char *file_name)
 {
-	int flags;
+	int	flags;
 
 	flags = O_WRONLY | O_CREAT | O_APPEND;
 	return (redirect_stdout(file_name, flags));

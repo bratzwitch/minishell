@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 13:14:00 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 13:14:58 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-int execute(t_token *tokens, char *path, char **env)
+int	execute(t_token *tokens, char *path, char **env)
 {
-	char **args;
-	char *path_exec;
+	char	**args;
+	char	*path_exec;
 
 	if (ft_is_special_token(tokens))
 		handle_special_tokens(tokens);
@@ -12,7 +24,8 @@ int execute(t_token *tokens, char *path, char **env)
 		path_exec = path;
 	else
 	{
-		if (!(path_exec = validator(tokens->value)))
+		path_exec = validator(tokens->value);
+		if (!path_exec)
 			g_received_sig = builtins(NULL, tokens, env);
 	}
 	execve(path_exec, args, env);
