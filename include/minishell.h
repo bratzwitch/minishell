@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:15:21 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:31:38 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_prompt
 	char						**env_copy;
 	t_token						*token_lst;
 	int							exit_status;
+	int fdin_copy;
+	int fdout_copy;
 }								t_prompt;
 
 // SIGNALS
@@ -177,5 +179,6 @@ void							free_token(t_token *t);
 void							cleanup(t_prompt *prompt);
 void							lst_cleanup(t_token **head,
 									void (*del)(t_token *));
+void free_prompt(t_prompt *prompt);
 
 #endif

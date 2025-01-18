@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_pwd_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:52 by vmoroz            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/01/18 13:15:59 by vmoroz           ###   ########.fr       */
+=======
+/*   Updated: 2025/01/18 13:33:15 by yhusieva         ###   ########.fr       */
+>>>>>>> 7870d1541dc642cb632f680afcf3db4457ab8e49
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +86,9 @@ int	handle_exit(t_prompt *prompt)
 			return (1);
 	}
 	g_received_sig = get_exit_status(prompt->token_lst);
-	ft_free(prompt->env_copy);
-	lst_cleanup(&prompt->token_lst, free_token);
+	// ft_free(prompt->env_copy);
+	// lst_cleanup(&prompt->token_lst, free_token);
+	// restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
+	free_prompt(prompt);
 	exit(g_received_sig);
 }
