@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:16:27 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:31:38 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,5 +179,6 @@ void							free_token(t_token *t);
 void							cleanup(t_prompt *prompt);
 void							lst_cleanup(t_token **head,
 									void (*del)(t_token *));
+void free_prompt(t_prompt *prompt);
 
 #endif

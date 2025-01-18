@@ -12,7 +12,8 @@ char *ft_prompt(t_prompt *prompt)
 	if (input == NULL)
 	{
 		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
-		ft_free(prompt->env_copy); // write a ft which will free the whole prompt at once. it should take the prompt as a parameter.
+		// ft_free(prompt->env_copy);
+		free_prompt(prompt);
 		rl_clear_history();
 		exit(g_received_sig);
 	}
@@ -109,7 +110,8 @@ int main(int argc, char **argv, char **env)
 		if(prompt.input[0] == '|')
 		{
 			printf("parse error near `|'\n");
-			ft_free(prompt.env_copy);
+			// ft_free(prompt.env_copy);
+			free_prompt(&prompt);
 			break;
 		}
 		if ((prompt.token_lst = lexer(prompt.input)))
@@ -120,8 +122,9 @@ int main(int argc, char **argv, char **env)
 				handle_single_cmd(&prompt);
 		}
 		add_history(prompt.input);
-		free(prompt.input);
-		lst_cleanup(&prompt.token_lst, free_token);
+		// free(prompt.input);
+		// lst_cleanup(&prompt.token_lst, free_token);
+		free_prompt(&prompt);
 	}
 	return (0);
 }
