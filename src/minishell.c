@@ -19,6 +19,15 @@ char *ft_prompt(t_prompt *prompt)
 	return (input);
 }
 
+void free_prompt(t_prompt *prompt)
+{
+	free(prompt->input);
+	free(prompt->path);
+	ft_free(prompt->env_copy);
+	lst_cleanup(&prompt->token_lst, free_token);
+	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
+}
+
 int save_stdinout(int *fdin_copy, int *fdout_copy) // reuse these, they're very helpful. you dont have to necessarily pass both at the same time. pass like save_stdinout(NULL, &fdout); or the opposite
 {
 	if (fdin_copy && ((*fdin_copy = dup(STDIN_FILENO)) == -1))
@@ -55,24 +64,20 @@ void restore_stdinout(int *fdin_copy, int *fdout_copy) // reuse these
 void handle_single_cmd(t_prompt *prompt)
 {
 	pid_t pid;
-	int fdin_copy;
-	int fdout_copy;
 
 	pid = 0;
-	if (save_stdinout(&fdin_copy, &fdout_copy) == -1)
+	if (save_stdinout(&prompt->fdin_copy, &prompt->fdout_copy) == -1)
 		return;
-	if(!strncmp(prompt->token_lst->value,"exit",4)) // nope. lets just move fdin_copy and fdout_copy to the prompt struct and pass it to the handle_exit in the builtins
-		restore_stdinout(&fdin_copy, &fdout_copy);
 	g_received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
 	if (!g_received_sig || g_received_sig == 1)
 	{
-		restore_stdinout(&fdin_copy, &fdout_copy);
+		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 		return;
 	}
 	else if (!(prompt->path = validator(prompt->token_lst->value)) && !(ft_is_special_character(prompt->input)))
 	{
 		printf("minishell: command not found: %s\n", prompt->token_lst->value);
-		restore_stdinout(&fdin_copy, &fdout_copy);
+		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 		return;
 	}
 	else
@@ -84,7 +89,7 @@ void handle_single_cmd(t_prompt *prompt)
 			handle_parent_process(pid, &prompt->exit_status, prompt);
 	}
 	free(prompt->path);
-	restore_stdinout(&fdin_copy, &fdout_copy);
+	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
 int main(int argc, char **argv, char **env)
