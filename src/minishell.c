@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 14:01:25 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 14:15:44 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,15 @@ char	*ft_prompt(t_prompt *prompt)
 
 int	save_stdinout(int *fdin_copy, int *fdout_copy)
 {
-	if (fdin_copy && ((*fdin_copy = dup(STDIN_FILENO)) == -1))
+	*fdin_copy = dup(STDIN_FILENO);
+	if (fdin_copy && *fdin_copy == -1)
 	{
 		perror("Error redirecting input.");
 		close(*fdin_copy);
 		return (-1);
 	}
-	if (fdout_copy && ((*fdout_copy = dup(STDOUT_FILENO)) == -1))
+	*fdout_copy = dup(STDOUT_FILENO);
+	if (fdout_copy && *fdout_copy == -1)
 	{
 		perror("Error redirecting input.");
 		close(*fdout_copy);
@@ -77,8 +79,8 @@ void	handle_single_cmd(t_prompt *prompt)
 		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 		return ;
 	}
-	else if (!(prompt->path = validator(prompt->token_lst->value))
-		&& !(ft_is_special_character(prompt->input)))
+	prompt->path = validator(prompt->token_lst->value);
+	if (!prompt->path && !ft_is_special_character(prompt->input))
 	{
 		printf("minishell: command not found: %s\n", prompt->token_lst->value);
 		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
@@ -107,7 +109,8 @@ int	main(int argc, char **argv, char **env)
 	setup_handlers();
 	while (1)
 	{
-		if (!(prompt.input = ft_prompt(&prompt)))
+		prompt.input = ft_prompt(&prompt);
+		if (!prompt.input)
 			break ;
 		if (prompt.input[0] == '|')
 		{
@@ -115,7 +118,8 @@ int	main(int argc, char **argv, char **env)
 			ft_free(prompt.env_copy);
 			break ;
 		}
-		if ((prompt.token_lst = lexer(prompt.input)))
+		prompt.token_lst = lexer(prompt.input);
+		if (prompt.token_lst)
 		{
 			if (is_pipe(prompt.token_lst))
 				piping(&prompt);
