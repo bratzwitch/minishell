@@ -22,10 +22,14 @@ char *ft_prompt(t_prompt *prompt)
 
 void free_prompt(t_prompt *prompt)
 {
-	free(prompt->input);
-	free(prompt->path);
-	ft_free(prompt->env_copy);
-	lst_cleanup(&prompt->token_lst, free_token);
+	if (prompt->input)
+		free(prompt->input);
+	if (prompt->path)
+		free(prompt->path);
+	if (prompt->env_copy)
+		ft_free(prompt->env_copy);
+	if (prompt->token_lst)
+		lst_cleanup(&prompt->token_lst, free_token);
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
@@ -51,13 +55,13 @@ void restore_stdinout(int *fdin_copy, int *fdout_copy) // reuse these
 	if (fdin_copy)
 	{
 		if (dup2(*fdin_copy, STDIN_FILENO) == -1)
-			perror("dup2 fdin");
+			return ;
 		close(*fdin_copy);
 	}
 	if (fdout_copy)
 	{
 		if (dup2(*fdout_copy, STDOUT_FILENO) == -1)
-			perror("dup2 fdout");
+			return ;
 		close(*fdout_copy);
 	}
 }

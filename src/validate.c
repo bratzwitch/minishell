@@ -63,7 +63,7 @@ char *validator(char *cmd_name)
 	path = find_command(cmd_name, getenv("PATH"));
 	if (!path)
 	{
-		free(path);
+		// free(path);
 		g_received_sig = 127;
 		return (NULL);
 	}

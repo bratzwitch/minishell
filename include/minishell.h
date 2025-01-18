@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:39:23 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 13:49:30 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ typedef struct s_prompt
 // SIGNALS
 void							sig_handler(int signum);
 void							setup_handlers(void);
+void setup_dfl_signals(void);
+void ignore_signals(void);
 
 // PROCESSES
 pid_t							create_child_process(void);

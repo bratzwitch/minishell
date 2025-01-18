@@ -1,5 +1,27 @@
 #include "../include/minishell.h"
 
+void setup_dfl_signals(void)
+{
+    struct sigaction sa_default;
+
+    sigemptyset(&sa_default.sa_mask);
+    sa_default.sa_flags = 0;
+    sa_default.sa_handler = SIG_DFL;
+    if (sigaction(SIGINT, &sa_default, NULL) == -1)
+        write(STDERR_FILENO, "Error: sigaction SIGQUIT\n", 26);
+}
+
+void ignore_signals(void)
+{
+    struct sigaction sa_ignore;
+
+    sigemptyset(&sa_ignore.sa_mask);
+    sa_ignore.sa_flags = 0;
+    sa_ignore.sa_handler = SIG_IGN;
+    if (sigaction(SIGINT, &sa_ignore, NULL) == -1)
+        write(STDERR_FILENO, "Error: sigaction SIGINT\n", 25);
+}
+
 void sig_handler(int signum)
 {
     g_received_sig = 128 + signum;
@@ -24,13 +46,7 @@ void setup_handlers(void)
     sa.sa_handler = SIG_IGN;
     if (sigaction(SIGQUIT, &sa, NULL) == -1)
     {
-        write(STDERR_FILENO, "Error: sigaction SIGQUIT\n", 26); // what will happen if we add the SIG_DFL handler here instead of the child?
-        exit(1);
-    }
-    sa.sa_handler = SIG_DFL;
-    if (sigaction(SIGCHLD, &sa, NULL) == -1)
-    {
-        write(STDERR_FILENO, "Error: sigaction SIGCHLD\n", 26); // what will happen if we add the SIG_DFL handler here instead of the child?
+        write(STDERR_FILENO, "Error: sigaction SIGQUIT\n", 26);
         exit(1);
     }
 }

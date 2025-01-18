@@ -15,13 +15,7 @@ pid_t	create_child_process(void)
 
 void handle_child_process(t_prompt *prompt, char **env)
 {
-	struct sigaction sa_default;
-
-	sigemptyset(&sa_default.sa_mask);
-	sa_default.sa_flags = 0;
-	sa_default.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &sa_default, NULL);
-
+	setup_dfl_signals();
 	execute(prompt->token_lst, prompt->path, env);
 	printf("No food today: %s\n", strerror(errno));
 	cleanup(prompt);
@@ -30,18 +24,10 @@ void handle_child_process(t_prompt *prompt, char **env)
 
 void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 {
-	struct sigaction sa_ignore;
-
-	sigemptyset(&sa_ignore.sa_mask);
-	sa_ignore.sa_flags = 0;
-	sa_ignore.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sa_ignore, NULL);
-
+	ignore_signals();
 	add_history(prompt->input);
 	waitpid(id, exit_status, 0);
-
 	setup_handlers();
-
 	if (WIFEXITED(*exit_status))
 		g_received_sig = WEXITSTATUS(*exit_status);
 	else if (WIFSIGNALED(*exit_status))
