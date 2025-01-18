@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:46 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 12:38:46 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:30:42 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ static int	change_directory(char **path)
 {
 	if (chdir(*path) == -1)
 	{
-		perror("cd");
+		perror("minishell: cd");
 		return (1);
 	}
 	*path = getcwd(NULL, 0);
 	if (!*path)
 	{
-		perror("pwd");
+		perror("minishell: pwd");
 		return (1);
 	}
 	return (0);
@@ -59,7 +59,7 @@ static char	*resolve_path(t_token *token, char **env)
 	char	*home;
 	int		index;
 
-	if (!token->next)
+	if (!token->next || !ft_strcmp(token->next->value, "~"))
 	{
 		home = getenv("HOME");
 		if (!home && env)
@@ -70,7 +70,7 @@ static char	*resolve_path(t_token *token, char **env)
 		}
 		if (!home)
 		{
-			perror("cd: HOME not set");
+			perror("minishell: cd: HOME not set");
 			return (NULL);
 		}
 		return (home);
@@ -85,7 +85,7 @@ int	handle_cd(t_token *token, char **env)
 
 	if (count_tokens(token) > 2)
 	{
-		perror("cd");
+		ft_putendl_fd("minishell: cd: too many arguments", STDERR_FILENO);
 		return (1);
 	}
 	path = resolve_path(token, env);
@@ -97,6 +97,7 @@ int	handle_cd(t_token *token, char **env)
 	free(path);
 	if (!var_lst)
 		return (1);
-	handle_export(var_lst, env);
+	handle_export(NULL, var_lst, &env);
+	lst_cleanup(&var_lst, free_token);
 	return (0);
 }

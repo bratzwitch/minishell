@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 16:12:27 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 17:50:58 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int								handle_cd(t_token *token, char **env);
 int								handle_env(char **env);
 int								handle_pwd(void);
 int								handle_exit(t_prompt *prompt);
-int								handle_export(t_token *tokens, char ***env);
+int handle_export(t_prompt *prompt, t_token *tokens, char ***env);
 int								handle_unset(t_token *tokens, char **env);
 int								find_var(char *name, char **env);
 char							*format_env_var(char *name, char *value);
@@ -156,8 +156,6 @@ int								ft_is_valid_identifier(char *name);
 char							*get_var_name(const char *name);
 char							**expand_env(char **env, int new_size);
 int								get_env_size(char **env);
-void							replace_existing_var(char ***env, char *new_var,
-									int index);
 char							**lst_to_arr(t_token *token_lst);
 bool							ft_isspace(const char c);
 bool							ft_is_special_character(const char *current);

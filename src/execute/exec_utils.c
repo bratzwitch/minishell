@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:13:57 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:17:14 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 17:52:43 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*format_env_var(char *name, char *value)
 {
 	char	*result;
 
-	result = (char *)malloc((ft_strlen(name) + ft_strlen(value) + 1)
+	result = (char *)malloc((ft_strlen(name) + ft_strlen(value) + 2)
 			* sizeof(char));
 	if (!result)
 		return (NULL);

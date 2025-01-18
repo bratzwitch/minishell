@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:13:54 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 16:12:32 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:19:43 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	builtins(t_prompt *prompt, t_token *tokens, char **env)
 	else if (!strcmp(tokens->value, "echo"))
 		return (handle_echo(tokens));
 	else if (!strcmp(tokens->value, "export"))
-		return (handle_export(tokens, &env));
+		return (handle_export(prompt, tokens, &env));
 	else if (!strcmp(tokens->value, "unset"))
 		return (handle_unset(tokens, env));
 	return (2);

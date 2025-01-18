@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:21:44 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 16:16:36 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 17:50:51 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,7 @@ char **expand_env(char **env, int new_size)
         i++;
     }
     new_env[i] = NULL;
-    if (env)
-		ft_free(env);
+	ft_free(env);
     return (new_env);
 }
 
@@ -73,10 +72,4 @@ int	get_env_size(char **env)
 	while (env && env[size])
 		size++;
 	return (size);
-}
-
-void	replace_existing_var(char ***env, char *new_var, int index)
-{
-	free((*env)[index]);
-	(*env)[index] = new_var;
 }

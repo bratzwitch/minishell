@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:58 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 15:10:00 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 18:26:30 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_unsetenv(char *name, char **env)
 
 	if (!name || !*name || strchr(name, '=') != NULL) // slava
 	{
-		fprintf(stderr, "unsetenv: invalid variable name\n"); // slava forbidden ft
+		ft_putendl_fd("minishell: unsetenv: invalid variable name", STDERR_FILENO);
 		return (-1);
 	}
 	i = find_var(name, env);
@@ -52,7 +52,11 @@ int	handle_unset(t_token *tokens, char **env)
 	t_token	*tmp;
 
 	tmp = tokens;
-	(void)env;
+	if (!tmp->next)
+	{
+		ft_putendl_fd("minishell: unset: not enough arguments", STDERR_FILENO);
+		return(1);
+	}
 	while (tmp && tmp->next)
 	{
 		if (ft_unsetenv(tmp->next->value, env) != 0)
