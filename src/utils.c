@@ -1,107 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 13:51:35 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/18 13:54:39 by vmoroz           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
-char **copy_env(char **env)
+void	lst_add_back(t_token **lst, t_token *new)
 {
-	int i;
-	char **copy;
-
-	i = 0;
-	while (env[i])
-		i++;
-	copy = malloc((i + 1) * sizeof(char *));
-	if (!copy)
-		return (NULL);
-	i = 0;
-	while (env[i])
-	{
-		copy[i] = strdup(env[i]);
-		if (!copy[i])
-		{
-			while (--i >= 0)
-				free(copy[i]);
-			free(copy);
-			return (NULL);
-		}
-		i++;
-	}
-	copy[i] = NULL;
-	return (copy);
-}
-
-void ft_free(char **values)
-{
-	int i;
-
-	i = 0;
-	if (!values)
-		return;
-	while (values[i])
-	{
-		free(values[i]);
-		i++;
-	}
-	free(values);
-}
-
-void free_token(t_token *t)
-{
-	// if (t->type == TOKEN_ARGUMENT)
-	// 	free(t->value);
-	// free(t);
-	if(t)
-	{
-		free(t->value);
-		free(t);
-	}
-}
-
-void lst_cleanup(t_token **head, void (*del)(t_token *))
-{
-	t_token *token;
-	t_token *next;
-
-	token = *head;
-	while (token != NULL)
-	{
-		next = token->next;
-		del(token);
-		token = next;
-	}
-	*head = NULL;
-}
-
-void cleanup(t_prompt *prompt)
-{
-	rl_clear_history();
-	if (!prompt)
-		return;
-	free(prompt->input);
-	free(prompt->path);
-	lst_cleanup(&prompt->token_lst, free_token);
-}
-
-int is_pipe(t_token *head)
-{
-	t_token *tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		if (tmp->type == TOKEN_PIPE)
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-void lst_add_back(t_token **lst, t_token *new)
-{
-	t_token *last;
+	t_token	*last;
 
 	if (!*lst)
 	{
 		*lst = new;
-		return;
+		return ;
 	}
 	last = *lst;
 	while (last->next)
@@ -109,27 +27,18 @@ void lst_add_back(t_token **lst, t_token *new)
 	last->next = new;
 }
 
-void lst_print(t_token *token_lst) // remove after the project is done
+void	split_tokens(t_token *head, t_token **list1, t_token **list2,
+		enum e_token_type TOKEN_TYPE)
 {
-	t_token *current = token_lst;
+	t_token	*current;
+	t_token	*prev;
 
-	while (current != NULL)
-	{
-		printf("%s->", current->value);
-		current = current->next;
-	}
-	printf("NULL\n");
-}
-
-void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
-{
-	t_token *current = head;
-	t_token *prev = NULL;
-
+	current = head;
+	prev = NULL;
 	*list1 = head;
 	*list2 = NULL;
 	if (TOKEN_TYPE == 0)
-		return;
+		return ;
 	while (current)
 	{
 		if (current->type == TOKEN_TYPE)
@@ -139,16 +48,16 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2, enum e_token_
 				prev->next = NULL;
 			current->next = NULL;
 			free(current);
-			return;
+			return ;
 		}
 		prev = current;
 		current = current->next;
 	}
 }
 
-int count_tokens(t_token *lst)
+int	count_tokens(t_token *lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (lst)
@@ -159,12 +68,12 @@ int count_tokens(t_token *lst)
 	return (i);
 }
 
-char **lst_to_arr(t_token *tokens)
+char	**lst_to_arr(t_token *tokens)
 {
-	t_token *tmp;
-	char **args;
-	int count;
-	int i;
+	t_token	*tmp;
+	char	**args;
+	int		count;
+	int		i;
 
 	tmp = tokens;
 	count = count_tokens(tokens);
@@ -180,9 +89,11 @@ char **lst_to_arr(t_token *tokens)
 	return (args);
 }
 
-void print_args(char **args) // remove after the project is done
+void	print_args(char **args) // remove after the project is done
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (args[i])
 	{
 		printf("args: %s\n", args[i]);
