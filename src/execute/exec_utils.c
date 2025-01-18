@@ -1,5 +1,19 @@
 #include "../../include/minishell.h"
 
+char	*format_env_var(char *name, char *value)
+{
+	char	*result;
+
+	result = (char *)malloc((ft_strlen(name) + ft_strlen(value) + 1)
+			* sizeof(char));
+	if (!result)
+		return (NULL);
+	strcpy(result, name);
+	strcat(result, "=");
+	strcat(result, value);
+	return (result);
+}
+
 enum e_token_type ft_is_special_token(t_token *head)
 {
 	t_token *tmp;

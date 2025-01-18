@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 12:28:13 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 12:56:44 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_prompt
 	char						**env_copy;
 	t_token						*token_lst;
 	int							exit_status;
+	sigset_t block_mask;
+	sigset_t prev_mask;
 }								t_prompt;
 
 // SIGNALS
@@ -106,6 +108,7 @@ int								handle_exit(t_prompt *prompt);
 int								handle_export(t_token *tokens, char **env);
 int								handle_unset(t_token *tokens, char **env);
 int								find_var(char *name, char **env);
+char	*format_env_var(char *name, char *value);
 
 // LEXER
 t_token							*lexer(char *input);

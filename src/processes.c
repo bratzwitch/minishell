@@ -1,8 +1,6 @@
 #include "../include/minishell.h"
 
-volatile sig_atomic_t g_received_sig = 0;
-
-pid_t	create_child_process(void)
+pid_t create_child_process(void)
 {
 	pid_t pid;
 
@@ -19,10 +17,10 @@ void handle_child_process(t_prompt *prompt, char **env)
 {
 	struct sigaction sa_default;
 
-    sigemptyset(&sa_default.sa_mask);
-    sa_default.sa_flags = 0;
-    sa_default.sa_handler = SIG_DFL;
-    sigaction(SIGINT, &sa_default, NULL);
+	sigemptyset(&sa_default.sa_mask);
+	sa_default.sa_flags = 0;
+	sa_default.sa_handler = SIG_DFL;
+	sigaction(SIGINT, &sa_default, NULL);
 
 	execute(prompt->token_lst, prompt->path, env);
 	printf("No food today: %s\n", strerror(errno));
@@ -32,16 +30,18 @@ void handle_child_process(t_prompt *prompt, char **env)
 
 void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 {
-	struct sigaction sa_ignore, sa_orig;
+	struct sigaction sa_ignore;
 
-    sigemptyset(&sa_ignore.sa_mask);
-    sa_ignore.sa_flags = 0;
-    sa_ignore.sa_handler = SIG_IGN;
-    sigaction(SIGINT, &sa_ignore, &sa_orig);
+	sigemptyset(&sa_ignore.sa_mask);
+	sa_ignore.sa_flags = 0;
+	sa_ignore.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sa_ignore, NULL);
 
 	add_history(prompt->input);
 	waitpid(id, exit_status, 0);
-	sigaction(SIGINT, &sa_orig, NULL);
+
+	setup_handlers();
+
 	if (WIFEXITED(*exit_status))
 		g_received_sig = WEXITSTATUS(*exit_status);
 	else if (WIFSIGNALED(*exit_status))
@@ -49,7 +49,7 @@ void handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 	else if (WIFSTOPPED(*exit_status))
 		g_received_sig = WSTOPSIG(*exit_status);
 	if (WIFSIGNALED(*exit_status) && WTERMSIG(*exit_status) == SIGINT)
-    {
-        write(STDOUT_FILENO, "\n", 1);
-    }
+	{
+		write(STDOUT_FILENO, "\n", 1);
+	}
 }

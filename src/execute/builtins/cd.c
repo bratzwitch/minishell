@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:46 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 12:32:22 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 12:38:46 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
-
-char	*format_env_var(char *name, char *value)
-{
-	char	*result;
-
-	result = (char *)malloc((ft_strlen(name) + ft_strlen(value) + 1)
-			* sizeof(char));
-	if (!result)
-		return (NULL);
-	strcpy(result, name);
-	strcat(result, "=");
-	strcat(result, value);
-	return (result);
-}
 
 char	*extract_var(char *name, char **env)
 {
