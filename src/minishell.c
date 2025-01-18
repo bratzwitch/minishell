@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 14:15:44 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 14:40:38 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,56 +14,17 @@
 
 volatile sig_atomic_t	g_received_sig = 0;
 
-char	*ft_prompt(t_prompt *prompt)
+int	builtins_handle(t_prompt *prompt)
 {
-	char	*input;
-
-	input = NULL;
-	if (isatty(STDIN_FILENO))
-		input = readline("minishell$>");
-	if (input == NULL)
+	if (save_stdinout(&prompt->fdin_copy, &prompt->fdout_copy) == -1)
+		return (1);
+	g_received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
+	if (!g_received_sig || g_received_sig == 1)
 	{
-		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
-		ft_free(prompt->env_copy);
-		rl_clear_history();
-		exit(g_received_sig);
-	}
-	return (input);
-}
-
-int	save_stdinout(int *fdin_copy, int *fdout_copy)
-{
-	*fdin_copy = dup(STDIN_FILENO);
-	if (fdin_copy && *fdin_copy == -1)
-	{
-		perror("Error redirecting input.");
-		close(*fdin_copy);
-		return (-1);
-	}
-	*fdout_copy = dup(STDOUT_FILENO);
-	if (fdout_copy && *fdout_copy == -1)
-	{
-		perror("Error redirecting input.");
-		close(*fdout_copy);
-		return (-1);
+		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
+		return (1);
 	}
 	return (0);
-}
-
-void	restore_stdinout(int *fdin_copy, int *fdout_copy)
-{
-	if (fdin_copy)
-	{
-		if (dup2(*fdin_copy, STDIN_FILENO) == -1)
-			return ;
-		close(*fdin_copy);
-	}
-	if (fdout_copy)
-	{
-		if (dup2(*fdout_copy, STDOUT_FILENO) == -1)
-			return ;
-		close(*fdout_copy);
-	}
 }
 
 void	handle_single_cmd(t_prompt *prompt)
@@ -71,14 +32,8 @@ void	handle_single_cmd(t_prompt *prompt)
 	pid_t	pid;
 
 	pid = 0;
-	if (save_stdinout(&prompt->fdin_copy, &prompt->fdout_copy) == -1)
+	if (builtins_handle(prompt) == 1)
 		return ;
-	g_received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
-	if (!g_received_sig || g_received_sig == 1)
-	{
-		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
-		return ;
-	}
 	prompt->path = validator(prompt->token_lst->value);
 	if (!prompt->path && !ft_is_special_character(prompt->input))
 	{
@@ -98,6 +53,32 @@ void	handle_single_cmd(t_prompt *prompt)
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
+int	init(t_prompt *prompt, char **env)
+{
+	(void)env;
+	prompt->input = ft_prompt(prompt);
+	if (!prompt->input)
+		return (1);
+	if (prompt->input[0] == '|')
+	{
+		printf("parse error near `|'\n");
+		ft_free(prompt->env_copy);
+		return (1);
+	}
+	prompt->token_lst = lexer(prompt->input);
+	if (prompt->token_lst)
+	{
+		if (is_pipe(prompt->token_lst))
+			piping(prompt);
+		else
+			handle_single_cmd(prompt);
+	}
+	add_history(prompt->input);
+	free(prompt->input);
+	lst_cleanup(&prompt->token_lst, free_token);
+	return (0);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_prompt	prompt;
@@ -109,26 +90,8 @@ int	main(int argc, char **argv, char **env)
 	setup_handlers();
 	while (1)
 	{
-		prompt.input = ft_prompt(&prompt);
-		if (!prompt.input)
+		if (init(&prompt, env) == 1)
 			break ;
-		if (prompt.input[0] == '|')
-		{
-			printf("parse error near `|'\n");
-			ft_free(prompt.env_copy);
-			break ;
-		}
-		prompt.token_lst = lexer(prompt.input);
-		if (prompt.token_lst)
-		{
-			if (is_pipe(prompt.token_lst))
-				piping(&prompt);
-			else
-				handle_single_cmd(&prompt);
-		}
-		add_history(prompt.input);
-		free(prompt.input);
-		lst_cleanup(&prompt.token_lst, free_token);
 	}
 	return (0);
 }

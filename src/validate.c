@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:46:57 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:48:44 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 14:42:08 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ char	*validator(char *cmd_name)
 	path = find_command(cmd_name, getenv("PATH"));
 	if (!path)
 	{
-		// free(path);
 		g_received_sig = 127;
 		return (NULL);
 	}
