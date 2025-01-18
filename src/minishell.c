@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-volatile sig_atomic_t received_sig = 0;
+volatile sig_atomic_t g_received_sig = 0;
 
 char *ft_prompt(t_prompt *prompt)
 {
@@ -14,7 +14,7 @@ char *ft_prompt(t_prompt *prompt)
 		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
 		ft_free(prompt->env_copy); // write a ft which will free the whole prompt at once. it should take the prompt as a parameter.
 		rl_clear_history();
-		exit(received_sig);
+		exit(g_received_sig);
 	}
 	return (input);
 }
@@ -63,8 +63,8 @@ void handle_single_cmd(t_prompt *prompt)
 		return;
 	if(!strncmp(prompt->token_lst->value,"exit",4)) // nope. lets just move fdin_copy and fdout_copy to the prompt struct and pass it to the handle_exit in the builtins
 		restore_stdinout(&fdin_copy, &fdout_copy);
-	received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
-	if (!received_sig || received_sig == 1)
+	g_received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
+	if (!g_received_sig || g_received_sig == 1)
 	{
 		restore_stdinout(&fdin_copy, &fdout_copy);
 		return;

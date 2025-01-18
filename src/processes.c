@@ -1,7 +1,5 @@
 #include "../include/minishell.h"
 
-volatile sig_atomic_t g_received_sig = 0;
-
 pid_t	create_child_process(void)
 {
 	pid_t pid;

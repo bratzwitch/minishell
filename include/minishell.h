@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 12:28:13 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 13:12:09 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,10 @@ int								handle_unset(t_token *tokens, char **env);
 int								find_var(char *name, char **env);
 
 // LEXER
+char							*process_whitespace(char *current);
+char							*process_current_char(char **current,
+									char *final_str);
+char							*handle_dollar(char **current, char *final_str);
 t_token							*lexer(char *input);
 t_token							*get_next_token(char **input);
 t_token							*create_token(enum e_token_type type,

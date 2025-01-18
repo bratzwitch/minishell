@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:52 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 11:51:36 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 12:54:19 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,6 @@ int	handle_exit(t_prompt *prompt)
 	g_received_sig = get_exit_status(prompt->token_lst);
 	ft_free(prompt->env_copy);
 	lst_cleanup(&prompt->token_lst, free_token);
-	cleanup(prompt);
+	// cleanup(prompt);
 	exit(g_received_sig);
 }
