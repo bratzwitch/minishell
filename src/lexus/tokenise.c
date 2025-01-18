@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenise.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:34 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:10:07 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 14:14:59 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ t_token	*create_token(enum e_token_type type, char *value)
 	new_token->value = value;
 	new_token->next = NULL;
 	return (new_token);
-}
-
-t_token	*finalize_and_return_token(char *final_str)
-{
-	return (create_token(TOKEN_ARGUMENT, final_str));
 }
 
 void	free_cur_and_str(char *final_str, char *current)
@@ -54,7 +49,7 @@ t_token	*handle_argument(char **input)
 	while (*current && !ft_isspace(*current))
 	{
 		if (*current == '$' && *(current + 1))
-			final_str = handle_dollar(&current, final_str);
+			final_str = dollar(&current, final_str, &current);
 		final_str = process_current_char(&current, final_str);
 		if (!final_str)
 		{
@@ -64,7 +59,7 @@ t_token	*handle_argument(char **input)
 	}
 	current = process_whitespace(current);
 	*input = current;
-	return (finalize_and_return_token(final_str));
+	return (create_token(TOKEN_ARGUMENT, final_str));
 }
 
 t_token	*get_next_token(char **input)

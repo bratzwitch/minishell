@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handles.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:09:32 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:10:02 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 14:15:06 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,6 @@ char	*handle_quotes(char **current, char *final_str)
 	else if (quote == '\"')
 		final_str = handle_double_quote(current, final_str);
 	return (final_str);
-}
-
-char	*handle_dollar(char **current, char *final_str)
-{
-	return (dollar(current, final_str, current));
 }
 
 char	*handle_regular_characters(char **current, char *final_str)

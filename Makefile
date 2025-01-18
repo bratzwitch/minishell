@@ -1,7 +1,4 @@
 NAME := minishell
-# For Mac:
-# CFLAGS := -Wall -Wextra -Werror -g -fPIE -I/opt/homebrew/opt/readline/include
-# LDFLAGS := -L/opt/homebrew/opt/readline/lib -lreadline -lncurses
 CFLAGS := -Wall -Wextra -Werror -fPIE -g
 LDFLAGS := -lreadline -lncurses
 CC := cc
@@ -80,17 +77,3 @@ re: fclean all
 .PHONY: all clean fclean re
 
 .SILENT: $(NAME) $(OBJS)
-
-# explanations to the assignment operators:
-# 	1. = (Simple Assignment):
-# 		The value is expanded every time the variable is used.
-# 	2. := (Immediate Assignment):
-# 		The value is expanded immediately when the variable is defined.
-# 	3. ?= (Conditional Assignment):
-# 		The value is assigned only if the variable is not already defined.
-# 	4. += (Append Assignment):
-# 		The value is appended to the existing value of the variable.
-
-# why does Makefile compiles the files with and without specifying "all"?
-# 	When you run make without specifying a target,
-# 	make uses the first target defined in the Makefile as the default target.
