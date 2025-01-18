@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:12:09 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 13:15:21 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int								handle_exit(t_prompt *prompt);
 int								handle_export(t_token *tokens, char **env);
 int								handle_unset(t_token *tokens, char **env);
 int								find_var(char *name, char **env);
+char	*format_env_var(char *name, char *value);
 
 // LEXER
 char							*process_whitespace(char *current);

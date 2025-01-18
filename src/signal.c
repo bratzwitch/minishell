@@ -27,4 +27,10 @@ void setup_handlers(void)
         write(STDERR_FILENO, "Error: sigaction SIGQUIT\n", 26); // what will happen if we add the SIG_DFL handler here instead of the child?
         exit(1);
     }
+    sa.sa_handler = SIG_DFL;
+    if (sigaction(SIGCHLD, &sa, NULL) == -1)
+    {
+        write(STDERR_FILENO, "Error: sigaction SIGCHLD\n", 26); // what will happen if we add the SIG_DFL handler here instead of the child?
+        exit(1);
+    }
 }

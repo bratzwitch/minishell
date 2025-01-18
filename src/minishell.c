@@ -55,10 +55,10 @@ void restore_stdinout(int *fdin_copy, int *fdout_copy) // reuse these
 void handle_single_cmd(t_prompt *prompt)
 {
 	pid_t pid;
-	pid = 0;
 	int fdin_copy;
 	int fdout_copy;
 
+	pid = 0;
 	if (save_stdinout(&fdin_copy, &fdout_copy) == -1)
 		return;
 	if(!strncmp(prompt->token_lst->value,"exit",4)) // nope. lets just move fdin_copy and fdout_copy to the prompt struct and pass it to the handle_exit in the builtins
