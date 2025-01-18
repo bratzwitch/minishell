@@ -34,6 +34,7 @@ SRC :=	$(SRC_DIR)/minishell.c \
 		$(EXEC_DIR)/builtins/cd.c \
 		$(EXEC_DIR)/builtins/echo.c \
 		$(EXEC_DIR)/builtins/env_pwd_exit.c \
+		$(EXEC_DIR)/builtins/export_utils.c \
 		$(EXEC_DIR)/builtins/export.c \
 		$(EXEC_DIR)/builtins/unset.c
 

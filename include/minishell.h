@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:31:38 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/18 13:39:23 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ typedef struct s_prompt
 	char						**env_copy;
 	t_token						*token_lst;
 	int							exit_status;
-	int fdin_copy;
-	int fdout_copy;
+	int							fdin_copy;
+	int							fdout_copy;
 }								t_prompt;
 
 // SIGNALS
@@ -108,7 +108,7 @@ int								handle_exit(t_prompt *prompt);
 int								handle_export(t_token *tokens, char **env);
 int								handle_unset(t_token *tokens, char **env);
 int								find_var(char *name, char **env);
-char	*format_env_var(char *name, char *value);
+char							*format_env_var(char *name, char *value);
 
 // LEXER
 char							*process_whitespace(char *current);
@@ -149,6 +149,12 @@ void							piping(t_prompt *prompt);
 int								count_pipes(t_token *token_lst);
 
 // UTILS
+int								ft_is_valid_identifier(char *name);
+char							*get_var_name(const char *name);
+char							**expand_env(char **env, int new_size);
+int								get_env_size(char **env);
+void							replace_existing_var(char ***env, char *new_var,
+									int index);
 char							**lst_to_arr(t_token *token_lst);
 bool							ft_isspace(const char c);
 bool							ft_is_special_character(const char *current);
@@ -179,6 +185,6 @@ void							free_token(t_token *t);
 void							cleanup(t_prompt *prompt);
 void							lst_cleanup(t_token **head,
 									void (*del)(t_token *));
-void free_prompt(t_prompt *prompt);
+void							free_prompt(t_prompt *prompt);
 
 #endif

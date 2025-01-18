@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:36:10 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/18 13:37:19 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,31 +52,6 @@ void handle_special_tokens(t_token *tokens)
 	current = tokens;
 	list1 = NULL;
 	list2 = NULL;
-<<<<<<< HEAD
-	while (current)
-	{
-		i = 0;
-		while (redir[i].handler != NULL)
-		{
-			if (current->type == redir[i].type && redir[i].type > 0)
-			{
-				split_tokens(current, &list1, &list2, redir[i].type);
-				if (redir[i].handler(list2->value) == -1)
-				{
-					printf("Redirection failed for %s\n", strerror(errno));
-					return ;
-				}
-				current = list2;
-				break ;
-			}
-			i++;
-		}
-		current = current->next;
-	}
-	lst_cleanup(&current, free_token);
-	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
-	// concatenate_tokens(&list1, list2->next);
-=======
 	redir = init_redirections();
     while (current)
     {
@@ -92,7 +67,6 @@ void handle_special_tokens(t_token *tokens)
     }
     lst_cleanup(&current, free_token);
     split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
->>>>>>> 7870d1541dc642cb632f680afcf3db4457ab8e49
 }
 
 // void handle_special_tokens(t_token *tokens)
