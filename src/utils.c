@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:51:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/19 11:58:09 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/19 12:34:29 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	split_tokens(t_token *head, t_token **list1, t_token **list2,
 		prev = current;
 		current = current->next;
 	}
+	
 }
 
 int	count_tokens(t_token *lst)
