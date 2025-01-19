@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:43:20 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/19 11:30:04 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	handle_special_tokens(t_token *tokens)
 		}
 		current = current->next;
 	}
-	lst_cleanup(&current, free_token);
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
+	lst_cleanup(&current, free_token);
 }
 
 // void handle_special_tokens(t_token *tokens)

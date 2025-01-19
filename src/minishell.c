@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 18:18:12 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/19 11:56:07 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		if (init(&prompt) == 1)
+		{
+			
 			break ;
+		}
 	}
 	return (0);
 }
