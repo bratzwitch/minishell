@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/19 11:55:18 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/19 11:57:56 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 	else
 	{
 		ft_free(env);
-		lst_cleanup(&pipe->list1, free_token);
-		lst_cleanup(&pipe->current_tokens, free_token);
+		if (pipe->list1)
+			lst_cleanup(&pipe->list1, free_token);
+		if (pipe->current_tokens)
+			lst_cleanup(&pipe->current_tokens, free_token);
 	}
 	exit(1);
 }

@@ -1,2 +1,5 @@
 #!/bin/bash
-echo "There is a big vase on the table."
+#!/bin/bash
+while read line; do
+    echo "Read line: $line"
+done
