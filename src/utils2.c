@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:53:23 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/19 12:35:21 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/21 14:49:22 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ void	free_token(t_token *t)
 	{
 		if (t->type == TOKEN_ARGUMENT)
 			free(t->value);
-		free(t);
+		if(t->type != TOKEN_HEREDOC && t->type != TOKEN_REDIRECT_APPEND && t->type != TOKEN_REDIRECT_IN && t->type != TOKEN_REDIRECT_OUT)
+			free(t);
 	}
 }
 

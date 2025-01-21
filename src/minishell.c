@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/19 11:56:48 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/21 14:27:48 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ int	builtins_handle(t_prompt *prompt)
 {
 	if (save_stdinout(&prompt->fdin_copy, &prompt->fdout_copy) == -1)
 		return (1);
+	if (!prompt->token_lst || !prompt->token_lst->value)
+    {
+        printf("Error: Invalid token in builtins\n");
+        restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
+        return 1;
+    }
 	g_received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
 	if (!g_received_sig || g_received_sig == 1)
 	{
@@ -53,11 +59,27 @@ void	handle_single_cmd(t_prompt *prompt)
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
+int ft_isallspace(char *str)
+{
+    while (*str)
+    {
+        if (!ft_isspace(*str))
+            return 0;
+        str++;
+    }
+    return 1;
+}
+
 int	init(t_prompt *prompt)
 {
 	prompt->input = ft_prompt(prompt);
 	if (!prompt->input)
 		return (1);
+	if (ft_isallspace(prompt->input))
+    {
+        free(prompt->input);
+        return (0);
+    }
 	if (prompt->input[0] == '|')
 	{
 		printf("parse error near `|'\n");
@@ -71,6 +93,12 @@ int	init(t_prompt *prompt)
 			piping(prompt);
 		else
 			handle_single_cmd(prompt);
+	}
+	else if(!prompt->token_lst)
+	{
+		free(prompt->input);
+		lst_cleanup(&prompt->token_lst, free_token);
+		return (0);
 	}
 	add_history(prompt->input);
 	free(prompt->input);
