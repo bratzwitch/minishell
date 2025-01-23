@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:25 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 12:39:26 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 12:30:53 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	ft_isspace(const char c)
 bool	ft_is_special_character(const char *current)
 {
 	return (*current == '<' || *current == '>' || *current == '|'
-		|| strncmp(current, "<<", 2) == 0 || strncmp(current, ">>", 2) == 0);
+		|| ft_strncmp(current, "<<", 2) == 0 || ft_strncmp(current, ">>", 2) == 0);
 }
 
 bool	ft_is_quotes(const char *current)

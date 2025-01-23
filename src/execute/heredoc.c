@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:03 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/21 14:12:25 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 13:21:00 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	heredoc_redirection(const char *delimiter)
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (!line || strcmp(line, delimiter) == 0)
+		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;

@@ -15,6 +15,7 @@ LIB_FILES = ft_atoi.c	ft_atof.c        ft_memset.c      ft_strlcpy.c \
 			ft_memcpy.c     ft_strjoin.c     ft_toupper.c \
 			ft_memmove.c    ft_strlcat.c	ft_lstadd_back.c   ft_lstclear.c \
 			ft_lstiter.c  ft_lstmap.c  ft_lstsize.c \
+			ft_strcat.c  ft_strcpy.c  ft_strncat.c  ft_strndup.c \
 			ft_lstadd_front.c  ft_lstdelone.c  ft_lstlast.c  ft_lstnew.c \
 			ft_printf/ft_formats.c ft_printf/ft_hexpointer.c \
 			ft_printf/ft_itoa.c ft_printf/ft_printf.c \

@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/21 14:27:48 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 12:49:44 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ int	init(t_prompt *prompt)
 	if (prompt->input[0] == '|')
 	{
 		printf("parse error near `|'\n");
-		ft_free(prompt->env_copy);
-		return (1);
+		return 0;
 	}
 	prompt->token_lst = lexer(prompt->input);
 	if (prompt->token_lst)

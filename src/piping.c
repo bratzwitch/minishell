@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/19 12:25:44 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 13:06:50 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,6 @@
 void	handle_child_process_pipe(t_pipe *pipe, char **env)
 {
 	setup_dfl_signals();
-	if (ft_is_special_token(pipe->list2) == TOKEN_HEREDOC)
-	{
-		if (heredoc_redirection(pipe->list2->next->value) == -1)
-		{
-			printf("Heredoc redirection failed.\n");
-			return ;
-		}
-	}
 	if (pipe->prev_pipe != -1)
 		restore_stdinout(&pipe->prev_pipe, NULL);
 	if (pipe->i < pipe->pipe_count)
@@ -31,7 +23,9 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 		close(pipe->fd[1]);
 	close(pipe->fd[0]);
 	if (validator(pipe->list1->value))
+	{
 		execute(pipe->list1, NULL, env);
+	}
 	else
 	{
 		ft_free(env);
@@ -76,7 +70,17 @@ void	piping(t_prompt *prompt)
 		if (pipe.pid == 0)
 			handle_child_process_pipe(&pipe, prompt->env_copy);
 		else
+		{
+			if (ft_is_special_token(pipe.list2) == TOKEN_HEREDOC)
+			{
+				if (heredoc_redirection(pipe.list2->next->value) == -1)
+				{
+					printf("Heredoc redirection failed.\n");
+					return ;
+				}
+			}
 			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe);
+		}
 		pipe.i++;
 	}
 	if (pipe.prev_pipe != -1)

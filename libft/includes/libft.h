@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 13:48:07 by vmoroz            #+#    #+#             */
-/*   Updated: 2024/09/14 16:00:18 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 13:23:10 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+char				*ft_strncat(char *dest, const char *src, size_t n);
+char				*ft_strndup(const char *src, size_t n);
+char				*ft_strcpy(char *dest, const char *src);
+char				*ft_strcat(char *dest, const char *src);
 size_t				ft_strlen(const char *s);
 int					ft_atoi(const char *str);
 double				ft_atof(char *str);
@@ -33,7 +37,7 @@ int					ft_isalpha(int c);
 int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(int c);
-int					ft_strcmp(char *s1, char *s2);
+int					ft_strcmp(char *s1, const char *s2);
 void				*ft_memchr(const void *src, int chr, size_t n);
 int					ft_memcmp(void *str1, void *str2, int l);
 void				*ft_memcpy(void *dest, const void *src, size_t n);

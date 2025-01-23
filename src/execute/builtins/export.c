@@ -3,19 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:55 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 17:50:46 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:46:43 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-void add_new_var_to_env(t_prompt *prompt, char ***env, char *new_var)
+void	print_exported_env(char **env)
 {
-	int size;
-	char **new_env;
+	int		i;
+	char	*eq;
+
+	i = 0;
+	while (env[i])
+	{
+		eq = ft_strchr(env[i], '=');
+		if (eq)
+		{
+			printf("declare -x %.*s=\"%s\"\n", (int)(eq - env[i]), env[i], eq
+				+ 1);
+		}
+		else
+		{
+			printf("declare -x %s\n", env[i]);
+		}
+		i++;
+	}
+}
+
+void	add_new_var_to_env(t_prompt *prompt, char ***env, char *new_var)
+{
+	int		size;
+	char	**new_env;
 
 	size = get_env_size(*env);
 	new_env = expand_env(*env, size + 1);
@@ -23,7 +45,7 @@ void add_new_var_to_env(t_prompt *prompt, char ***env, char *new_var)
 	{
 		perror("Failed to expand env");
 		free(new_var);
-		return;
+		return ;
 	}
 	*env = new_env;
 	(*env)[size] = new_var;
@@ -32,11 +54,11 @@ void add_new_var_to_env(t_prompt *prompt, char ***env, char *new_var)
 		prompt->env_copy = *env;
 }
 
-char *ft_setenv(t_prompt *prompt, char *name, char ***env)
+char	*ft_setenv(t_prompt *prompt, char *name, char ***env)
 {
-	int i;
-	char *new_var;
-	char *cut_name;
+	int		i;
+	char	*new_var;
+	char	*cut_name;
 
 	if (!name || !ft_strchr(name, '='))
 		return (NULL);
@@ -58,21 +80,27 @@ char *ft_setenv(t_prompt *prompt, char *name, char ***env)
 	return (new_var);
 }
 
-static int validate_and_set_var(t_prompt *prompt, t_token *token, char ***env)
+static int	validate_and_set_var(t_prompt *prompt, t_token *token, char ***env)
 {
 	if (ft_is_valid_identifier(token->value))
 	{
-		ft_putendl_fd("minishell: export: not a valid identifier", STDERR_FILENO);
+		ft_putendl_fd("minishell: export: not a valid identifier",
+			STDERR_FILENO);
 		return (1);
 	}
 	ft_setenv(prompt, token->value, env);
 	return (0);
 }
 
-int handle_export(t_prompt *prompt, t_token *tokens, char ***env)
+int	handle_export(t_prompt *prompt, t_token *tokens, char ***env)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
+	if (!tokens->next)
+	{
+		print_exported_env(*env);
+		return (0);
+	}
 	tmp = tokens;
 	while (tmp)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:21:44 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 17:50:51 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:00:44 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_var_name(const char *name)
 	char	*equal_sign;
 	size_t	len;
 
-	equal_sign = strchr(name, '=');
+	equal_sign = ft_strchr(name, '=');
 	if (!equal_sign)
 		return (NULL);
 	len = equal_sign - name;
@@ -49,7 +49,7 @@ char **expand_env(char **env, int new_size)
     i = 0;
     while (env[i])
     {
-        new_env[i] = strdup(env[i]);
+        new_env[i] = ft_strdup(env[i]);
         if (!new_env[i])
         {
             while (i > 0)

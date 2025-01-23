@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:46:57 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 14:42:08 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 12:29:02 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ char	*validator(char *cmd_name)
 {
 	char	*path;
 
-	if (!strncmp(cmd_name, "../", 3) || !strncmp(cmd_name, "./", 2)
-		|| !strncmp(cmd_name, "/", 1))
+	if (!ft_strncmp(cmd_name, "../", 3) || !ft_strncmp(cmd_name, "./", 2)
+		|| !ft_strncmp(cmd_name, "/", 1))
 	{
 		if (access(cmd_name, X_OK) == 0)
 			return (ft_strdup(cmd_name));

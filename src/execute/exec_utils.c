@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:13:57 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 17:52:43 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:32:35 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ char	*format_env_var(char *name, char *value)
 			* sizeof(char));
 	if (!result)
 		return (NULL);
-	strcpy(result, name);
-	strcat(result, "=");
-	strcat(result, value);
+	ft_strcpy(result, name);
+	ft_strcat(result, "=");
+	ft_strcat(result, value);
 	return (result);
 }
 

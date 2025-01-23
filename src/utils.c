@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:51:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/21 14:45:27 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 10:33:20 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	split_tokens(t_token *head, t_token **list1, t_token **list2,
 			current->next = NULL;
 			// free(current);
 			// free_token(current);
-			free_token(current);
+			// free_token(current);
 			return ;
 		}
 		prev = current;

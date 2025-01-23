@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:58 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 18:26:30 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/23 12:33:20 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	find_var(char *name, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (strncmp(env[i], name, strlen(name)) == 0) // slava
+		if (ft_strncmp(env[i], name, ft_strlen(name)) == 0) // slava
 			return (i);
 		i++;
 	}
@@ -30,7 +30,7 @@ int	ft_unsetenv(char *name, char **env)
 {
 	int	i;
 
-	if (!name || !*name || strchr(name, '=') != NULL) // slava
+	if (!name || !*name || ft_strchr(name, '=') != NULL) // slava
 	{
 		ft_putendl_fd("minishell: unsetenv: invalid variable name", STDERR_FILENO);
 		return (-1);

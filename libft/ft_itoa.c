@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 15:08:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2024/02/12 15:48:11 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 12:18:04 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,6 @@ static int	digits_num(int n)
 		num++;
 	}
 	return (num);
-}
-
-static char	*ft_strcpy(char *dest, const char *src)
-{
-	int	i;
-
-	i = 0;
-	while (src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
 }
 
 static char	*underflow(void)

@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:31 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/21 12:39:06 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 12:37:58 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ char	*append_to_final_str(char *final_str, const char *start, size_t len)
 	new_str = malloc(old_len + len + 1);
 	if (!new_str)
 		return (NULL);
-	strcpy(new_str, final_str);
-	strncat(new_str, start, len);
+	ft_strcpy(new_str, final_str);
+	ft_strncat(new_str, start, len);
 	free(final_str);
 	return (new_str);
 }

@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/14 13:12:06 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 13:21:27 by vmoroz           ###   ########.fr       */
+/*   Created: 2025/01/23 12:19:37 by vmoroz            #+#    #+#             */
+/*   Updated: 2025/01/23 12:28:26 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "./includes/libft.h"
 
-int	ft_strcmp(char *s1, const char *s2)
+char	*ft_strndup(const char *src, size_t n)
 {
-	int	i;
+	char	*str;
+	size_t	len;
+	size_t	i;
 
 	i = 0;
-	while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
+	len = 0;
+	while (src[len] && len < n)
+		len++;
+	str = malloc(len + 1);
+	if (str == NULL)
+		return (NULL);
+	while (i < len)
+	{
+		str[i] = src[i];
 		i++;
-	return (s1[i] - s2[i]);
+	}
+	str[i] = '\0';
+	return (str);
 }

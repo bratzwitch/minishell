@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:53:23 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/21 14:49:22 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/23 12:29:23 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**copy_env(char **env)
 	i = 0;
 	while (env[i])
 	{
-		copy[i] = strdup(env[i]);
+		copy[i] = ft_strdup(env[i]);
 		if (!copy[i])
 		{
 			while (--i >= 0)
@@ -59,10 +59,10 @@ void	free_token(t_token *t)
 {
 	if (t)
 	{
-		if (t->type == TOKEN_ARGUMENT)
+		if (t->type == TOKEN_ARGUMENT || t->type == TOKEN_PIPE)
 			free(t->value);
-		if(t->type != TOKEN_HEREDOC && t->type != TOKEN_REDIRECT_APPEND && t->type != TOKEN_REDIRECT_IN && t->type != TOKEN_REDIRECT_OUT)
-			free(t);
+		// if(t->type != TOKEN_HEREDOC && t->type != TOKEN_REDIRECT_APPEND && t->type != TOKEN_REDIRECT_IN && t->type != TOKEN_REDIRECT_OUT)
+		free(t);
 	}
 }
 
@@ -86,7 +86,9 @@ void	cleanup(t_prompt *prompt)
 	rl_clear_history();
 	if (!prompt)
 		return ;
-	free(prompt->input);
-	free(prompt->path);
+	if (prompt->input)
+    	free(prompt->input);
+	if (prompt->path)
+    	free(prompt->path);
 	lst_cleanup(&prompt->token_lst, free_token);
 }
