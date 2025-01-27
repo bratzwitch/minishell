@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 11:28:06 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:41:02 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	process_token(t_token *current, t_redirection *redir, t_token **list1,
 	return (0);
 }
 
-void	handle_special_tokens(t_token *tokens)
+int	handle_special_tokens(t_token *tokens)
 {
 	t_token			*current;
 	t_token			*list1;
@@ -58,7 +58,12 @@ void	handle_special_tokens(t_token *tokens)
 	{
 		processed = process_token(current, redir, &list1, &list2);
 		if (processed == -1)
-			return ;
+		{
+			split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
+			lst_cleanup(&current, free_token);
+			return -1;
+		}
+			
 		if (processed == 1)
 		{
 			current = list2;
@@ -68,6 +73,7 @@ void	handle_special_tokens(t_token *tokens)
 	}
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
 	lst_cleanup(&current, free_token);
+	return 1;
 }
 
 // void handle_special_tokens(t_token *tokens)

@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 13:06:50 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/27 16:04:45 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,15 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 	close(pipe->fd[0]);
 	if (validator(pipe->list1->value))
 	{
-		execute(pipe->list1, NULL, env);
+		
+		if(execute(pipe->list1, NULL, env) == -1)
+		{
+			ft_free(env);
+			if (pipe->list1)
+				lst_cleanup(&pipe->list1, free_token);
+			if (pipe->current_tokens)
+				lst_cleanup(&pipe->current_tokens, free_token);
+		}
 	}
 	else
 	{
@@ -65,6 +73,7 @@ void	piping(t_prompt *prompt)
 	{
 		split_tokens(pipe.current_tokens, &pipe.list1, &pipe.list2, TOKEN_PIPE);
 		pipe.current_tokens = pipe.list2;
+		
 		create_pipes(pipe.i, pipe.pipe_count, pipe.fd);
 		pipe.pid = create_child_process();
 		if (pipe.pid == 0)
@@ -83,6 +92,7 @@ void	piping(t_prompt *prompt)
 		}
 		pipe.i++;
 	}
+	
 	if (pipe.prev_pipe != -1)
 		close(pipe.prev_pipe);
 	lst_cleanup(&pipe.list1, free_token);

@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 13:20:54 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:24:56 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char							*validator(char *cmd_name);
 int								builtins(t_prompt *prompt, t_token *tokens,
 									char **env);
 char							*find_command(char *cmd_name, char *env_path);
-void							handle_special_tokens(t_token *tokens);
+int							handle_special_tokens(t_token *tokens);
 
 // BUILT-INS
 int								handle_echo(t_token *token);

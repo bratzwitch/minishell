@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:13:54 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 12:32:49 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/27 14:54:53 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,13 @@ int	builtins(t_prompt *prompt, t_token *tokens, char **env)
 	if (tokens == NULL)
 		return (2);
 	if (ft_is_special_token(tokens))
-		handle_special_tokens(tokens);
+	{
+		if(handle_special_tokens(tokens) == -1)
+		{
+			return 1;
+		}
+	}
+		
 	if (!ft_strcmp(tokens->value, "env"))
 		return (handle_env(env));
 	else if (!ft_strcmp(tokens->value, "pwd"))
