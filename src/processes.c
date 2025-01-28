@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:07 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:27 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 16:35:23 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ pid_t	create_child_process(void)
 void	handle_child_process(t_prompt *prompt, char **env)
 {
 	setup_dfl_signals();
-	if(execute(prompt->token_lst, prompt->path, env) == -1)
+	if(execute(prompt->token_lst, prompt->path, env, prompt) == -1)
 	{
+		ft_free(env);
 		cleanup(prompt);
 		printf("\nbro\n");
 		exit(1);

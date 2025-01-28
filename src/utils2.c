@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:53:23 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 11:17:01 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:35:48 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_token(t_token *t)
 {
 	if (t)
 	{
-		if (t->type == TOKEN_ARGUMENT || t->type != TOKEN_PIPE)
+		if (t->type == TOKEN_ARGUMENT)
 			free(t->value);
 		free(t);
 	}

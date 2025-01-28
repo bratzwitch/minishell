@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 11:15:28 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:36:04 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void							handle_parent_process(pid_t id,
 
 // EXEC
 int								execute(t_token *tokens, char *path,
-									char **env);
+									char **env,t_prompt *prompt);
 char							*validator(char *cmd_name);
 int								builtins(t_prompt *prompt, t_token *tokens,
 									char **env);

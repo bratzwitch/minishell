@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:22 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 10:44:54 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 15:01:12 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,19 @@ t_token	*lexer(char *input)
 
 	token_head = NULL;
 	new_token = NULL;
-	if (ft_quotes(input, ft_strlen(input)))
+	if ((ft_quotes(input, ft_strlen(input))))
 	{
 		printf("minishell: quotes not closed. God saw you.\n");
 		return (NULL);
 	}
 	while (*input)
 	{
+		// if(ft_strcmp(input,"||") && ft_quotes(input, ft_strlen(input)) == 0)
+		// {
+		// 	printf("|| not mandatory, not today\n");
+		// 	add_history(input);
+		// 	return NULL;
+		// }
 		while (*input && ft_isspace(*input))
 			input++;
 		new_token = get_next_token(&input);

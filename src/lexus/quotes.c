@@ -6,13 +6,13 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:31 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 12:37:58 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 12:32:07 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*append_to_final_str(char *final_str, const char *start, size_t len)
+char	*append_to_final_str(char *final_str,const char *start, size_t len)
 {
 	char	*new_str;
 	size_t	old_len;
@@ -24,6 +24,7 @@ char	*append_to_final_str(char *final_str, const char *start, size_t len)
 	ft_strcpy(new_str, final_str);
 	ft_strncat(new_str, start, len);
 	free(final_str);
+	
 	return (new_str);
 }
 

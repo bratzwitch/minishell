@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:03 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 11:25:58 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:09:20 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,11 @@ int handle_heredoc(t_token *list2)
         return (-1);
     }
     if (heredoc_redirection(list2->value, tmp_filename) == -1)
+	{
+		unlink(tmp_filename);
+		free(tmp_filename);
         return (-1);
+	}
     if (count_heredocs(list2) == 0)
     {
         tmp_fd = open(tmp_filename, O_RDONLY);
@@ -126,6 +130,8 @@ int handle_heredoc(t_token *list2)
         }
         restore_stdinout(&tmp_fd, NULL);
         unlink(tmp_filename);
+		
     }
+	free(tmp_filename);
     return (0);
 }

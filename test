@@ -1,0 +1,10 @@
+include
+libft
+Makefile
+mini_outfiles
+minishell
+minishell.supp
+README.md
+src
+test
+test_script.sh

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 11:17:56 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/28 17:00:16 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int process_token(t_token *current, t_redirection *redir, t_token **list1,
                 split_tokens(current, list1, list2, redir[i].type);
                 if (handle_heredoc(*list2) == -1)
                     return (-1);
+				
             }
 			else
 			{
@@ -80,6 +81,6 @@ int handle_special_tokens(t_token *tokens)
 		current = current->next;
 	}
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
-	lst_cleanup(&current, free_token);
+	lst_cleanup(&list2, free_token);
 	return (1);
 }

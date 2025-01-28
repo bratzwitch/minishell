@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 11:23:38 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:48:58 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	builtins_handle(t_prompt *prompt)
 	if (save_stdinout(&prompt->fdin_copy, &prompt->fdout_copy) == -1)
 		return (1);
 	if (!prompt->token_lst || !prompt->token_lst->value)
-    {
-        printf("Error: Invalid token in builtins\n");
-        restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
-        return 1;
-    }
+	{
+		printf("Error: Invalid token in builtins\n");
+		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
+		return (1);
+	}
 	g_received_sig = builtins(prompt, prompt->token_lst, prompt->env_copy);
 	if (!g_received_sig || g_received_sig == 1)
 	{
@@ -59,15 +59,42 @@ void	handle_single_cmd(t_prompt *prompt)
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
-int ft_isallspace(char *str)
+int	ft_isallspace(char *str)
 {
-    while (*str)
-    {
-        if (!ft_isspace(*str))
-            return 0;
-        str++;
-    }
-    return 1;
+	while (*str)
+	{
+		if (!ft_isspace(*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+int	isvalidtoken(t_token *t)
+{
+	if (t->type == TOKEN_PIPE)
+	{
+		printf("error\n");
+		return (1);
+	}
+	while (t)
+	{
+		if ((t->type == TOKEN_REDIRECT_APPEND || t->type == TOKEN_REDIRECT_IN
+				|| t->type == TOKEN_REDIRECT_OUT || t->type == TOKEN_HEREDOC)
+			&& (!t->next || t->next->type != TOKEN_ARGUMENT))
+		{
+			printf("error\n");
+			return (1);
+		}
+		if (t->type == TOKEN_PIPE && (!t->next
+				|| t->next->type != TOKEN_ARGUMENT))
+		{
+			printf("error\n");
+			return (1);
+		}
+		t = t->next;
+	}
+	return (0);
 }
 
 int	init(t_prompt *prompt)
@@ -76,16 +103,28 @@ int	init(t_prompt *prompt)
 	if (!prompt->input)
 		return (1);
 	if (ft_isallspace(prompt->input))
-    {
-        free(prompt->input);
-        return (0);
-    }
-	if (prompt->input[0] == '|')
 	{
-		printf("parse error near `|'\n");
-		return 0;
+		free(prompt->input);
+		return (0);
 	}
+	// if (prompt->input[0] == '|')
+	// {
+	// 	printf("parse error near `|'\n");
+	// 	return (0);
+	// }
+	// if (prompt->input[0] == '<')
+	// {
+	// 	printf("syntax error near unexpected token `newline'\n");
+	// 	return (0);
+	// }
 	prompt->token_lst = lexer(prompt->input);
+	if (isvalidtoken(prompt->token_lst) == 1)
+	{
+		add_history(prompt->input);
+		free(prompt->input);
+		lst_cleanup(&prompt->token_lst, free_token);
+		return (0);
+	}
 	if (prompt->token_lst)
 	{
 		if (is_pipe(prompt->token_lst))
@@ -93,7 +132,7 @@ int	init(t_prompt *prompt)
 		else
 			handle_single_cmd(prompt);
 	}
-	else if(!prompt->token_lst)
+	else if (!prompt->token_lst)
 	{
 		free(prompt->input);
 		lst_cleanup(&prompt->token_lst, free_token);
@@ -101,7 +140,7 @@ int	init(t_prompt *prompt)
 	}
 	add_history(prompt->input);
 	free(prompt->input);
-	// lst_cleanup(&prompt->token_lst, free_token);
+	lst_cleanup(&prompt->token_lst, free_token);
 	return (0);
 }
 
