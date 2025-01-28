@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/27 14:45:51 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 11:23:38 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	init(t_prompt *prompt)
 	}
 	add_history(prompt->input);
 	free(prompt->input);
-	lst_cleanup(&prompt->token_lst, free_token);
+	// lst_cleanup(&prompt->token_lst, free_token);
 	return (0);
 }
 

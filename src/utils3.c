@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:54:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 13:54:35 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 11:15:04 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,24 @@ int	is_pipe(t_token *head)
 		tmp = tmp->next;
 	}
 	return (0);
+}
+
+int count_heredocs(t_token *token_list)
+{
+	int count = 0;
+	t_token *tmp = token_list;
+
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_HEREDOC)
+			count++;
+		tmp = tmp->next;
+	}
+	return (count);
+}
+
+int heredoc_redirection_wrapper(const char *param)
+{
+	(void)param;
+	return(0);
 }

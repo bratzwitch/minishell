@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:53:23 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/27 16:39:51 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 11:17:01 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	free_token(t_token *t)
 	{
 		if (t->type == TOKEN_ARGUMENT || t->type != TOKEN_PIPE)
 			free(t->value);
-		// if(t->type != TOKEN_HEREDOC && t->type != TOKEN_REDIRECT_APPEND && t->type != TOKEN_REDIRECT_IN && t->type != TOKEN_REDIRECT_OUT)
 		free(t);
 	}
 }

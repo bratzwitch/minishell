@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/27 14:24:56 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 11:15:28 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ enum							e_token_type
 	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_APPEND,
 	TOKEN_HEREDOC,
-	TOKEN_ENV_VAR,
-	TOKEN_EXIT_STATUS,
 	TOKEN_EOF,
 	TOKEN_ERROR
 };
@@ -116,7 +114,6 @@ char							*format_env_var(char *name, char *value);
 char							*process_whitespace(char *current);
 char							*process_current_char(char **current,
 									char *final_str);
-char							*handle_dollar(char **current, char *final_str);
 t_token							*lexer(char *input);
 t_token							*get_next_token(char **input);
 t_token							*create_token(enum e_token_type type,
@@ -138,7 +135,10 @@ char							*append_to_final_str(char *final_str,
 									const char *start, size_t len);
 
 // REDIRECTIONS
-int								heredoc_redirection(const char *delimiter);
+int heredoc_redirection(const char *delimiter, const char *tmp_filename);
+int handle_heredoc(t_token *list2);
+int heredoc_redirection_wrapper(const char *param);
+char	*generate_temp_filename(void);
 int								input_redirection(const char *file_name);
 int								output_redirection(const char *file_name);
 int								append_redirection(const char *file_name);
@@ -176,9 +176,7 @@ bool							ft_is_num(char *str);
 void							concatenate_tokens(t_token **tokens,
 									t_token *list2);
 char							**copy_env(char **env);
-
-// void	lst_print(t_token *token_lst); // tests
-// void	print_args(char **args);       // tests
+int count_heredocs(t_token *token_list);
 
 // FREE
 void							ft_free(char **values);

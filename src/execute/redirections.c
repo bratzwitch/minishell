@@ -3,38 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:02 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 11:17:56 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_redirection	*init_redirections(void)
+t_redirection *init_redirections(void)
 {
-	static t_redirection	redir[] = {{TOKEN_REDIRECT_IN, input_redirection},
-	{TOKEN_REDIRECT_OUT, output_redirection}, {TOKEN_HEREDOC,
-		heredoc_redirection}, {TOKEN_REDIRECT_APPEND, append_redirection},
-	{0, NULL}};
+	static t_redirection redir[] = {{TOKEN_REDIRECT_IN, input_redirection},
+									{TOKEN_REDIRECT_OUT, output_redirection},
+									{TOKEN_HEREDOC, heredoc_redirection_wrapper},
+									{TOKEN_REDIRECT_APPEND, append_redirection},
+									{0, NULL}};
 
 	return (redir);
 }
 
-int	process_token(t_token *current, t_redirection *redir, t_token **list1,
-		t_token **list2)
+int process_token(t_token *current, t_redirection *redir, t_token **list1,
+				  t_token **list2)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (redir[i].handler != NULL)
 	{
 		if (current->type == redir[i].type && redir[i].type > 0)
 		{
-			split_tokens(current, list1, list2, redir[i].type);
-			if (redir[i].handler((*list2)->value) == -1)
-				return (-1);
+            if (current->type == TOKEN_HEREDOC)
+            {
+                split_tokens(current, list1, list2, redir[i].type);
+                if (handle_heredoc(*list2) == -1)
+                    return (-1);
+            }
+			else
+			{
+				split_tokens(current, list1, list2, redir[i].type);
+				if (redir[i].handler((*list2)->value) == -1)
+					return (-1);
+			}
 			return (1);
 		}
 		i++;
@@ -42,13 +52,13 @@ int	process_token(t_token *current, t_redirection *redir, t_token **list1,
 	return (0);
 }
 
-int	handle_special_tokens(t_token *tokens)
+int handle_special_tokens(t_token *tokens)
 {
-	t_token			*current;
-	t_token			*list1;
-	t_token			*list2;
-	t_redirection	*redir;
-	int				processed;
+	t_token *current;
+	t_token *list1;
+	t_token *list2;
+	t_redirection *redir;
+	int processed;
 
 	current = tokens;
 	list1 = NULL;
@@ -60,53 +70,16 @@ int	handle_special_tokens(t_token *tokens)
 		if (processed == -1)
 		{
 			split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
-			lst_cleanup(&current, free_token);
-			return -1;
+			return (-1);
 		}
-			
 		if (processed == 1)
 		{
 			current = list2;
-			continue ;
+			continue;
 		}
 		current = current->next;
 	}
 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
 	lst_cleanup(&current, free_token);
-	return 1;
+	return (1);
 }
-
-// void handle_special_tokens(t_token *tokens)
-// {
-// 	t_token *current = tokens;
-// 	t_token *list1 = NULL;
-// 	t_token *list2 = NULL;
-// 	t_redirection redir[] = {
-// 		{TOKEN_REDIRECT_IN, input_redirection},
-// 		{TOKEN_REDIRECT_OUT, output_redirection},
-// 		{TOKEN_HEREDOC, heredoc_redirection},
-// 		{TOKEN_REDIRECT_APPEND, append_redirection},
-// 		{0, NULL}};
-// 	int i;
-
-// 	while (current)
-// 	{
-// 		i = 0;
-// 		while (redir[i].handler != NULL)
-// 		{
-// 			if (current->type == redir[i].type && redir[i].type > 0)
-// 			{
-// 				split_tokens(current, &list1, &list2, redir[i].type);
-// 				if (redir[i].handler(list2->value) == -1)
-// 					return ;
-// 				current = list2;
-// 				break ;
-// 			}
-// 			i++;
-// 		}
-// 		current = current->next;
-// 	}
-// 	lst_cleanup(&current, free_token);
-// 	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
-// 	// concatenate_tokens(&list1, list2->next);
-// }

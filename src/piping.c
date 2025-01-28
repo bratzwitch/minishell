@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   piping.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/27 16:04:45 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 11:21:26 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,9 @@ void	piping(t_prompt *prompt)
 		if (pipe.pid == 0)
 			handle_child_process_pipe(&pipe, prompt->env_copy);
 		else
-		{
-			if (ft_is_special_token(pipe.list2) == TOKEN_HEREDOC)
-			{
-				if (heredoc_redirection(pipe.list2->next->value) == -1)
-				{
-					printf("Heredoc redirection failed.\n");
-					return ;
-				}
-			}
 			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe);
-		}
 		pipe.i++;
 	}
-	
 	if (pipe.prev_pipe != -1)
 		close(pipe.prev_pipe);
 	lst_cleanup(&pipe.list1, free_token);

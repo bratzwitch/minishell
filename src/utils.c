@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:51:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/27 16:36:50 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 11:18:20 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,12 @@ void	split_tokens(t_token *head, t_token **list1, t_token **list2,
 			if (prev)
 				prev->next = NULL;
 			current->next = NULL;
-			// free(current);
-			// free_token(current);
-			// free_token(current);
-			lst_cleanup(&current,free_token);
 			return ;
 		}
 		prev = current;
 		current = current->next;
 		
 	}
-	lst_cleanup(&current,free_token);
 }
 
 int	count_tokens(t_token *lst)

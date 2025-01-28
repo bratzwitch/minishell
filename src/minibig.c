@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minibig.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:38:21 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:36 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/28 11:25:22 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,12 @@ void	restore_stdinout(int *fdin_copy, int *fdout_copy)
 {
 	if (fdin_copy)
 	{
-		if (dup2(*fdin_copy, STDIN_FILENO) == -1)
-			return ;
+		dup2(*fdin_copy, STDIN_FILENO);
 		close(*fdin_copy);
 	}
 	if (fdout_copy)
 	{
-		if (dup2(*fdout_copy, STDOUT_FILENO) == -1)
-			return ;
+		dup2(*fdout_copy, STDOUT_FILENO);
 		close(*fdout_copy);
 	}
 }
