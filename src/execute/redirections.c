@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 14:32:07 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 14:59:53 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@ int process_token(t_token *current, t_redirection *redir, t_token **list1,
 		i++;
 	}
 	return (0);
+}
+
+void lst_print(t_token *head)
+{
+	t_token *current = head;
+	while (current != NULL)
+	{
+		printf("Type: %d, Value: %s -> ", current->type, current->value);
+		current = current->next;
+	}
+	printf("NULL\n");
 }
 
 int handle_special_tokens(t_token *tokens)
