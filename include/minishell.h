@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 10:36:43 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:57:05 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ void							handle_parent_process(pid_t id,
 
 // EXEC
 int								execute(t_token *tokens, char *path,
-									char **env);
+									t_prompt *prompt, char **env);
 char							*validator(char *cmd_name);
 int								builtins(t_prompt *prompt, t_token *tokens,
 									char **env);
 char							*find_command(char *cmd_name, char *env_path);
-int							handle_special_tokens(t_token *tokens);
+int								handle_special_tokens(t_token *tokens);
 
 // BUILT-INS
 int								handle_echo(t_token *token);
@@ -105,7 +105,8 @@ int								handle_cd(t_token *token, char **env);
 int								handle_env(char **env);
 int								handle_pwd(void);
 int								handle_exit(t_prompt *prompt);
-int handle_export(t_prompt *prompt, t_token *tokens, char ***env);
+int								handle_export(t_prompt *prompt, t_token *tokens,
+									char ***env);
 int								handle_unset(t_token *tokens, char **env);
 int								find_var(char *name, char **env);
 char							*format_env_var(char *name, char *value);
@@ -135,10 +136,11 @@ char							*append_to_final_str(char *final_str,
 									const char *start, size_t len);
 
 // REDIRECTIONS
-int heredoc_redirection(const char *delimiter, const char *tmp_filename);
-int handle_heredoc(t_token *list2);
-int heredoc_redirection_wrapper(const char *param);
-char	*generate_temp_filename(void);
+int								heredoc_redirection(const char *delimiter,
+									const char *tmp_filename);
+int								handle_heredoc(t_token *list2);
+int								heredoc_redirection_wrapper(const char *param);
+char							*generate_temp_filename(void);
 int								input_redirection(const char *file_name);
 int								output_redirection(const char *file_name);
 int								append_redirection(const char *file_name);
@@ -166,7 +168,9 @@ enum e_token_type				ft_is_special_token(t_token *head);
 void							split_tokens(t_token *head, t_token **list1,
 									t_token **list2,
 									enum e_token_type TOKEN_TYPE);
-void	split_free(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE);
+void							split_free(t_token *head, t_token **list1,
+									t_token **list2,
+									enum e_token_type TOKEN_TYPE);
 void							add_token(t_token **head, t_token *new_token);
 bool							ft_is_quotes(const char *current);
 void							wait_for_children(int child_count);
@@ -177,7 +181,7 @@ bool							ft_is_num(char *str);
 void							concatenate_tokens(t_token **tokens,
 									t_token *list2);
 char							**copy_env(char **env);
-int count_heredocs(t_token *token_list);
+int								count_heredocs(t_token *token_list);
 
 // FREE
 void							ft_free(char **values);
@@ -186,6 +190,6 @@ void							cleanup(t_prompt *prompt);
 void							lst_cleanup(t_token **head,
 									void (*del)(t_token *));
 
-bool no_nl(int flag);
+bool							no_nl(int flag);
 
 #endif
