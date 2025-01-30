@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 12:02:04 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:08:15 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_isallspace(char *str)
 
 int	isvalidtoken(t_token *t)
 {
-	if (t->type == TOKEN_PIPE)
+	if (t->type == TOKEN_PIPE || (count_heredocs(t) && count_pipes(t)))
 	{
 		printf("error\n");
 		return (1);
