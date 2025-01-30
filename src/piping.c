@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   piping.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 12:05:46 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:21:02 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ bool no_nl(int flag)
 
 void	handle_child_process_pipe(t_pipe *pipe, char **env)
 {
+	char *path;
+	
 	setup_dfl_signals();
 	if (pipe->prev_pipe != -1)
 		restore_stdinout(&pipe->prev_pipe, NULL);
@@ -36,17 +38,21 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 		close(pipe->fd[1]);
 	close(pipe->fd[0]);
 	no_nl(1);
-	if (validator(pipe->list1->value))
+	path = validator(pipe->list1->value);
+	if (path)
 	{
 		if (execute(pipe->list1, NULL, env) == -1)
 		{
+			free(path);
 			ft_free(env);
 			if (pipe->list1)
 				lst_cleanup(&pipe->list1, free_token);
 			if (pipe->current_tokens)
 				lst_cleanup(&pipe->current_tokens, free_token);
+			exit(1);
 		}
 	}
+	free(path);
 	ft_free(env);
 	if (pipe->list1)
 		lst_cleanup(&pipe->list1, free_token);

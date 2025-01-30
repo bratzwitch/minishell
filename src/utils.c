@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:51:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 09:49:40 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:09:48 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	split_tokens(t_token *head, t_token **list1, t_token **list2,
 	{
 		if (current->type == TOKEN_TYPE)
 		{
+			
 			*list2 = current->next;
 			if (prev)
 				prev->next = NULL;
@@ -53,6 +54,7 @@ void	split_tokens(t_token *head, t_token **list1, t_token **list2,
 		prev = current;
 		current = current->next;
 	}
+	
 }
 
 void	split_free(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
