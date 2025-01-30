@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 14:57:05 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:32:24 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,5 +191,8 @@ void							lst_cleanup(t_token **head,
 									void (*del)(t_token *));
 
 bool							no_nl(int flag);
+
+
+void print_args(char **args);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:00 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 14:56:05 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:39:35 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ int	execute(t_token *tokens, char *path,t_prompt *prompt, char **env)
 	ft_free(env);
 	free(args);
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
-	exit(-1);
+	exit(1);
 }

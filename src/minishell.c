@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 14:24:12 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:34:55 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	isvalidtoken(t_token *t)
 			printf("error\n");
 			return (1);
 		}
+		printf("valid %u token %s\n",t->type,t->value);
 		t = t->next;
 	}
 	return (0);
