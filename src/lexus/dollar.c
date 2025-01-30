@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:19 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 12:30:29 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 12:44:20 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ char	*get_env_variable(char **current, char *var_start)
 	size_t	len;
 
 	len = *current - var_start;
-	token_value = ft_strndup(var_start, len); // slava
+	token_value = ft_strndup(var_start, len);
 	env_value = getenv(token_value);
 	free(token_value);
 	if (env_value)
 		return (ft_strdup(env_value));
 	else
-		return (ft_strdup(""));
+		return (ft_strdup(" "));
 }
 
 char	*process_dollar(char **current)

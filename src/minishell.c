@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 12:08:15 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:48:59 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ void	handle_single_cmd(t_prompt *prompt)
 	prompt->path = validator(prompt->token_lst->value);
 	if (!prompt->path && !ft_is_special_character(prompt->input))
 	{
-		printf("minishell: command not found: %s\n", prompt->token_lst->value);
+		if(ft_strcmp(prompt->token_lst->value, " ") != 0)
+			printf("minishell: command not found: %s\n", prompt->token_lst->value);
 		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 		return ;
 	}
