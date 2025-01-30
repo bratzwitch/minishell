@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:03 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 17:09:20 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 13:26:16 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	write_to_tmp(int write_fd, const char *delimiter)
 
 	while (1)
 	{
-		line = readline("heredoc> ");
+		line = readline("heredoc>");
 		if (!line || !strcmp(line, delimiter))
 		{
 			free(line);
