@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 17:00:16 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:08:07 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,12 @@ int process_token(t_token *current, t_redirection *redir, t_token **list1,
 	{
 		if (current->type == redir[i].type && redir[i].type > 0)
 		{
-            if (current->type == TOKEN_HEREDOC)
-            {
-                split_tokens(current, list1, list2, redir[i].type);
-                if (handle_heredoc(*list2) == -1)
-                    return (-1);
-				
-            }
+			if (current->type == TOKEN_HEREDOC)
+			{
+				split_tokens(current, list1, list2, redir[i].type);
+				if (handle_heredoc(*list2) == -1)
+					return (-1);
+			}
 			else
 			{
 				split_tokens(current, list1, list2, redir[i].type);
@@ -80,7 +79,7 @@ int handle_special_tokens(t_token *tokens)
 		}
 		current = current->next;
 	}
-	split_tokens(tokens, &list1, &list2, ft_is_special_token(tokens));
+	split_free(tokens, &list1, &list2, ft_is_special_token(tokens));
 	lst_cleanup(&list2, free_token);
 	return (1);
 }

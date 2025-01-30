@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/18 14:00:36 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:50:23 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,6 @@ void	wait_for_children(int child_count)
 				g_received_sig = 128 + WTERMSIG(exit_status);
 			else if (WIFSTOPPED(exit_status))
 				g_received_sig = WSTOPSIG(exit_status);
-		}
-		if (WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == SIGINT)
-		{
-			write(STDOUT_FILENO, "\n", 1);
 		}
 		i++;
 	}

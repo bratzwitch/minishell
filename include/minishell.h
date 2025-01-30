@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 16:36:04 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:36:43 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void							handle_parent_process(pid_t id,
 
 // EXEC
 int								execute(t_token *tokens, char *path,
-									char **env,t_prompt *prompt);
+									char **env);
 char							*validator(char *cmd_name);
 int								builtins(t_prompt *prompt, t_token *tokens,
 									char **env);
@@ -166,6 +166,7 @@ enum e_token_type				ft_is_special_token(t_token *head);
 void							split_tokens(t_token *head, t_token **list1,
 									t_token **list2,
 									enum e_token_type TOKEN_TYPE);
+void	split_free(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE);
 void							add_token(t_token **head, t_token *new_token);
 bool							ft_is_quotes(const char *current);
 void							wait_for_children(int child_count);
@@ -184,6 +185,7 @@ void							free_token(t_token *t);
 void							cleanup(t_prompt *prompt);
 void							lst_cleanup(t_token **head,
 									void (*del)(t_token *));
-void							free_prompt(t_prompt *prompt);
+
+bool no_nl(int flag);
 
 #endif

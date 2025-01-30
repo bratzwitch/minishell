@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 16:48:58 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:52:35 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	handle_single_cmd(t_prompt *prompt)
 			handle_parent_process(pid, &prompt->exit_status, prompt);
 	}
 	free(prompt->path);
+	lst_cleanup(&prompt->token_lst, free_token);
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
@@ -107,16 +108,6 @@ int	init(t_prompt *prompt)
 		free(prompt->input);
 		return (0);
 	}
-	// if (prompt->input[0] == '|')
-	// {
-	// 	printf("parse error near `|'\n");
-	// 	return (0);
-	// }
-	// if (prompt->input[0] == '<')
-	// {
-	// 	printf("syntax error near unexpected token `newline'\n");
-	// 	return (0);
-	// }
 	prompt->token_lst = lexer(prompt->input);
 	if (isvalidtoken(prompt->token_lst) == 1)
 	{
@@ -128,7 +119,12 @@ int	init(t_prompt *prompt)
 	if (prompt->token_lst)
 	{
 		if (is_pipe(prompt->token_lst))
+		{
 			piping(prompt);
+			add_history(prompt->input);
+			free(prompt->input);
+			return(0);
+		}
 		else
 			handle_single_cmd(prompt);
 	}

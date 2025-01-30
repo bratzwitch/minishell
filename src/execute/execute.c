@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:00 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 16:40:34 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:53:31 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	execute(t_token *tokens, char *path, char **env,t_prompt *prompt)
+int	execute(t_token *tokens, char *path, char **env)
 {
 	char	**args;
 	char	*path_exec;
@@ -20,9 +20,7 @@ int	execute(t_token *tokens, char *path, char **env,t_prompt *prompt)
 	if (ft_is_special_token(tokens))
 	{
 		if(handle_special_tokens(tokens) == -1)
-		{
 			return (-1);
-		}
 	}
 	args = lst_to_arr(tokens);
 	if (path)
@@ -36,8 +34,5 @@ int	execute(t_token *tokens, char *path, char **env,t_prompt *prompt)
 	if(path_exec != NULL)
 		execve(path_exec, args, env);
 	perror("execve");
-	free(args);
-	ft_free(prompt->env_copy);
-	cleanup(prompt);
-	exit(2);
+	exit(-1);
 }

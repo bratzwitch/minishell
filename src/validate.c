@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:46:57 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 12:29:02 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 10:58:56 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ char	*validator(char *cmd_name)
 			return (ft_strdup(cmd_name));
 		else
 		{
-			perror("error");
 			g_received_sig = 127;
 			return (NULL);
 		}

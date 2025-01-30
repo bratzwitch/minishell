@@ -3,18 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   piping.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 14:24:30 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 11:02:43 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+bool no_nl(int flag)
+{
+	static bool nl = 0;
+
+	if (flag == 3)
+		return(nl);
+	else
+	{
+		nl = flag;
+		return(nl);
+	}
+}
+
 void	handle_child_process_pipe(t_pipe *pipe, char **env)
 {
-	setup_dfl_signals();
 	if (pipe->prev_pipe != -1)
 		restore_stdinout(&pipe->prev_pipe, NULL);
 	if (pipe->i < pipe->pipe_count)
@@ -22,6 +34,7 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 	else
 		close(pipe->fd[1]);
 	close(pipe->fd[0]);
+	no_nl(1);
 	if (validator(pipe->list1->value))
 	{
 		if (execute(pipe->list1, NULL, env) == -1)
@@ -43,7 +56,6 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 
 void	handle_parent_process_pipe(int fd[2], int *prev_pipe)
 {
-	ignore_signals();
 	close(fd[1]);
 	if (*prev_pipe != -1)
 		close(*prev_pipe);
@@ -76,12 +88,10 @@ void	piping(t_prompt *prompt)
 		else
 			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe);
 		pipe.i++;
+		lst_cleanup(&pipe.list1, free_token);
 	}
 	if (pipe.prev_pipe != -1)
 		close(pipe.prev_pipe);
-	lst_cleanup(&pipe.list1, free_token);
 	lst_cleanup(&pipe.list2, free_token);
-	lst_cleanup(&pipe.current_tokens, free_token);
 	wait_for_children(pipe.pipe_count + 1);
-	setup_handlers();
 }
