@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 11:02:43 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:49:16 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ bool no_nl(int flag)
 
 void	handle_child_process_pipe(t_pipe *pipe, char **env)
 {
+	setup_dfl_signals();
 	if (pipe->prev_pipe != -1)
 		restore_stdinout(&pipe->prev_pipe, NULL);
 	if (pipe->i < pipe->pipe_count)
@@ -56,6 +57,7 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env)
 
 void	handle_parent_process_pipe(int fd[2], int *prev_pipe)
 {
+	ignore_signals();
 	close(fd[1]);
 	if (*prev_pipe != -1)
 		close(*prev_pipe);
@@ -94,4 +96,5 @@ void	piping(t_prompt *prompt)
 		close(pipe.prev_pipe);
 	lst_cleanup(&pipe.list2, free_token);
 	wait_for_children(pipe.pipe_count + 1);
+	setup_handlers();
 }

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:07 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 11:01:34 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:49:22 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ pid_t	create_child_process(void)
 void	handle_child_process(t_prompt *prompt, char **env)
 {
 	no_nl(1);
+	setup_dfl_signals();
 	if(execute(prompt->token_lst, prompt->path, env) == -1)
 	{
 		ft_free(env);
@@ -42,8 +43,10 @@ void	handle_child_process(t_prompt *prompt, char **env)
 
 void	handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 {
+	ignore_signals();
 	add_history(prompt->input);
 	waitpid(id, exit_status, 0);
+	setup_handlers();
 	if (WIFEXITED(*exit_status))
 		g_received_sig = WEXITSTATUS(*exit_status);
 	else if (WIFSIGNALED(*exit_status))
