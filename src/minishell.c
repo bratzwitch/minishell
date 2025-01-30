@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 10:52:35 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:02:04 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,12 @@ int	isvalidtoken(t_token *t)
 	}
 	while (t)
 	{
-		if ((t->type == TOKEN_REDIRECT_APPEND || t->type == TOKEN_REDIRECT_IN
-				|| t->type == TOKEN_REDIRECT_OUT || t->type == TOKEN_HEREDOC)
-			&& (!t->next || t->next->type != TOKEN_ARGUMENT))
+		if ((t->type == TOKEN_REDIRECT_APPEND || t->type == TOKEN_REDIRECT_IN || t->type == TOKEN_REDIRECT_OUT || t->type == TOKEN_HEREDOC) && (!t->next || t->next->type != TOKEN_ARGUMENT))
 		{
 			printf("error\n");
 			return (1);
 		}
-		if (t->type == TOKEN_PIPE && (!t->next
-				|| t->next->type != TOKEN_ARGUMENT))
+		if (t->type == TOKEN_PIPE && (!t->next || t->next->type != TOKEN_ARGUMENT))
 		{
 			printf("error\n");
 			return (1);

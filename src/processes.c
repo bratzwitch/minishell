@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:07 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 11:49:22 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:53:02 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,6 @@ void	handle_parent_process(pid_t id, int *exit_status, t_prompt *prompt)
 		g_received_sig = 128 + WTERMSIG(*exit_status);
 	else if (WIFSTOPPED(*exit_status))
 		g_received_sig = WSTOPSIG(*exit_status);
+	if (WIFSIGNALED(*exit_status) && WTERMSIG(*exit_status) == SIGINT)
+		write(STDOUT_FILENO, "\n", 1);
 }

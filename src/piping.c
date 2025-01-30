@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 11:49:16 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:02:54 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ void	piping(t_prompt *prompt)
 {
 	t_pipe	pipe;
 
+	if (count_heredocs(prompt->token_lst))
+	{
+		printf("syntax error.\n");
+		return ;
+	}
 	initialise_pipe(&pipe, prompt);
 	while (pipe.i <= pipe.pipe_count)
 	{

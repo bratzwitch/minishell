@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 10:50:23 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:54:59 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,6 @@ void	wait_for_children(int child_count)
 		}
 		i++;
 	}
+	if (WIFSIGNALED(exit_status) && WTERMSIG(exit_status) == SIGINT)
+		write(STDOUT_FILENO, "\n", 1);
 }
