@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:51:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:46:28 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:59:33 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,38 +55,31 @@ void	split_tokens(t_token *head, t_token **list1, t_token **list2,
 	}
 }
 
-void	split_free(t_token **head_ref, t_token **list1, t_token **list2,
-		enum e_token_type TOKEN_TYPE)
+void	split_free(t_token **head, t_token **list1, t_token **list2, 
+		enum e_token_type type)
 {
-	t_token	*current;
+	t_token	*cur;
 	t_token	*prev;
-	t_token	*redir;
 
-	current = *head_ref;
+	cur = *head;
 	prev = NULL;
-	*list1 = *head_ref;
+	*list1 = *head;
 	*list2 = NULL;
-	if (TOKEN_TYPE == 0)
+	if (!type)
 		return ;
-	while (current)
+	while (cur && cur->type != type)
 	{
-		if (current->type == TOKEN_TYPE)
-		{
-			redir = current;
-			*list2 = redir;
-			if (!prev)
-			{
-				*list1 = current->next->next;
-				*head_ref = *list1;
-			}
-			else
-				prev->next = current->next->next;
-			redir->next->next = NULL;
-			return ;
-		}
-		prev = current;
-		current = current->next;
+		prev = cur;
+		cur = cur->next;
 	}
+	if (!cur)
+		return ;
+	*list2 = cur;
+	if (!prev)
+		*head = cur->next->next;
+	else
+		prev->next = cur->next->next;
+	cur->next->next = NULL;
 }
 
 int	count_tokens(t_token *lst)

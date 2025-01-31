@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:03 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:45:10 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:59:37 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,17 @@ int	heredoc_redirection(const char *delimiter, const char *tmp_filename)
 
 int	handle_heredoc(t_token *list2)
 {
-	int		tmp_fd;
-	char	*tmp_filename;
+	int		fd;
+	char	*tmp;
 
-	tmp_filename = "/tmp/filename_temp";
-	if (!tmp_filename)
-	{
-		perror("Failed to allocate memory for temporary filename");
-		return (-1);
-	}
-	if (heredoc_redirection(list2->value, tmp_filename) == -1)
-	{
-		unlink(tmp_filename);
-		return (-1);
-	}
-	if (count_heredocs(list2) == 0)
-	{
-		tmp_fd = open(tmp_filename, O_RDONLY);
-		if (tmp_fd == -1)
-		{
-			perror("Failed to reopen temporary file for reading");
-			unlink(tmp_filename);
-			return (-1);
-		}
-		restore_stdinout(&tmp_fd, NULL);
-		unlink(tmp_filename);
-	}
-	return (0);
+	tmp = "/tmp/filename_temp";
+	if (!tmp || heredoc_redirection(list2->value, tmp) == -1)
+		return (unlink(tmp), -1);
+	if (count_heredocs(list2))
+		return (0);
+	fd = open(tmp, O_RDONLY);
+	if (fd == -1)
+		return (perror("Failed to open file"), unlink(tmp), -1);
+	restore_stdinout(&fd, NULL);
+	return (unlink(tmp), 0);
 }
