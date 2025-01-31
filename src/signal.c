@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:59:31 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:46:23 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:16:54 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,18 @@ void	setup_handlers(void)
 	{
 		write(STDERR_FILENO, "Error: sigaction SIGQUIT\n", 26);
 		exit(1);
+	}
+}
+
+bool	no_nl(int flag)
+{
+	static bool	nl = 0;
+
+	if (flag == 3)
+		return (nl);
+	else
+	{
+		nl = flag;
+		return (nl);
 	}
 }

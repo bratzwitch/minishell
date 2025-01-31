@@ -3,26 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   piping.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:46:13 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:17:17 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-bool	no_nl(int flag)
+void	clean_exit_pipe(t_pipe *pipe, char *path, char **env)
 {
-	static bool	nl = 0;
-
-	if (flag == 3)
-		return (nl);
-	else
-	{
-		nl = flag;
-		return (nl);
-	}
+	free(path);
+	ft_free(env);
+	if (pipe->list1)
+		lst_cleanup(&pipe->list1, free_token);
+	if (pipe->current_tokens)
+		lst_cleanup(&pipe->current_tokens, free_token);
+	exit(1);
 }
 
 void	handle_child_process_pipe(t_pipe *pipe, char **env, t_prompt *prompt)
@@ -42,23 +40,9 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env, t_prompt *prompt)
 	if (path)
 	{
 		if (execute(pipe->list1, NULL, prompt, env) == -1)
-		{
-			free(path);
-			ft_free(env);
-			if (pipe->list1)
-				lst_cleanup(&pipe->list1, free_token);
-			if (pipe->current_tokens)
-				lst_cleanup(&pipe->current_tokens, free_token);
-			exit(1);
-		}
+			clean_exit_pipe(pipe, path, env);
 	}
-	free(path);
-	ft_free(env);
-	if (pipe->list1)
-		lst_cleanup(&pipe->list1, free_token);
-	if (pipe->current_tokens)
-		lst_cleanup(&pipe->current_tokens, free_token);
-	exit(1);
+	clean_exit_pipe(pipe, path, env);
 }
 
 void	handle_parent_process_pipe(int fd[2], int *prev_pipe)
