@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:22 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 15:01:12 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 15:46:26 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,6 @@ t_token	*lexer(char *input)
 	}
 	while (*input)
 	{
-		// if(ft_strcmp(input,"||") && ft_quotes(input, ft_strlen(input)) == 0)
-		// {
-		// 	printf("|| not mandatory, not today\n");
-		// 	add_history(input);
-		// 	return NULL;
-		// }
 		while (*input && ft_isspace(*input))
 			input++;
 		new_token = get_next_token(&input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 14:24:12 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 15:49:59 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	handle_single_cmd(t_prompt *prompt)
 	pid_t	pid;
 
 	pid = 0;
+	lst_print(prompt->token_lst);
 	if (builtins_handle(prompt) == 1)
 		return ;
 	prompt->path = validator(prompt->token_lst->value);
@@ -134,7 +135,7 @@ int	init(t_prompt *prompt)
 	}
 	add_history(prompt->input);
 	free(prompt->input);
-	lst_cleanup(&prompt->token_lst, free_token);
+	// lst_cleanup(&prompt->token_lst, free_token);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 10:36:43 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:45:05 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,5 +187,6 @@ void							lst_cleanup(t_token **head,
 									void (*del)(t_token *));
 
 bool no_nl(int flag);
+void lst_print(t_token *head);
 
 #endif

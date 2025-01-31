@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 14:59:53 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:59:14 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,6 @@ int handle_special_tokens(t_token *tokens)
 		current = current->next;
 	}
 	split_free(tokens, &list1, &list2, ft_is_special_token(tokens));
-	lst_cleanup(&list2, free_token);
+	// lst_cleanup(&list2, free_token);
 	return (1);
 }
