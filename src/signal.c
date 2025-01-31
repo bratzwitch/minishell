@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:59:31 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 13:17:59 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:46:23 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ignore_signals(void)
 		write(STDERR_FILENO, "Error: sigaction SIGINT\n", 25);
 }
 
-void sig_handler(int signum)
+void	sig_handler(int signum)
 {
 	g_received_sig = 128 + signum;
 	if (!no_nl(3))
@@ -44,9 +44,9 @@ void sig_handler(int signum)
 	rl_redisplay();
 }
 
-void setup_handlers(void)
+void	setup_handlers(void)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;

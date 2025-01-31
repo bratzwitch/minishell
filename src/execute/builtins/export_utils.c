@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:21:44 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 12:00:44 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:42:38 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,30 @@ char	*get_var_name(const char *name)
 	return (strndup(name, len));
 }
 
-char **expand_env(char **env, int new_size)
+char	**expand_env(char **env, int new_size)
 {
-    char **new_env;
-    int i;
+	char	**new_env;
+	int		i;
 
-    new_env = malloc((new_size + 1) * sizeof(char *));
-    if (!new_env)
-        return (NULL);
-    i = 0;
-    while (env[i])
-    {
-        new_env[i] = ft_strdup(env[i]);
-        if (!new_env[i])
-        {
-            while (i > 0)
-                free(new_env[--i]);
-            free(new_env);
-            return (NULL);
-        }
-        i++;
-    }
-    new_env[i] = NULL;
+	new_env = malloc((new_size + 1) * sizeof(char *));
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	while (env[i])
+	{
+		new_env[i] = ft_strdup(env[i]);
+		if (!new_env[i])
+		{
+			while (i > 0)
+				free(new_env[--i]);
+			free(new_env);
+			return (NULL);
+		}
+		i++;
+	}
+	new_env[i] = NULL;
 	ft_free(env);
-    return (new_env);
+	return (new_env);
 }
 
 int	get_env_size(char **env)

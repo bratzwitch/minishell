@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:58 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/23 12:33:20 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:47:09 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	find_var(char *name, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], name, ft_strlen(name)) == 0) // slava
+		if (ft_strncmp(env[i], name, ft_strlen(name)) == 0)
 			return (i);
 		i++;
 	}
@@ -30,9 +30,10 @@ int	ft_unsetenv(char *name, char **env)
 {
 	int	i;
 
-	if (!name || !*name || ft_strchr(name, '=') != NULL) // slava
+	if (!name || !*name || ft_strchr(name, '=') != NULL)
 	{
-		ft_putendl_fd("minishell: unsetenv: invalid variable name", STDERR_FILENO);
+		ft_putendl_fd("minishell: unsetenv: invalid variable name",
+			STDERR_FILENO);
 		return (-1);
 	}
 	i = find_var(name, env);
@@ -55,7 +56,7 @@ int	handle_unset(t_token *tokens, char **env)
 	if (!tmp->next)
 	{
 		ft_putendl_fd("minishell: unset: not enough arguments", STDERR_FILENO);
-		return(1);
+		return (1);
 	}
 	while (tmp && tmp->next)
 	{

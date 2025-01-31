@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:54:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:01:46 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:46:36 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ int	is_pipe(t_token *head)
 	return (0);
 }
 
-int count_heredocs(t_token *token_list)
+int	count_heredocs(t_token *token_list)
 {
-	int count = 0;
-	t_token *tmp = token_list;
+	int		count;
+	t_token	*tmp;
 
+	count = 0;
+	tmp = token_list;
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_HEREDOC)
@@ -51,8 +53,8 @@ int	ft_isallspace(char *str)
 	return (1);
 }
 
-int heredoc_redirection_wrapper(const char *param)
+int	heredoc_redirection_wrapper(const char *param)
 {
 	(void)param;
-	return(0);
+	return (0);
 }

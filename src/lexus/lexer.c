@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:22 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 10:38:43 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:45:27 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ t_token	*lexer(char *input)
 	token_head = NULL;
 	new_token = NULL;
 	if ((ft_quotes(input, ft_strlen(input))))
-	{ 
-		ft_putendl_fd("minishell: quotes not closed. God saw you.", STDERR_FILENO);
+	{
+		ft_putendl_fd("minishell: quotes not closed. God saw you.",
+			STDERR_FILENO);
 		return (NULL);
 	}
 	while (*input)

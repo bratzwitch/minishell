@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:01:39 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:45:54 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	handle_single_cmd(t_prompt *prompt)
 	prompt->path = validator(prompt->token_lst->value);
 	if (!prompt->path && !ft_is_special_character(prompt->input))
 	{
-		if(ft_strcmp(prompt->token_lst->value, " ") != 0)
+		if (ft_strcmp(prompt->token_lst->value, " ") != 0)
 		{
 			ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
 			ft_putendl_fd(prompt->token_lst->value, STDERR_FILENO);
@@ -73,12 +73,15 @@ int	isvalidtoken(t_token *t)
 	}
 	while (t)
 	{
-		if ((t->type == TOKEN_REDIRECT_APPEND || t->type == TOKEN_REDIRECT_IN || t->type == TOKEN_REDIRECT_OUT || t->type == TOKEN_HEREDOC) && (!t->next || t->next->type != TOKEN_ARGUMENT))
+		if ((t->type == TOKEN_REDIRECT_APPEND || t->type == TOKEN_REDIRECT_IN
+				|| t->type == TOKEN_REDIRECT_OUT || t->type == TOKEN_HEREDOC)
+			&& (!t->next || t->next->type != TOKEN_ARGUMENT))
 		{
 			ft_putendl_fd("error", STDERR_FILENO);
 			return (1);
 		}
-		if (t->type == TOKEN_PIPE && (!t->next || t->next->type != TOKEN_ARGUMENT))
+		if (t->type == TOKEN_PIPE && (!t->next
+				|| t->next->type != TOKEN_ARGUMENT))
 		{
 			ft_putendl_fd("error", STDERR_FILENO);
 			return (1);
@@ -113,7 +116,7 @@ int	init(t_prompt *prompt)
 			piping(prompt);
 			add_history(prompt->input);
 			free(prompt->input);
-			return(0);
+			return (0);
 		}
 		else
 			handle_single_cmd(prompt);

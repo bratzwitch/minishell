@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:13:54 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 10:46:43 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:42:57 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ int	builtins(t_prompt *prompt, t_token *tokens, char **env)
 	if (tokens == NULL)
 		return (2);
 	if (ft_is_special_token(tokens))
-	{
-		if(handle_special_tokens(&tokens) == -1)
+		if (handle_special_tokens(&tokens) == -1)
 			return (1);
-	}
 	if (!ft_strcmp(tokens->value, "env"))
 		return (handle_env(env));
 	else if (!ft_strcmp(tokens->value, "pwd"))

@@ -3,30 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:01:59 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:51:20 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_redirection *init_redirections(void)
+t_redirection	*init_redirections(void)
 {
-	static t_redirection redir[] = {{TOKEN_REDIRECT_IN, input_redirection},
-									{TOKEN_REDIRECT_OUT, output_redirection},
-									{TOKEN_HEREDOC, heredoc_redirection_wrapper},
-									{TOKEN_REDIRECT_APPEND, append_redirection},
-									{0, NULL}};
+	static t_redirection	redir[] = {{TOKEN_REDIRECT_IN, input_redirection},
+	{TOKEN_REDIRECT_OUT, output_redirection}, {TOKEN_HEREDOC,
+		heredoc_redirection_wrapper}, {TOKEN_REDIRECT_APPEND,
+		append_redirection}, {0, NULL}};
 
 	return (redir);
 }
 
-int process_token(t_token *current, t_redirection *redir, t_token **list1,
-				  t_token **list2)
+int	process_token(t_token *current, t_redirection *redir, t_token **list1,
+		t_token **list2)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (redir[i].handler != NULL)
@@ -52,13 +51,15 @@ int process_token(t_token *current, t_redirection *redir, t_token **list1,
 	return (0);
 }
 
-int handle_special_tokens(t_token **tokens)
+// void init_process(t_token **current,)
+
+int	handle_special_tokens(t_token **tokens)
 {
-	t_token *current;
-	t_token *list1;
-	t_token *list2;
-	t_redirection *redir;
-	int processed;
+	t_token			*current;
+	t_token			*list1;
+	t_token			*list2;
+	t_redirection	*redir;
+	int				processed;
 
 	current = *tokens;
 	list1 = NULL;
@@ -75,11 +76,8 @@ int handle_special_tokens(t_token **tokens)
 		}
 		if (processed == 1)
 		{
-			if (list2 && list2->next)
-				current = list2->next;
-			else
-				break;
-			continue;
+			current = list2;
+			continue ;
 		}
 		current = current->next;
 	}

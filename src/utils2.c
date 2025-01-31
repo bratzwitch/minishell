@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:53:23 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 13:28:32 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:46:32 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ void	cleanup(t_prompt *prompt)
 	if (!prompt)
 		return ;
 	if (prompt->input)
-    	free(prompt->input);
+		free(prompt->input);
 	if (prompt->path)
-    	free(prompt->path);
+		free(prompt->path);
 	lst_cleanup(&prompt->token_lst, free_token);
 }

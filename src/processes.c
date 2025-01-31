@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:07 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 10:37:51 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:46:18 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	handle_child_process(t_prompt *prompt, char **env)
 {
 	no_nl(1);
 	setup_dfl_signals();
-	if(execute(prompt->token_lst, prompt->path,prompt, env) == -1)
+	if (execute(prompt->token_lst, prompt->path, prompt, env) == -1)
 	{
 		ft_free(env);
 		cleanup(prompt);

@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:51:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:02:55 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:46:28 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void lst_add_back(t_token **lst, t_token *new)
+void	lst_add_back(t_token **lst, t_token *new)
 {
-	t_token *last;
+	t_token	*last;
 
 	if (!*lst)
 	{
 		*lst = new;
-		return;
+		return ;
 	}
 	last = *lst;
 	while (last->next)
@@ -27,18 +27,18 @@ void lst_add_back(t_token **lst, t_token *new)
 	last->next = new;
 }
 
-void split_tokens(t_token *head, t_token **list1, t_token **list2,
-				  enum e_token_type TOKEN_TYPE)
+void	split_tokens(t_token *head, t_token **list1, t_token **list2,
+		enum e_token_type TOKEN_TYPE)
 {
-	t_token *current;
-	t_token *prev;
+	t_token	*current;
+	t_token	*prev;
 
 	current = head;
 	prev = NULL;
 	*list1 = head;
 	*list2 = NULL;
 	if (TOKEN_TYPE == 0)
-		return;
+		return ;
 	while (current)
 	{
 		if (current->type == TOKEN_TYPE)
@@ -48,25 +48,26 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2,
 				prev->next = NULL;
 			if (current->type == TOKEN_PIPE)
 				free(current);
-			return;
+			return ;
 		}
 		prev = current;
 		current = current->next;
 	}
 }
 
-void split_free(t_token **head_ref, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
+void	split_free(t_token **head_ref, t_token **list1, t_token **list2,
+		enum e_token_type TOKEN_TYPE)
 {
-	t_token *current;
-	t_token *prev;
-	t_token *redir;
+	t_token	*current;
+	t_token	*prev;
+	t_token	*redir;
 
 	current = *head_ref;
 	prev = NULL;
 	*list1 = *head_ref;
 	*list2 = NULL;
 	if (TOKEN_TYPE == 0)
-		return;
+		return ;
 	while (current)
 	{
 		if (current->type == TOKEN_TYPE)
@@ -74,23 +75,23 @@ void split_free(t_token **head_ref, t_token **list1, t_token **list2, enum e_tok
 			redir = current;
 			*list2 = redir;
 			if (!prev)
-			{  
+			{
 				*list1 = current->next->next;
 				*head_ref = *list1;
 			}
 			else
 				prev->next = current->next->next;
 			redir->next->next = NULL;
-			return;
+			return ;
 		}
 		prev = current;
 		current = current->next;
 	}
 }
 
-int count_tokens(t_token *lst)
+int	count_tokens(t_token *lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (lst)
@@ -101,12 +102,12 @@ int count_tokens(t_token *lst)
 	return (i);
 }
 
-char **lst_to_arr(t_token *tokens)
+char	**lst_to_arr(t_token *tokens)
 {
-	t_token *tmp;
-	char **args;
-	int count;
-	int i;
+	t_token	*tmp;
+	char	**args;
+	int		count;
+	int		i;
 
 	tmp = tokens;
 	count = count_tokens(tokens);

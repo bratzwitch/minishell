@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_pwd_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:47:52 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/19 10:59:37 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:42:28 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static int	validate_exit_arguments(t_token *token_lst)
 	}
 	if (token_lst->next && !ft_is_num(token_lst->next->value))
 	{
-		ft_putendl_fd("minishell: exit: numeric argument required", STDERR_FILENO);
+		ft_putendl_fd("minishell: exit: numeric argument required",
+			STDERR_FILENO);
 		return (2);
 	}
 	return (0);
@@ -59,15 +60,15 @@ static int	validate_exit_arguments(t_token *token_lst)
 
 static int	get_exit_status(t_token *token_lst)
 {
-	int result;
-	
+	int	result;
+
 	if (token_lst->next && ft_is_num(token_lst->next->value))
 	{
 		result = ft_atoi(token_lst->next->value);
 		if (result < 0)
-            result = 256 + (result % 256);
-        else if (result > 255)
-            result = result % 256;
+			result = 256 + (result % 256);
+		else if (result > 255)
+			result = result % 256;
 		return (result);
 	}
 	return (0);

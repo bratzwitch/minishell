@@ -6,29 +6,29 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:15 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 15:08:41 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 11:46:13 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-bool no_nl(int flag)
+bool	no_nl(int flag)
 {
-	static bool nl = 0;
+	static bool	nl = 0;
 
 	if (flag == 3)
-		return(nl);
+		return (nl);
 	else
 	{
 		nl = flag;
-		return(nl);
+		return (nl);
 	}
 }
 
-void	handle_child_process_pipe(t_pipe *pipe, char **env,t_prompt *prompt)
+void	handle_child_process_pipe(t_pipe *pipe, char **env, t_prompt *prompt)
 {
-	char *path;
-	
+	char	*path;
+
 	setup_dfl_signals();
 	if (pipe->prev_pipe != -1)
 		restore_stdinout(&pipe->prev_pipe, NULL);
@@ -41,7 +41,7 @@ void	handle_child_process_pipe(t_pipe *pipe, char **env,t_prompt *prompt)
 	path = validator(pipe->list1->value);
 	if (path)
 	{
-		if (execute(pipe->list1, NULL,prompt, env) == -1)
+		if (execute(pipe->list1, NULL, prompt, env) == -1)
 		{
 			free(path);
 			ft_free(env);
@@ -92,7 +92,7 @@ void	piping(t_prompt *prompt)
 		create_pipes(pipe.i, pipe.pipe_count, pipe.fd);
 		pipe.pid = create_child_process();
 		if (pipe.pid == 0)
-			handle_child_process_pipe(&pipe, prompt->env_copy,prompt);
+			handle_child_process_pipe(&pipe, prompt->env_copy, prompt);
 		else
 			handle_parent_process_pipe(pipe.fd, &pipe.prev_pipe);
 		pipe.i++;
