@@ -3,14 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   minibig.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:38:21 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 11:25:22 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 12:30:37 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	cond_free(t_prompt *prompt, int tr)
+{
+	if (tr == 1)
+	{
+		add_history(prompt->input);
+		lst_cleanup(&prompt->token_lst, free_token);
+	}
+	else if (tr == 2)
+		add_history(prompt->input);
+	else if (tr == 3)
+		lst_cleanup(&prompt->token_lst, free_token);
+	free(prompt->input);
+	return (0);
+}
+
+int	isvalidtoken(t_token *t)
+{
+	if (t->type == TOKEN_PIPE || (count_heredocs(t) && count_pipes(t)))
+	{
+		ft_putendl_fd("error", STDERR_FILENO);
+		return (1);
+	}
+	while (t)
+	{
+		if ((t->type == TOKEN_REDIRECT_APPEND || t->type == TOKEN_REDIRECT_IN
+				|| t->type == TOKEN_REDIRECT_OUT || t->type == TOKEN_HEREDOC)
+			&& (!t->next || t->next->type != TOKEN_ARGUMENT))
+		{
+			ft_putendl_fd("error", STDERR_FILENO);
+			return (1);
+		}
+		if (t->type == TOKEN_PIPE && (!t->next
+				|| t->next->type != TOKEN_ARGUMENT))
+		{
+			ft_putendl_fd("error", STDERR_FILENO);
+			return (1);
+		}
+		t = t->next;
+	}
+	return (0);
+}
 
 char	*ft_prompt(t_prompt *prompt)
 {

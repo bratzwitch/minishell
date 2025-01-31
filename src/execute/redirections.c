@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:51:20 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:11:32 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,14 @@ int	process_token(t_token *current, t_redirection *redir, t_token **list1,
 	return (0);
 }
 
-// void init_process(t_token **current,)
-
-int	handle_special_tokens(t_token **tokens)
+int	init_process(t_token *current, t_token **tokens, t_redirection *redir)
 {
-	t_token			*current;
-	t_token			*list1;
-	t_token			*list2;
-	t_redirection	*redir;
-	int				processed;
+	t_token	*list1;
+	t_token	*list2;
+	int		processed;
 
-	current = *tokens;
 	list1 = NULL;
 	list2 = NULL;
-	redir = init_redirections();
 	while (current)
 	{
 		processed = process_token(current, redir, &list1, &list2);
@@ -83,5 +77,17 @@ int	handle_special_tokens(t_token **tokens)
 	}
 	split_free(tokens, &list1, &list2, ft_is_special_token(*tokens));
 	lst_cleanup(&list2, free_token);
+	return (1);
+}
+
+int	handle_special_tokens(t_token **tokens)
+{
+	t_token			*current;
+	t_redirection	*redir;
+
+	current = *tokens;
+	redir = init_redirections();
+	if (init_process(current, tokens, redir) == -1)
+		return (-1);
 	return (1);
 }

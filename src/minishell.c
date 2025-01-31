@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:45:54 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:31:10 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,20 @@ int	builtins_handle(t_prompt *prompt)
 	return (0);
 }
 
-void	handle_single_cmd(t_prompt *prompt)
+void	mini_family(t_prompt *prompt)
 {
 	pid_t	pid;
 
 	pid = 0;
+	pid = create_child_process();
+	if (pid == 0)
+		handle_child_process(prompt, prompt->env_copy);
+	else
+		handle_parent_process(pid, &prompt->exit_status, prompt);
+}
+
+void	handle_single_cmd(t_prompt *prompt)
+{
 	if (builtins_handle(prompt) == 1)
 		return ;
 	prompt->path = validator(prompt->token_lst->value);
@@ -52,43 +61,10 @@ void	handle_single_cmd(t_prompt *prompt)
 		return ;
 	}
 	else
-	{
-		pid = create_child_process();
-		if (pid == 0)
-			handle_child_process(prompt, prompt->env_copy);
-		else
-			handle_parent_process(pid, &prompt->exit_status, prompt);
-	}
+		mini_family(prompt);
 	free(prompt->path);
 	lst_cleanup(&prompt->token_lst, free_token);
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
-}
-
-int	isvalidtoken(t_token *t)
-{
-	if (t->type == TOKEN_PIPE || (count_heredocs(t) && count_pipes(t)))
-	{
-		ft_putendl_fd("error", STDERR_FILENO);
-		return (1);
-	}
-	while (t)
-	{
-		if ((t->type == TOKEN_REDIRECT_APPEND || t->type == TOKEN_REDIRECT_IN
-				|| t->type == TOKEN_REDIRECT_OUT || t->type == TOKEN_HEREDOC)
-			&& (!t->next || t->next->type != TOKEN_ARGUMENT))
-		{
-			ft_putendl_fd("error", STDERR_FILENO);
-			return (1);
-		}
-		if (t->type == TOKEN_PIPE && (!t->next
-				|| t->next->type != TOKEN_ARGUMENT))
-		{
-			ft_putendl_fd("error", STDERR_FILENO);
-			return (1);
-		}
-		t = t->next;
-	}
-	return (0);
 }
 
 int	init(t_prompt *prompt)
@@ -97,40 +73,23 @@ int	init(t_prompt *prompt)
 	if (!prompt->input)
 		return (1);
 	if (ft_isallspace(prompt->input))
-	{
-		free(prompt->input);
-		return (0);
-	}
+		return (free(prompt->input), 0);
 	prompt->token_lst = lexer(prompt->input);
 	if (isvalidtoken(prompt->token_lst) == 1)
-	{
-		add_history(prompt->input);
-		free(prompt->input);
-		lst_cleanup(&prompt->token_lst, free_token);
-		return (0);
-	}
+		return (cond_free(prompt, 1));
 	if (prompt->token_lst)
 	{
 		if (is_pipe(prompt->token_lst))
 		{
 			piping(prompt);
-			add_history(prompt->input);
-			free(prompt->input);
-			return (0);
+			return (cond_free(prompt, 2));
 		}
 		else
 			handle_single_cmd(prompt);
 	}
 	else if (!prompt->token_lst)
-	{
-		free(prompt->input);
-		lst_cleanup(&prompt->token_lst, free_token);
-		return (0);
-	}
-	add_history(prompt->input);
-	free(prompt->input);
-	lst_cleanup(&prompt->token_lst, free_token);
-	return (0);
+		return (cond_free(prompt, 3));
+	return (cond_free(prompt, 1));
 }
 
 int	main(int argc, char **argv, char **env)

@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:44:13 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 11:42:17 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:30:52 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ char							*dollar(char **current, char *final_str,
 									char **start);
 char							*append_to_final_str(char *final_str,
 									const char *start, size_t len);
+int								isvalidtoken(t_token *t);
 
 // REDIRECTIONS
 int								heredoc_redirection(const char *delimiter,
@@ -155,6 +156,7 @@ void							piping(t_prompt *prompt);
 int								count_pipes(t_token *token_lst);
 
 // UTILS
+int								cond_free(t_prompt *prompt, int tr);
 char							*ft_prompt(t_prompt *prompt);
 int								ft_is_valid_identifier(char *name);
 char							*get_var_name(const char *name);
