@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:51:35 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 09:11:24 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:02:55 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,15 @@ void split_tokens(t_token *head, t_token **list1, t_token **list2,
 	}
 }
 
-void split_free(t_token *head, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
+void split_free(t_token **head_ref, t_token **list1, t_token **list2, enum e_token_type TOKEN_TYPE)
 {
 	t_token *current;
 	t_token *prev;
 	t_token *redir;
 
-	current = head;
+	current = *head_ref;
 	prev = NULL;
-	*list1 = head;
+	*list1 = *head_ref;
 	*list2 = NULL;
 	if (TOKEN_TYPE == 0)
 		return;
@@ -74,9 +74,9 @@ void split_free(t_token *head, t_token **list1, t_token **list2, enum e_token_ty
 			redir = current;
 			*list2 = redir;
 			if (!prev)
-			{
+			{  
 				*list1 = current->next->next;
-				head = *list1;
+				*head_ref = *list1;
 			}
 			else
 				prev->next = current->next->next;
@@ -118,19 +118,6 @@ char **lst_to_arr(t_token *tokens)
 		tmp = tmp->next;
 		i++;
 	}
-	// lst_cleanup(&tmp,free_token);
 	args[i] = NULL;
 	return (args);
-}
-
-void print_args(char **args) // remove after the project is done
-{
-	int i;
-
-	i = 0;
-	while (args[i])
-	{
-		printf("args: %s\n", args[i]);
-		i++;
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 09:11:19 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:01:39 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	builtins_handle(t_prompt *prompt)
 		return (1);
 	if (!prompt->token_lst || !prompt->token_lst->value)
 	{
-		printf("Error: Invalid token in builtins\n");
+		ft_putendl_fd("Error: Invalid token in builtins", STDERR_FILENO);
 		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 		return (1);
 	}
@@ -38,14 +38,16 @@ void	handle_single_cmd(t_prompt *prompt)
 	pid_t	pid;
 
 	pid = 0;
-	lst_print(prompt->token_lst);
 	if (builtins_handle(prompt) == 1)
 		return ;
 	prompt->path = validator(prompt->token_lst->value);
 	if (!prompt->path && !ft_is_special_character(prompt->input))
 	{
 		if(ft_strcmp(prompt->token_lst->value, " ") != 0)
-			printf("minishell: command not found: %s\n", prompt->token_lst->value);
+		{
+			ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
+			ft_putendl_fd(prompt->token_lst->value, STDERR_FILENO);
+		}
 		restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 		return ;
 	}
@@ -62,37 +64,25 @@ void	handle_single_cmd(t_prompt *prompt)
 	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
 }
 
-int	ft_isallspace(char *str)
-{
-	while (*str)
-	{
-		if (!ft_isspace(*str))
-			return (0);
-		str++;
-	}
-	return (1);
-}
-
 int	isvalidtoken(t_token *t)
 {
 	if (t->type == TOKEN_PIPE || (count_heredocs(t) && count_pipes(t)))
 	{
-		printf("error\n");
+		ft_putendl_fd("error", STDERR_FILENO);
 		return (1);
 	}
 	while (t)
 	{
 		if ((t->type == TOKEN_REDIRECT_APPEND || t->type == TOKEN_REDIRECT_IN || t->type == TOKEN_REDIRECT_OUT || t->type == TOKEN_HEREDOC) && (!t->next || t->next->type != TOKEN_ARGUMENT))
 		{
-			printf("error\n");
+			ft_putendl_fd("error", STDERR_FILENO);
 			return (1);
 		}
 		if (t->type == TOKEN_PIPE && (!t->next || t->next->type != TOKEN_ARGUMENT))
 		{
-			printf("error\n");
+			ft_putendl_fd("error", STDERR_FILENO);
 			return (1);
 		}
-		printf("valid %u token %s\n",t->type,t->value);
 		t = t->next;
 	}
 	return (0);
@@ -136,7 +126,7 @@ int	init(t_prompt *prompt)
 	}
 	add_history(prompt->input);
 	free(prompt->input);
-	// lst_cleanup(&prompt->token_lst, free_token);
+	lst_cleanup(&prompt->token_lst, free_token);
 	return (0);
 }
 

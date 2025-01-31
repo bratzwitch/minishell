@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:13:54 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 09:11:07 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 10:46:43 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	builtins(t_prompt *prompt, t_token *tokens, char **env)
 		return (2);
 	if (ft_is_special_token(tokens))
 	{
-		if(handle_special_tokens(tokens) == -1)
+		if(handle_special_tokens(&tokens) == -1)
 			return (1);
 	}
 	if (!ft_strcmp(tokens->value, "env"))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenise.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:34 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 12:30:48 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 10:39:21 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_token	*create_token(enum e_token_type type, char *value)
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
 	{
-		printf("Error creating a token: %s\n", strerror(errno));
+		ft_putendl_fd("Error creating a token", STDERR_FILENO);
 		return (NULL);
 	}
 	new_token->type = type;

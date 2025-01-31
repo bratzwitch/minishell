@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:00:07 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 14:57:16 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 10:37:51 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ void	handle_child_process(t_prompt *prompt, char **env)
 	{
 		ft_free(env);
 		cleanup(prompt);
-		printf("\nbro\n");
 		exit(1);
 	}
-	printf("No food today: %s\n", strerror(errno));
 	cleanup(prompt);
 	exit(1);
 }

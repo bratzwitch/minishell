@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 12:39:31 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/28 12:32:07 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 10:39:07 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*handle_single_quotes(char **input, char *final_str)
 		current++;
 	if (*current != '\'')
 	{
-		printf("Unmatched single quote detected.\n");
+		ft_putendl_fd("Unmatched single quote detected", STDERR_FILENO);
 		free(final_str);
 		return (NULL);
 	}
@@ -68,7 +68,7 @@ char	*handle_double_quote(char **input, char *final_str)
 	}
 	if (*current != '\"')
 	{
-		printf("Unmatched double quote detected.\n");
+		ft_putendl_fd("Unmatched single quote detected", STDERR_FILENO);
 		free(final_str);
 		return (NULL);
 	}

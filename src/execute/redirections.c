@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:08 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 09:11:12 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 11:01:59 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,7 @@ int process_token(t_token *current, t_redirection *redir, t_token **list1,
 	return (0);
 }
 
-void lst_print(t_token *head)
-{
-	t_token *current = head;
-	while (current != NULL)
-	{
-		printf("Type: %d, Value: %s -> ", current->type, current->value);
-		current = current->next;
-	}
-	printf("NULL\n");
-}
-
-int handle_special_tokens(t_token *tokens)
+int handle_special_tokens(t_token **tokens)
 {
 	t_token *current;
 	t_token *list1;
@@ -71,7 +60,7 @@ int handle_special_tokens(t_token *tokens)
 	t_redirection *redir;
 	int processed;
 
-	current = tokens;
+	current = *tokens;
 	list1 = NULL;
 	list2 = NULL;
 	redir = init_redirections();
@@ -80,18 +69,21 @@ int handle_special_tokens(t_token *tokens)
 		processed = process_token(current, redir, &list1, &list2);
 		if (processed == -1)
 		{
-			split_free(tokens, &list1, &list2, ft_is_special_token(tokens));
+			split_free(tokens, &list1, &list2, ft_is_special_token(*tokens));
 			lst_cleanup(&list2, free_token);
 			return (-1);
 		}
 		if (processed == 1)
 		{
-			current = list2;
+			if (list2 && list2->next)
+				current = list2->next;
+			else
+				break;
 			continue;
 		}
 		current = current->next;
 	}
-	split_free(tokens, &list1, &list2, ft_is_special_token(tokens));
-	// lst_cleanup(&list2, free_token);
+	split_free(tokens, &list1, &list2, ft_is_special_token(*tokens));
+	lst_cleanup(&list2, free_token);
 	return (1);
 }
