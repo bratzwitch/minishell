@@ -6,7 +6,7 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:38:21 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/31 12:30:37 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:37:30 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char	*ft_prompt(t_prompt *prompt)
 		input = readline("minishell$>");
 	if (input == NULL)
 	{
-		ft_putendl_fd("Vp*zdu brother.(remove once done)", 1);
+		ft_putendl_fd("exit", 1);
 		ft_free(prompt->env_copy);
 		rl_clear_history();
 		exit(g_received_sig);
