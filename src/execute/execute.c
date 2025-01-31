@@ -6,13 +6,13 @@
 /*   By: vmoroz <vmoroz@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:14:00 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 12:39:41 by vmoroz           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:39:35 by vmoroz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	execute(t_token *tokens, char *path, char **env)
+int	execute(t_token *tokens, char *path,t_prompt *prompt, char **env)
 {
 	char	**args;
 	char	*path_exec;
@@ -34,5 +34,9 @@ int	execute(t_token *tokens, char *path, char **env)
 	if(path_exec != NULL)
 		execve(path_exec, args, env);
 	perror("execve");
-	exit(-1);
+	lst_cleanup(&tokens,free_token);
+	ft_free(env);
+	free(args);
+	restore_stdinout(&prompt->fdin_copy, &prompt->fdout_copy);
+	exit(1);
 }

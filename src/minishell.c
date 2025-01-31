@@ -6,7 +6,7 @@
 /*   By: yhusieva <yhusieva@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 14:01:18 by vmoroz            #+#    #+#             */
-/*   Updated: 2025/01/30 15:49:59 by yhusieva         ###   ########.fr       */
+/*   Updated: 2025/01/31 09:11:19 by yhusieva         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	isvalidtoken(t_token *t)
 			printf("error\n");
 			return (1);
 		}
+		printf("valid %u token %s\n",t->type,t->value);
 		t = t->next;
 	}
 	return (0);
